@@ -1,0 +1,15 @@
+// Run these commands in ElephantSQL postgres database in browser tab to recreate starting table that Syed had
+
+
+// Create example employee table with two rows
+CREATE TABLE employee (
+    id integer PRIMARY KEY,
+    first_name varchar(20),
+    last_name varchar(20),
+    job varchar(20),
+    salary integer
+);
+
+INSERT INTO employee (id, first_name, last_name, job, salary) 
+    VALUES (1, 'John', 'Doe', 'pilot', 100000), (2, 'Alice', 'Lang', 'copilot', 90000);
+
