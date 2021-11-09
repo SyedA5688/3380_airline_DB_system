@@ -6,3 +6,33 @@ Syed Rizvi
 Aaron Wright
 Nathaniel Valtierra
 Kirmanbek Bazarov
+
+
+Prerequirements:
+- Node.js installed on local machine
+- npm package manager (comes with node)
+
+Instructions for getting started:
+1. Pull the code
+```
+git clone https://github.com/SyedA5688/3380_airline_DB_system.git
+```
+
+2. Navigate to repository base
+```
+cd 3380_airline_DB_system
+```
+
+3. Install dependencies
+```
+npm install
+```
+
+4. Start the Web Server (web server listens for web requests made by web client, which is user)
+```
+node index.js
+```
+
+5. Once server is listening on a local port, start web client
+  - Option 1: Install Live Server extension on VSCode, then right-click on index.html and open with live server (recommended, this refreshes webpage whenever you change code)
+  - Option 2: Right click index.html, open with chrome (will not refresh everytime code changes)
