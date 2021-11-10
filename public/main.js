@@ -39,8 +39,8 @@ console.log("Main.js script running when page loads");
 // Async function definitions to select, insert, update, and delete employees
 async function selectEmployees() {
   try {
-    // Get all employees from "https://localhost:5000/employees"
-    const response = await fetch("http://localhost:5000/employees")
+    // Get all employees from "/employees"
+    const response = await fetch("/employees")
     const jsonData = await response.json();
     // console.log("Inside selectEmployees(), jsonData:", jsonData);
 
@@ -66,11 +66,11 @@ async function insertEmployee() {
   const salary = inputSalary.value;
 
   try {
-    // insert new demo to http://localhost:5000/employees with POST request
+    // insert new demo to /employees with POST request
     const body = { id: id, first_name: first_name, last_name: last_name, job_title: job_title, salary: salary };
 
     // connect to heroku? Remove localhost:port
-    const response = await fetch("http://localhost:5000/employees", {
+    const response = await fetch("/employees", {
       method: "POST",
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify(body)

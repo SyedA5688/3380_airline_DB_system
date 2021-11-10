@@ -1,2 +1,4 @@
-node_modules/
+/node_modules
+/db/log.txt
 esql_creds.json
+.env
