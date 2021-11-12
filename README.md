@@ -38,6 +38,6 @@ node index.js
 ```
 
 6. Once server is listening on a local port, start web client
-  - Option 1: Install Live Server extension on VSCode, then right-click on index.html and open with live server (recommended, this refreshes webpage whenever you change code)
-  - Option 2: Go to localhost:5000 in your browser
-  - Option 3: Right click index.html, open with chrome (will not refresh everytime code changes)
+  - Start a new terminal
+  - cd to client/ directory
+  - run ```npm start``` to start developmental react frontend client
