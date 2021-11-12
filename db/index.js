@@ -20,4 +20,13 @@ module.exports = {
     });
     return res;
   },
+  end: async () => {
+    console.log('Disconnecting pool...');
+    try {
+      await pool.end();
+      console.log('Pool disconnected');
+    } catch(err) {
+      console.error('Could not disconnect pool\n', err.stack);
+    }
+  }
 };
