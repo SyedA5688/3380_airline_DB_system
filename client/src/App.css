@@ -1,0 +1,93 @@
+table {
+  align-items: center;
+  margin-left: auto; 
+  margin-right: auto;
+}
+
+select {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+
+/* Employee Database Display */
+.database-visual-container {
+  text-align: center;
+  margin-top: 10vmin;
+  flex-direction: column;
+  align-items: center;
+
+  /* border-style: solid;
+  border-width: 1px;
+  border-color: green; */
+}
+
+.employee-table-container {
+  width: 70vw;
+  margin-left:auto; 
+  margin-right:auto;
+
+  /* border-style: solid;
+  border-width: 1px;
+  border-color: red; */
+}
+
+
+/* Search Form */
+.search-form-container {
+  margin-top: 10vmin;
+}
+
+
+/* Insert Form */
+.insert-employee-form-container {
+  border: 1px;
+  border-color: gray;
+  border-style: solid;
+  border-radius: 20px;
+  padding: 30px 40px;
+  margin-top: 5vmin;
+}
+
+.form-group {
+  margin-right: 20px;
+}
+
+
+.page-content-container {
+  padding: 30px 40px;
+  /* border-style: solid;
+  border-width: 1px;
+  border-color: black; */
+}
+
+
+.App {
+  flex-direction: column;
+  align-items: center;
+  width: 100vw;
+
+  /* border-style: solid;
+  border-width: 1px;
+  border-color: black; */
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 4em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 1em;
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}

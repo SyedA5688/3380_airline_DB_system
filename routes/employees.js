@@ -12,7 +12,8 @@ router.get('/employees', async (req, res) => {
   try {
     const result = await db.query(dbQuery);
     res.json(result.rows);
-  } catch(err) {
+  } 
+  catch(err) {
     console.error(err.stack);
     res.json({error: 'invalid query'});
   }
