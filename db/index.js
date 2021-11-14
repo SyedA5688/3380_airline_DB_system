@@ -6,6 +6,14 @@ const pool = new Pool({
   connectionString: process.env.ELEPHANTSQL_URL
 });
 
+const endPool = () => {
+  console.log('Disconnecting pool...');
+  pool.end()
+    .then(console.log('Pool disconnected'))
+    .catch((err) => console.error('Could not disconnect pool\n', err.stack));
+};
+process.on('exit', endPool);
+
 module.exports = {
   connect: async () => {
     const client =  await pool.connect();
@@ -19,5 +27,5 @@ module.exports = {
       if(err) console.error(err.stack);
     });
     return res;
-  },
+  }
 };
