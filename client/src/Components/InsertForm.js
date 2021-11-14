@@ -33,6 +33,7 @@ class InsertForm extends Component {
         job_title: this.state.insertJobTitle, 
         salary: this.state.insertSalary 
       };
+      console.log(body);
   
       // connect to heroku? Remove localhost:port
       const response = await fetch("/employees", {
@@ -85,7 +86,7 @@ class InsertForm extends Component {
               <input type="number" className="form-control" id="inputEmployeeSalary" placeholder="Salary" name="insertSalary" value={this.state.insertSalary} onChange={this.handleChange} />
             </div>
           </div>
-          <button type="button" className="btn btn-outline-secondary">Submit</button>
+          <button type="submit" className="btn btn-outline-secondary">Submit</button>
         </form>
       </div>
     );

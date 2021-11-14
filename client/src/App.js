@@ -16,9 +16,9 @@ class App extends Component {
   componentDidMount = async () => {
     const res = await fetch('/employees');
     const body = await res.json();
-    console.log(body.rows);  // Right now prints undefined, ToDo: see why GET request to /employees returns undefined
+    console.log(body);
     this.setState({
-      employees: body.rows
+      employees: body
     });
   };
 
