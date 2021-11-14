@@ -17,11 +17,13 @@ mountRoutes(app);
 
 const closeServer = () => {
   console.log('Server closing...');
-  server.close((err) => {
-    console.log('Server closed');
-    process.exit(err ? 1 : 0 );
-  });
+  server.close();
 };
+
+server.on('close', () => {
+  console.log('Server closed');
+  process.exit();
+});
 
 process.on('SIGINT', closeServer);
 process.on('SIGTERM', closeServer);

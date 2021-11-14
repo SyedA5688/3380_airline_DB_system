@@ -8,9 +8,9 @@ const pool = new Pool({
 
 const endPool = () => {
   console.log('Disconnecting pool...');
-    pool.end()
-      .then(console.log('Pool disconnected'))
-      .catch((err) => console.error('Could not disconnect pool\n', err.stack));
+  pool.end()
+    .then(console.log('Pool disconnected'))
+    .catch((err) => console.error('Could not disconnect pool\n', err.stack));
 };
 process.on('exit', endPool);
 
