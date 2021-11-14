@@ -1,7 +1,6 @@
 const express = require('express');
 const cors = require("cors");
 const mountRoutes = require('./routes');
-const db = require('./db');
 require('dotenv').config();
 
 const app = express();
@@ -16,18 +15,12 @@ app.use(express.json());
 
 mountRoutes(app);
 
-const closeServer = async () => {
-  try {
-    await db.end();
-  } finally {
-    server.close(() => {
-      console.log('Server closing...');
-      server.close(() => {
-        console.log('Server closed');
-        process.exit();
-      });
-    });
-  }
+const closeServer = () => {
+  console.log('Server closing...');
+  server.close((err) => {
+    console.log('Server closed');
+    process.exit(err ? 1 : 0 );
+  });
 };
 
 process.on('SIGINT', closeServer);
