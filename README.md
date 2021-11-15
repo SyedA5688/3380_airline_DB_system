@@ -5,7 +5,7 @@ Group Members:
 Syed Rizvi
 Aaron Wright
 Nathaniel Valtierra
-Kirmanbek Bazarov
+Kurmanbek Bazarov
 
 
 Prerequirements:
