@@ -3,7 +3,6 @@ This repository contains the implementation of the airline personnel HR web/data
 
 Group Members:
 Syed Rizvi
-Aaron Wright
 Nathaniel Valtierra
 Kurmanbek Bazarov
 
