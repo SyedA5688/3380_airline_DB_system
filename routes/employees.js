@@ -1,3 +1,19 @@
+/* 
+ * GET QUERY PARAMATERS:
+ * page:   int                                    default = 1
+ * sort:   [id | fname | lname | salary* | job*]  default = id    *not implemented
+ * limit:  int                                    default = 100
+ * 
+ * SUMMARY:
+ * Returns the first 100 employees sorted by id (default).
+ * 
+ * POST BODY PARAMETERS:
+ * {id, first_name, last_name, job_title, salary}
+ * 
+ * SUMMARY:
+ * Attempts to insert a new employee into the database. Returns the inserted employee.
+ */
+
 const Router = require('express-promise-router');
 const format = require('pg-format');
 const db = require('../db');
