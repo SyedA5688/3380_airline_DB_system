@@ -27,7 +27,7 @@ module.exports = {
 
     client.query = async (text, params) => {
       console.log('client executed query:', {text});
-      await fs.writeFile('./db/transactions.sql', text+'\n' ,{ flag: 'a' }, logError); 
+      await fs.writeFile('./db/transaction.sql', text+'\n' ,{ flag: 'a' }, logError); 
       return query.apply(client, [text, params]);
     };
     client.release = () => {
@@ -42,7 +42,7 @@ module.exports = {
   query: async (text, params) => {
     const res = await pool.query(text, params);
     console.log('pool executed query:', { text, rows: res.rowCount });
-    await fs.writeFile('./db/queries.sql', text+'\n' ,{ flag: 'a' }, logError);
+    await fs.writeFile('./db/query.sql', text+'\n' ,{ flag: 'a' }, logError);
     return res;
   }
 };

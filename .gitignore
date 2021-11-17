@@ -1,8 +1,8 @@
 /node_modules
 /client/node_modules
 
-/db/queries.sql
-/db/transactions.sql
+/db/query.sql
+/db/transaction.sql
 
 esql_creds.json
 .env
