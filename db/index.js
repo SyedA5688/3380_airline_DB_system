@@ -19,6 +19,7 @@ const logError = async (err) => {
 };
 
 module.exports = {
+  // Monkey patches default pg-Client methods for logging purposes
   connect: async () => {
     const client =  await pool.connect();
     console.log('client checked out');
@@ -30,6 +31,7 @@ module.exports = {
       await fs.writeFile('./db/transaction.sql', text+'\n' ,{ flag: 'a' }, logError); 
       return query.apply(client, [text, params]);
     };
+
     client.release = () => {
       console.log('client released');
       // Set methods back to original versions
@@ -39,6 +41,7 @@ module.exports = {
     };
     return client;
   },
+
   query: async (text, params) => {
     const res = await pool.query(text, params);
     console.log('pool executed query:', { text, rows: res.rowCount });
