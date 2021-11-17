@@ -1,5 +1,5 @@
 const employees = require('./employees');
 
-module.exports = app => {
+module.exports = (app) => {
   app.use(employees);
 };
