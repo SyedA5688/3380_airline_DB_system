@@ -22,15 +22,20 @@ const router = new Router();
 module.exports = router;
 
 // DBMS table information
-const params = {
-  tableName: 'employee',
-  orderBy: 'id',
-  limit: 'LIMIT 100'
+const tableParams = {
+  table: 'employee',
+  id: 'id',
+  fname: 'first_name',
+  lname: 'last_name'
 };
 
 // Get all employees currently in database
 router.get('/employees', async (req, res) => {
-  const args = [params.tableName, params.orderBy, params.limit];
+  const params = req.query;
+  const limit = params.limit ? params.limit : 100;
+  const sortBy = params.sort ? validateSortBy(params.sort) : tableParams.id;
+
+  const args = [tableParams.table, sortBy, limit];
   const dbQuery = format.withArray('SELECT *\nFROM %I\nORDER BY %I\n%s;', args);
   try {
     const result = await db.query(dbQuery);
@@ -53,8 +58,9 @@ router.get('/employees', async (req, res) => {
 // Insert a new employee into the ElephantSQL employee database
 router.post('/employees', async (req, res) => {
   const {id, first_name, last_name, job_title, salary} = req.body;
-  const args = [params.tableName, id, first_name, last_name, job_title, salary];
+  const args = [tableParams.table, id, first_name, last_name, job_title, salary];
   const dbQuery = format.withArray('INSERT INTO %I VALUES(%L, %L, %L, %L, %L)\nRETURNING *;', args);
+  
   try {
     const result = await db.query(dbQuery);
     res.json({
@@ -71,3 +77,10 @@ router.post('/employees', async (req, res) => {
     });
   }
 });
+
+const validateSortBy = (sortBy) => {
+  if(sortBy == 'fname') return tableParams.fname;
+  if(sortBy == 'lname') return tableParams.lname;
+  
+  return tableParams.id; // Default
+}
