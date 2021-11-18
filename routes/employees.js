@@ -2,10 +2,11 @@
  * GET QUERY PARAMATERS:
  * page:   int                                    default = 1
  * sort:   [id | fname | lname | salary | job]    default = id
+ * order:  [asc | desc]                           default = asc
  * limit:  int                                    default = 10
  * 
  * SUMMARY:
- * Returns the first 10 employees sorted by id (default).
+ * Returns the first 10 employees sorted by id in ascending order (default).
  * 
  * POST BODY PARAMETERS:
  * {id, first_name, last_name, job_title, salary}
@@ -33,13 +34,15 @@ const tableParams = {
 
 // Get all employees currently in database
 router.get('/employees', async (req, res) => {
+  // TODO: Input validation
   const params = req.query;
   const page = params.page ? params.page : 1;
-  const sortBy = params.sort ? validateSortBy(params.sort) : tableParams.id;
+  const sortBy = tableParams[params.sort] ? tableParams[params.sort] : tableParams.id;
+  const order = params.order ? params.order.toUpperCase() : 'ASC';
   const limit = params.limit ? params.limit : 10;
 
-  const args = [tableParams.table, sortBy, limit * (page - 1), limit];
-  const dbQuery = format.withArray('SELECT *\nFROM %I\nORDER BY %I\nOFFSET %s\nLIMIT %s;', args);
+  const args = [tableParams.table, sortBy, order, limit * (page - 1), limit];
+  const dbQuery = format.withArray('SELECT *\nFROM %I\nORDER BY %I %s\nOFFSET %s\nLIMIT %s;', args);
   try {
     const result = await db.query(dbQuery);
     res.json({
@@ -80,12 +83,3 @@ router.post('/employees', async (req, res) => {
     });
   }
 });
-
-const validateSortBy = (sortBy) => {
-  if(sortBy == 'fname') return tableParams.fname;
-  if(sortBy == 'lname') return tableParams.lname;
-  if(sortBy == 'salary') return tableParams.salary;
-  if(sortBy == 'job') return tableParams.job;
-
-  return tableParams.id; // Default
-}
