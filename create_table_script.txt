@@ -7,26 +7,110 @@
 
 
 // Create Employee relation
-CREATE TABLE Employee (
-  employee_id INT           GENERATED ALWAYS AS IDENTITY (START WITH 1000000),
-  first_name  VARCHAR(50)   NOT NULL CHECK(first_name ~ '^[A-Z ]+$'),
-  m_initial   CHAR(1),  
-  last_name   VARCHAR(50)   NOT NULL CHECK(last_name ~ '^[A-Z ]+$'),
-  ssn         CHAR(9)       UNIQUE CHECK(ssn ~ '^\d{9}$'),
-  dob         DATE          NOT NULL,
-  gender      CHAR(1)       NOT NULL CHECK(gender ~ '^[MFO]$'),
-  phone       VARCHAR(15)   CHECK(phone ~ '^\+\d+$'),
-  email       VARCHAR(100)  UNIQUE CHECK(email ~ '^\w{1,64}@(\w+\.[A-Za-z]+){1,100}$'),
-  address     VARCHAR(255)  NOT NULL,
-  job_id      INT           DEFAULT 0 NOT NULL,
-  location_id INT           NOT NULL,
+CREATE TABLE employee (
+  employee_id INT           GENERATED ALWAYS AS IDENTITY (START WITH 1000000),
+  first_name  VARCHAR(50)   NOT NULL CHECK(first_name ~ '^[A-Z ]+$'),
+  m_initial   CHAR(1),  
+  last_name   VARCHAR(50)   NOT NULL CHECK(last_name ~ '^[A-Z ]+$'),
+  ssn         CHAR(9)       UNIQUE CHECK(ssn ~ '^\d{9}$'),
+  dob         DATE          NOT NULL,
+  gender      CHAR(1)       NOT NULL CHECK(gender ~ '^[MFO]$'),
+  phone       VARCHAR(15)   CHECK(phone ~ '^\+\d+$'),
+  email       VARCHAR(100)  UNIQUE CHECK(email ~ '^[\w\.\+]{1,64}@(\w+\.[A-Za-z]+){1,100}$'),
+  address     VARCHAR(255)  NOT NULL,
+  job_id      INT           DEFAULT 0 NOT NULL,
+  location_id INT           NOT NULL,
 
-  PRIMARY KEY(employee_id),
-  FOREIGN KEY(job_id)
-    REFERENCES job(job_id)
-    ON DELETE SET DEFAULT,
-  FOREIGN KEY(location_id)
-    REFERENCES location(location_id)
+  PRIMARY KEY(employee_id),
+  FOREIGN KEY(job_id)
+    REFERENCES job(job_id)
+    ON DELETE SET DEFAULT,
+  FOREIGN KEY(location_id)
+    REFERENCES location(location_id)
+);
+
+
+
+
+CREATE TABLE department (
+    department_id    INT          GENERATE ALWAYS AS IDENTITY,
+    department_name  VARCHAR(50)  NOT NULL CHECK(department_name ~ '^[A-Z ]+$'),
+    creation_date    DATE         NOT NULL, 
+    
+    PRIMARY KEY(department_id)
+);
+
+CREATE TABLE job (
+    job_id                 INT          GENERATE ALWAYS AS IDENTITY, 
+    job_title              VARCHAR(30)  NOT NULL CHECK(department_name ~ '^[A-Z ]+$'),
+    department_id          INT          NOT NULL, 
+    weekly_hours           INT          CHECK(weekly_hours <= 168),
+    benefits_package_id    INT          NOT NULL,
+
+    PRIMARY KEY(job_id),
+    FOREIGN KEY(department_id)
+     REFERENCES department(department_id)
+    FOREIGN KEY(benefits_package_id)
+     REFERENCES benefits(benefits_package_id)
+);
+
+CREATE TABLE benefits (
+    benefits_package_id        INT          GENERATE ALWAYS AS IDENTITY, 
+    amount                     INT          NOT NULL,
+    stock_options              INT          NOT NULL, 
+    health_insurance_provider  VARCHAR(90)  NOT NULL CHECK(health_insurance_provider ~ '^[A-Z ]+$'),
+    retirement_plan            INT          NOT NULL,
+
+    PRIMARY KEY(benefits_package_id)
+);
+
+CREATE TABLE salary (
+    salary_id    INT GENERATE ALWAYS AS IDENTITY,
+    job_id       INT NOT NULL,
+    annual_bonus INT NOT NULL,
+
+    PRIMARY KEY(salary_id),
+    FOREIGN KEY(job_id)
+     REFERENCES job(job_id)
+);
+
+CREATE TABLE leave (
+    leave_id    INT           GENERATE ALWAYS AS IDENTITY,
+    employee_id INT           NOT NULL,
+    date        DATE          NOT NULL,
+    reason      VARCHAR(100)  NOT NULL CHECK(reason ~ '^[A-Z ]+$'),
+    status      VARCHAR(50)   NOT NULL CHECK(status ~ '^[A-Z ]+$'),
+
+    PRIMARY KEY(leave_id),
+    FOREIGN KEY(employee_id)
+     REFERENCES employee(employee_id)
+);
+
+CREATE TABLE payroll (
+    payroll_id   INT  GENERATE ALWAYS AS IDENTITY,
+    employee_id  INT  NOT NULL, 
+    job_id       INT  NOT NULL,
+    salary_id    INT  NOT NULL,
+    leave_id     INT  NOT NULL,
+    pay_period   DATE NOT NULL,
+
+    PRIMARY KEY(payroll_id)
+    FOREIGN KEY(employee_id)
+     REFERENCES employee(employee_id)
+    FOREIGN KEY(job_id)
+     REFERENCES job(job_id)
+    FOREIGN KEY(leave_id)
+     REFERENCES leave(leave_id)
+
+);
+
+CREATE TABLE location (
+    city_id         INT          GENERATE ALWAYS AS IDENTITY,
+    city_name       VARCHAR(50)  NOT NULL CHECK(department_name ~ '^[A-Z ]+$'),
+    country_name    VARCHAR(50)  NOT NULL CHECK(department_name ~ '^[A-Z ]+$'),   
+    office_address  VARCHAR(200) UNIQUE CHECK(office_address ~ '^[#.0-9a-zA-Z\s,-]+$'),
+
+    PRIMARY KEY(city_id)
 );
 
 INSERT INTO Employee (employee_id, first_name, m_initial, last_name, ssn, dob, gender, phone, email, address, job_id, location_id) 
