@@ -30,6 +30,6 @@ CREATE TABLE Employee (
 );
 
 INSERT INTO Employee (employee_id, first_name, m_initial, last_name, ssn, dob, gender, phone, email, address, job_id, location_id) 
-    VALUES (1000000, 'John', 'P', 'Doe', 123456789, '2001-11-21', 'M', '832-345-9253', 'john.p.doe@gmail.com', '12345 Heather Bridge LN', 1, 1);
-    VALUES (1000001, 'Jane', 'M', 'Austere', 195836284, '1985-01-30', 'F', '832-927-2847', 'jane.m.austere@gmail.com', '12345 Heather Bridge LN', 1, 1);
-    VALUES (1000002, 'Kevin', 'T', 'Hoang', 171662836, '2000-7-15', 'M', '832-277-8264', 'john.p.doe@gmail.com', '12345 Heather Bridge LN', 1, 1);
+    VALUES (DEFAULT, 'John', 'P', 'Doe', 123456789, '2001-11-21', 'M', '832-345-9253', 'john.p.doe@gmail.com', '12345 Heather Bridge LN', 1, 1);
+    VALUES (DEFAULT, 'Jane', 'M', 'Austere', 195836284, '1985-01-30', 'F', '832-927-2847', 'jane.m.austere@gmail.com', '12345 Heather Bridge LN', 1, 1);
+    VALUES (DEFAULT, 'Kevin', 'T', 'Hoang', 171662836, '2000-7-15', 'M', '832-277-8264', 'john.p.doe@gmail.com', '12345 Heather Bridge LN', 1, 1);
