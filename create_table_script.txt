@@ -10,6 +10,16 @@ CREATE TABLE employee (
     salary integer
 );
 
+// Create example for the department table 
+CREATE TABLE department (
+department_id   INT         GENERATE ALWAYS AS IDENTITY,
+department_name VARCHAR(50) NOT NULL CHECK(department_name ~ '^[A-Z ]+$'),
+creation_date   DATE        NOT NULL,
+
+PRIMARY KEY(department_id)
+);
+
+
 INSERT INTO employee (id, first_name, last_name, job, salary) 
     VALUES (1, 'John', 'Doe', 'pilot', 100000), (2, 'Alice', 'Lang', 'copilot', 90000);
 
