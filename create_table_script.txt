@@ -1,15 +1,35 @@
 // Run these commands in ElephantSQL postgres database in browser tab to recreate starting table that Syed had
 
 
-// Create example employee table with two rows
-CREATE TABLE employee (
-    id integer PRIMARY KEY,
-    first_name varchar(20),
-    last_name varchar(20),
-    job varchar(20),
-    salary integer
+// Drop tables if they already exist
+// DROP TABLE IF EXISTS employees;
+// DROP TABLE IF EXISTS employee;
+
+
+// Create Employee relation
+CREATE TABLE Employee (
+  employee_id INT           GENERATED ALWAYS AS IDENTITY (START WITH 1000000),
+  first_name  VARCHAR(50)   NOT NULL CHECK(first_name ~ '^[A-Z ]+$'),
+  m_initial   CHAR(1),  
+  last_name   VARCHAR(50)   NOT NULL CHECK(last_name ~ '^[A-Z ]+$'),
+  ssn         CHAR(9)       UNIQUE CHECK(ssn ~ '^\d{9}$'),
+  dob         DATE          NOT NULL,
+  gender      CHAR(1)       NOT NULL CHECK(gender ~ '^[MFO]$'),
+  phone       VARCHAR(15)   CHECK(phone ~ '^\+\d+$'),
+  email       VARCHAR(100)  UNIQUE CHECK(email ~ '^\w{1,64}@(\w+\.[A-Za-z]+){1,100}$'),
+  address     VARCHAR(255)  NOT NULL,
+  job_id      INT           DEFAULT 0 NOT NULL,
+  location_id INT           NOT NULL,
+
+  PRIMARY KEY(employee_id),
+  FOREIGN KEY(job_id)
+    REFERENCES job(job_id)
+    ON DELETE SET DEFAULT,
+  FOREIGN KEY(location_id)
+    REFERENCES location(location_id)
 );
 
-INSERT INTO employee (id, first_name, last_name, job, salary) 
-    VALUES (1, 'John', 'Doe', 'pilot', 100000), (2, 'Alice', 'Lang', 'copilot', 90000);
-
+INSERT INTO Employee (employee_id, first_name, m_initial, last_name, ssn, dob, gender, phone, email, address, job_id, location_id) 
+    VALUES (1000000, 'John', 'P', 'Doe', 123456789, '2001-11-21', 'M', '832-345-9253', 'john.p.doe@gmail.com', '12345 Heather Bridge LN', 1, 1);
+    VALUES (1000001, 'Jane', 'M', 'Austere', 195836284, '1985-01-30', 'F', '832-927-2847', 'jane.m.austere@gmail.com', '12345 Heather Bridge LN', 1, 1);
+    VALUES (1000002, 'Kevin', 'T', 'Hoang', 171662836, '2000-7-15', 'M', '832-277-8264', 'john.p.doe@gmail.com', '12345 Heather Bridge LN', 1, 1);
