@@ -1,0 +1,15 @@
+{
+  "empTable": "employee",
+  "id": "employee_id",
+  "fname": "first_name",
+  "minitial": "m_initial",
+  "lname": "last_name",
+
+  "jobTable": "job",
+  "job_id": "job_id",
+  "title": "job_title",
+
+  "depTable": "department",
+  "dep_id": "department_id",
+  "department": "department_name"
+}

@@ -1,15 +1,16 @@
 /* 
  * GET QUERY PARAMATERS:
- * page:   int                                    default = 1
- * sort:   [id | fname | lname | salary | job]    default = id
- * order:  [asc | desc]                           default = asc
- * limit:  int                                    default = 10
+ * page:   int                                        default = 1
+ * sort:   [id | fname | lname | title | department]  default = id
+ * order:  [asc | desc]                               default = asc
+ * limit:  int                                        default = 10,   max = 100
  * 
  * SUMMARY:
  * Returns the first 10 employees sorted by id in ascending order (default).
+ * Returns employee first and last name, middle initial, job title, and department.
  * 
  * POST BODY PARAMETERS:
- * {id, first_name, last_name, job_title, salary}
+ * 
  * 
  * SUMMARY:
  * Attempts to insert a new employee into the database. Returns the inserted employee.
@@ -23,14 +24,7 @@ const router = new Router();
 module.exports = router;
 
 // DBMS table information
-const tableParams = {
-  table: 'employee',
-  id: 'id',
-  fname: 'first_name',
-  lname: 'last_name',
-  salary: 'salary',
-  job: 'job'
-};
+const tableParams = require('./employees.json');
 
 // Get all employees currently in database
 router.get('/employees', async (req, res) => {
@@ -39,10 +33,30 @@ router.get('/employees', async (req, res) => {
   const page = params.page ? params.page : 1;
   const sortBy = tableParams[params.sort] ? tableParams[params.sort] : tableParams.id;
   const order = params.order ? params.order.toUpperCase() : 'ASC';
-  const limit = params.limit ? params.limit : 10;
+  const limit = params.limit ? (params.limit <= 100 ? params.limit : 100) : 10;
 
-  const args = [tableParams.table, sortBy, order, limit * (page - 1), limit];
-  const dbQuery = format.withArray('SELECT *\nFROM %I\nORDER BY %I %s\nOFFSET %s\nLIMIT %s;', args);
+  const columnArgs = [ 
+    tableParams.id, 
+    tableParams.fname, 
+    tableParams.minitial, 
+    tableParams.lname,
+    tableParams.title,
+    tableParams.department
+  ];
+  const joinArgs = [
+    tableParams.empTable,
+    tableParams.jobTable,
+    tableParams.depTable
+  ];
+  const orderArgs = [  
+    sortBy, 
+    order, 
+    limit * (page - 1), 
+    limit 
+  ];
+  const queryString = `SELECT %I\nFROM %I\n\tNATURAL JOIN %I\n\tNATURAL JOIN %I\nORDER BY %I %s\nOFFSET %s\nLIMIT %s;`;
+  const dbQuery = format(queryString, columnArgs, ...joinArgs,...orderArgs);
+
   try {
     const result = await db.query(dbQuery);
     res.json({
@@ -62,24 +76,24 @@ router.get('/employees', async (req, res) => {
 });
 
 // Insert a new employee into the ElephantSQL employee database
-router.post('/employees', async (req, res) => {
-  const {id, first_name, last_name, job_title, salary} = req.body;
-  const args = [tableParams.table, id, first_name.trim().toUpperCase(), last_name.trim().toUpperCase(), job_title.trim().toUpperCase(), salary];
-  const dbQuery = format.withArray('INSERT INTO %I VALUES(%L, %L, %L, %L, %L)\nRETURNING *;', args);
+// router.post('/employees', async (req, res) => {
+//   const {id, first_name, last_name, job_title, salary} = req.body;
+//   const args = [tableParams.empTable, id, first_name.trim().toUpperCase(), last_name.trim().toUpperCase(), job_title.trim().toUpperCase(), salary];
+//   const dbQuery = format.withArray('INSERT INTO %I VALUES(%L, %L, %L, %L, %L)\nRETURNING *;', args);
   
-  try {
-    const result = await db.query(dbQuery);
-    res.json({
-      rows: result.rows, 
-      queries: [dbQuery],
-      transaction: false
-    });
-  } catch(err) {
-    console.error(err.stack);
-    res.json({
-      error: err.message,
-      queries: [dbQuery],
-      transaction: false
-    });
-  }
-});
+//   try {
+//     const result = await db.query(dbQuery);
+//     res.json({
+//       rows: result.rows, 
+//       queries: [dbQuery],
+//       transaction: false
+//     });
+//   } catch(err) {
+//     console.error(err.stack);
+//     res.json({
+//       error: err.message,
+//       queries: [dbQuery],
+//       transaction: false
+//     });
+//   }
+// });
