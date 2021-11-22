@@ -25,11 +25,18 @@ module.exports = router;
 // DBMS table information
 const tableParams = {
   table: 'employee',
-  id: 'id',
-  fname: 'first_name',
-  lname: 'last_name',
-  salary: 'salary',
-  job: 'job'
+  id: 'employee_id',
+  first_name: 'first_name',
+  m_initial: 'm_initial',
+  last_name: 'last_name',
+  ssn: 'ssn',
+  dob: 'dob',
+  gender: 'gender',
+  phone: 'phone',
+  email: 'email',
+  address: 'address',
+  job_id: 'job_id',
+  city_id: 'city_id',
 };
 
 // Get all employees currently in database

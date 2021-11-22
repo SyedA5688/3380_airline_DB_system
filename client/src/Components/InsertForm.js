@@ -5,11 +5,14 @@ class InsertForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      insertID: 0,
       insertFirstName: '',
+      insertMiddleInitial: '',
       insertLastName: '',
-      insertJobTitle: '',
-      insertSalary: 0
+      insertSSN: '',
+      insertDOB: '',
+      insertGender: '',
+      insertPhone: 1111111111,
+      insertEmail: '',
     };
     
     this.handleChange = this.handleChange.bind(this);
@@ -35,7 +38,6 @@ class InsertForm extends Component {
       };
       console.log(body);
   
-      // connect to heroku? Remove localhost:port
       const response = await fetch("/employees", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
@@ -66,24 +68,36 @@ class InsertForm extends Component {
         <form className="form-inline" onSubmit={this.handleSubmit}>
           <div className="input-group">
             <div className="form-group">
-              <label className="sr-only" htmlFor="inputEmployeeID">ID Number</label>
-              <input type="number" className="form-control" id="inputEmployeeID" placeholder="Employee ID" name="insertID" value={this.state.insertID} onChange={this.handleChange} />
+              <label className="sr-only" htmlFor="inputEmployeeFirstName">First Name</label>
+              <input type="text" className="form-control" id="inputEmployeeFirstName" placeholder="John" name="insertFirstName" value={this.state.insertFirstName} onChange={this.handleChange} />
             </div>
             <div className="form-group">
-              <label className="sr-only" htmlFor="inputEmployeeFirstName">First Name</label>
-              <input type="text" className="form-control" id="inputEmployeeFirstName" placeholder="First Name" name="insertFirstName" value={this.state.insertFirstName} onChange={this.handleChange} />
+              <label className="sr-only" htmlFor="inputEmployeeMiddleInitial">Middle Initial</label>
+              <input type="text" className="form-control" id="inputEmployeeMiddleInitial" placeholder="A" name="insertMiddleInitial" value={this.state.insertMiddleInitial} onChange={this.handleChange} />
             </div>
             <div className="form-group">
               <label className="sr-only" htmlFor="inputEmployeeLastName">Last Name</label>
-              <input type="text" className="form-control" id="inputEmployeeLastName" placeholder="Last Name" name="insertLastName" value={this.state.insertLastName} onChange={this.handleChange} />
+              <input type="text" className="form-control" id="inputEmployeeLastName" placeholder="Doe" name="insertLastName" value={this.state.insertLastName} onChange={this.handleChange} />
             </div>
             <div className="form-group">
-              <label className="sr-only" htmlFor="inputEmployeeJobTitle">Job Title</label>
-              <input type="text" className="form-control" id="inputEmployeeJobTitle" placeholder="Job Title" name="insertJobTitle" value={this.state.insertJobTitle} onChange={this.handleChange} />
+              <label className="sr-only" htmlFor="inputEmployeeSSN">Social Security Number</label>
+              <input type="text" className="form-control" id="inputEmployeeSSN" placeholder="123456789" name="insertSSN" value={this.state.insertSSN} onChange={this.handleChange} />
             </div>
             <div className="form-group">
-              <label className="sr-only" htmlFor="inputEmployeeSalary">Salary</label>
-              <input type="number" className="form-control" id="inputEmployeeSalary" placeholder="Salary" name="insertSalary" value={this.state.insertSalary} onChange={this.handleChange} />
+              <label className="sr-only" htmlFor="inputEmployeeDOB">Date of Birth</label>
+              <input type="text" className="form-control" id="inputEmployeeDOB" placeholder="2001-11-30" name="insertDOB" value={this.state.insertDOB} onChange={this.handleChange} />
+            </div>
+            <div className="form-group">
+              <label className="sr-only" htmlFor="inputEmployeeGender">Gender</label>
+              <input type="text" className="form-control" id="inputEmployeeGender" placeholder="M" name="insertGender" value={this.state.insertGender} onChange={this.handleChange} />
+            </div>
+            <div className="form-group">
+              <label className="sr-only" htmlFor="inputEmployeePhone">Phone</label>
+              <input type="number" className="form-control" id="inputEmployeePhone" placeholder="8321234567" name="insertPhone" value={this.state.insertPhone} onChange={this.handleChange} />
+            </div>
+            <div className="form-group">
+              <label className="sr-only" htmlFor="inputEmployeeEmail">Email</label>
+              <input type="text" className="form-control" id="inputEmployeeEmail" placeholder="example@gmail.com" name="insertEmail" value={this.state.insertEmail} onChange={this.handleChange} />
             </div>
           </div>
           <button type="submit" className="btn btn-outline-secondary">Submit</button>

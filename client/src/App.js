@@ -16,9 +16,9 @@ class App extends Component {
   componentDidMount = async () => {
     const res = await fetch('/employees');
     const body = await res.json();
-    console.log(body);
+    console.log("Request body from app mounting get request:", body);  // Either { queries, rows, transaction } or { error, rows, transaction }
     this.setState({
-      employees: body
+      employees: body.rows
     });
   };
 
@@ -49,20 +49,31 @@ class App extends Component {
                   <tr>
                     <th scope="col">ID</th>
                     <th scope="col">First Name</th>
+                    <th scope="col">Middle Initial</th>
                     <th scope="col">Last Name</th>
-                    <th scope="col">Job Title</th>
-                    <th scope="col">Salary</th>
+                    <th scope="col">SSN</th>
+                    <th scope="col">Date of Birth</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Phone</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Job ID</th>
+                    <th scope="col">City ID</th>
                   </tr>
                 </thead>
                 {/* Add Employees in tbody through HTML injection in main.js */}
                 <tbody>
                   {this.state.employees && this.state.employees.map(employeeObj => (
-                    <tr key={employeeObj.id}>
-                    <th scope="col">{employeeObj.id}</th>
+                    <tr key={employeeObj.employee_id}>
+                    <th scope="col">{employeeObj.employee_id}</th>
                     <th scope="col">{employeeObj.first_name}</th>
+                    <th scope="col">{employeeObj.m_initial}</th>
                     <th scope="col">{employeeObj.last_name}</th>
-                    <th scope="col">{employeeObj.job}</th>
-                    <th scope="col">{employeeObj.salary}</th>
+                    <th scope="col">{employeeObj.ssn}</th>
+                    <th scope="col">{employeeObj.dob}</th>
+                    <th scope="col">{employeeObj.gender}</th>
+                    <th scope="col">{employeeObj.phone}</th>
+                    <th scope="col">{employeeObj.email}</th>
                     </tr>
                   ))}
                 </tbody>
