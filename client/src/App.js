@@ -74,6 +74,9 @@ class App extends Component {
                     <th scope="col">{employeeObj.gender}</th>
                     <th scope="col">{employeeObj.phone}</th>
                     <th scope="col">{employeeObj.email}</th>
+                    <th scope="col">{employeeObj.address}</th>
+                    <th scope="col">{employeeObj.job_id}</th>
+                    <th scope="col">{employeeObj.city_id}</th>
                     </tr>
                   ))}
                 </tbody>
