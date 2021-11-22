@@ -13,10 +13,10 @@ const tableParams = require('./employee.json');
  * @apiName GetEmployees
  * @apiGroup Employee
  * 
- * @apiQuery {Number {1..}}                                     [page=1]    Specify <code>page</code> if there are more employees than <code>limit</code>
- * @apiQuery {String="id","fname","lname","title","department"} [sort=id]   How rows are sorted
- * @apiQuery {String="asc","desc"}                              [order=asc] Receive rows in ascending or descending order
- * @apiQuery {Number {1..100}}                                  [limit=10]  The maximum number of rows to receive
+ * @apiQuery {Number {1..}}                             [page=1]    Specify <code>page</code> if there are more employees than <code>limit</code>
+ * @apiQuery {String=id,fname,lname,title,department}   [sort=id]   How rows are sorted
+ * @apiQuery {String=asc,desc}                          [order=asc] Receive rows in ascending or descending order
+ * @apiQuery {Number {1..100}}                          [limit=10]  The maximum number of rows to receive
  * 
  * @apiSuccess {Object[]} rows                  Results from the database
  * @apiSuccess {Number}   rows.employee_id      Employee's ID number
