@@ -10,7 +10,7 @@ const tableParams = require('./employee.json');
 
 /**
  * @api {get} /employee Get all employees
- * @apiName GetEmployees
+ * @apiName GetAllEmployees
  * @apiGroup Employee
  * 
  * @apiQuery {Number {1..}}                             [page=1]    Specify <code>page</code> if there are more employees than <code>limit</code>
@@ -21,7 +21,7 @@ const tableParams = require('./employee.json');
  * @apiSuccess {Object[]} rows                  Results from the database
  * @apiSuccess {Number}   rows.employee_id      Employee's ID number
  * @apiSuccess {String}   rows.first_name       Employee's first name
- * @apiSuccess {String}   rows.m_initial        Employee's middle initial
+ * @apiSuccess {String}   [rows.m_initial]      Employee's middle initial (can be null)
  * @apiSuccess {String}   rows.last_name        Employee's last name
  * @apiSuccess {String}   rows.job_title        Employee's job title
  * @apiSuccess {String}   rows.department_name  Department employee works in
@@ -91,26 +91,3 @@ router.get('/employee', async (req, res) => {
     });
   }
 });
-
-// Insert a new employee into the ElephantSQL employee database
-// router.post('/employees', async (req, res) => {
-//   const {id, first_name, last_name, job_title, salary} = req.body;
-//   const args = [tableParams.empTable, id, first_name.trim().toUpperCase(), last_name.trim().toUpperCase(), job_title.trim().toUpperCase(), salary];
-//   const dbQuery = format.withArray('INSERT INTO %I VALUES(%L, %L, %L, %L, %L)\nRETURNING *;', args);
-  
-//   try {
-//     const result = await db.query(dbQuery);
-//     res.json({
-//       rows: result.rows, 
-//       queries: [dbQuery],
-//       transaction: false
-//     });
-//   } catch(err) {
-//     console.error(err.stack);
-//     res.json({
-//       error: err.message,
-//       queries: [dbQuery],
-//       transaction: false
-//     });
-//   }
-// });

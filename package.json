@@ -23,6 +23,7 @@
   "apidoc": {
     "title": "API Documentation",
     "name": "Backend API Documentation",
-    "description": "Quick reference to the endpoints used"
+    "description": "Quick reference to the endpoints used",
+    "url" : "https://api.example.com"
   }
 }
