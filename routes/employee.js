@@ -24,10 +24,10 @@ const router = new Router();
 module.exports = router;
 
 // DBMS table information
-const tableParams = require('./employees.json');
+const tableParams = require('./employee.json');
 
 // Get all employees currently in database
-router.get('/employees', async (req, res) => {
+router.get('/employee', async (req, res) => {
   // TODO: Input validation
   const params = req.query;
   const page = params.page ? params.page : 1;
