@@ -26,7 +26,42 @@ module.exports = router;
 // DBMS table information
 const tableParams = require('./employee.json');
 
-// Get all employees currently in database
+/**
+ * @api {get} /employee Get all employees
+ * @apiName GetEmployees
+ * @apiGroup Employee
+ * 
+ * @apiQuery {Number {1..}}                                     [page=1]    Specify <code>page</code> if there are more employees than <code>limit</code>
+ * @apiQuery {String="id","fname","lname","title","department"} [sort=id]   How rows are sorted
+ * @apiQuery {String="asc","desc"}                              [order=asc] Receive rows in ascending or descending order
+ * @apiQuery {Number {1..100}}                                  [limit=10]  The maximum number of rows to receive
+ * 
+ * @apiSuccess {Object[]} rows                  Results from the database
+ * @apiSuccess {Number}   rows.employee_id      Employee's ID number
+ * @apiSuccess {String}   rows.first_name       Employee's first name
+ * @apiSuccess {String}   rows.m_initial        Employee's middle initial
+ * @apiSuccess {String}   rows.last_name        Employee's last name
+ * @apiSuccess {String}   rows.job_title        Employee's job title
+ * @apiSuccess {String}   rows.department_name  Department employee works in
+
+ * @apiSuccess {String[]} queries     Array of queries used
+ * @apiSuccess {Boolean}  transaction True if transactions were used
+ * 
+ * @apiSuccessExample {json} Success-Response example:
+ *    HTTP/1.1 200 OK
+ *    {
+ *      "rows": [{
+ *                "employee_id": 1000000,
+ *                "first_name": "JOHN",
+ *                "m_initial": "P",
+ *                "last_name": "SMITH",
+ *                "job_title": "PILOT",
+ *                "department_name": "LINE PERSONNEL"
+ *               }],
+ *      "queries": ["SELECT *\nFROM table;"],
+ *      "transaction": false
+ *    }
+ */
 router.get('/employee', async (req, res) => {
   // TODO: Input validation
   const params = req.query;
