@@ -1,71 +1,116 @@
 // Run these commands in ElephantSQL postgres database in browser tab to recreate starting table that Syed had
 
-
 // Drop tables if they already exist
-// DROP TABLE IF EXISTS employees;
 // DROP TABLE IF EXISTS employee;
-
-
-// Create Employee relation
-CREATE TABLE employee (
-  employee_id INT           GENERATED ALWAYS AS IDENTITY (START WITH 1000000),
-  first_name  VARCHAR(50)   NOT NULL CHECK(first_name ~ '^[A-Z ]+$'),
-  m_initial   CHAR(1),  
-  last_name   VARCHAR(50)   NOT NULL CHECK(last_name ~ '^[A-Z ]+$'),
-  ssn         CHAR(9)       UNIQUE CHECK(ssn ~ '^\d{9}$'),
-  dob         DATE          NOT NULL,
-  gender      CHAR(1)       NOT NULL CHECK(gender ~ '^[MFO]$'),
-  phone       VARCHAR(15)   CHECK(phone ~ '^\+\d+$'),
-  email       VARCHAR(100)  UNIQUE CHECK(email ~ '^[\w\.\+]{1,64}@(\w+\.[A-Za-z]+){1,100}$'),
-  address     VARCHAR(255)  NOT NULL,
-  job_id      INT           DEFAULT 0 NOT NULL,
-  location_id INT           NOT NULL,
-
-  PRIMARY KEY(employee_id),
-  FOREIGN KEY(job_id)
-    REFERENCES job(job_id)
-    ON DELETE SET DEFAULT,
-  FOREIGN KEY(location_id)
-    REFERENCES location(location_id)
-);
-
 
 
 
 CREATE TABLE department (
-    department_id    INT          GENERATE ALWAYS AS IDENTITY,
-    department_name  VARCHAR(50)  NOT NULL CHECK(department_name ~ '^[A-Z ]+$'),
-    creation_date    DATE         NOT NULL, 
-    
-    PRIMARY KEY(department_id)
+  department_id    INT          GENERATED ALWAYS AS IDENTITY,
+  department_name  VARCHAR(50)  NOT NULL CHECK(department_name ~ '^[A-Z ]+$'),
+  creation_date    DATE         NOT NULL, 
+  
+  PRIMARY KEY(department_id)
 );
 
-CREATE TABLE job (
-    job_id                 INT          GENERATE ALWAYS AS IDENTITY, 
-    job_title              VARCHAR(30)  NOT NULL CHECK(department_name ~ '^[A-Z ]+$'),
-    department_id          INT          NOT NULL, 
-    weekly_hours           INT          CHECK(weekly_hours <= 168),
-    benefits_package_id    INT          NOT NULL,
+INSERT INTO department (department_name, creation_date) 
+  VALUES ('FLIGHT CREW', '1980-8-14'),
+  ('CARGO', '1979-2-28'),
+  ('OPERATIONS', '1981-10-01');
 
-    PRIMARY KEY(job_id),
-    FOREIGN KEY(department_id)
-     REFERENCES department(department_id)
-    FOREIGN KEY(benefits_package_id)
-     REFERENCES benefits(benefits_package_id)
-);
+
 
 CREATE TABLE benefits (
-    benefits_package_id        INT          GENERATE ALWAYS AS IDENTITY, 
-    amount                     INT          NOT NULL,
-    stock_options              INT          NOT NULL, 
-    health_insurance_provider  VARCHAR(90)  NOT NULL CHECK(health_insurance_provider ~ '^[A-Z ]+$'),
-    retirement_plan            INT          NOT NULL,
+  benefits_package_id        INT          GENERATED ALWAYS AS IDENTITY, 
+  amount                     INT          NOT NULL,
+  stock_options              INT          NOT NULL, 
+  health_insurance_provider  VARCHAR(90)  NOT NULL CHECK(health_insurance_provider ~ '^[A-Z ]+$'),
+  retirement_plan            INT          NOT NULL,
 
-    PRIMARY KEY(benefits_package_id)
+  PRIMARY KEY(benefits_package_id)
 );
 
+INSERT INTO benefits (amount, stock_options, health_insurance_provider, retirement_plan) 
+  VALUES (2000, 5000, 'AETNA', 3),
+  (3000, 3000, 'ALL STATE', 1),
+  (2500, 4000, 'ALL STATE', 2);
+
+
+
+CREATE TABLE job (
+  job_id                 INT          GENERATED ALWAYS AS IDENTITY, 
+  job_title              VARCHAR(30)  NOT NULL CHECK(job_title ~ '^[A-Z ]+$'),
+  department_id          INT          NOT NULL, 
+  weekly_hours           INT          CHECK(weekly_hours <= 168),
+  benefits_package_id    INT          NOT NULL,
+
+  PRIMARY KEY(job_id),
+  FOREIGN KEY(department_id)
+    REFERENCES department(department_id)
+  FOREIGN KEY(benefits_package_id)
+    REFERENCES benefits(benefits_package_id)
+);
+
+INSERT INTO job (job_title, department_id, weekly_hours, benefits_package_id) 
+  VALUES ('PILOT', 1, 40, 3),
+  ('FLIGHT ATTENDANT', 2, 45, 2),
+  ('CARGO HOLDER', 2, 40, 4);
+
+
+
+CREATE TABLE location (
+    city_id         INT          GENERATED ALWAYS AS IDENTITY,
+    city_name       VARCHAR(50)  NOT NULL CHECK(city_name ~ '^[A-Z ]+$'),
+    country_name    VARCHAR(50)  NOT NULL CHECK(country_name ~ '^[A-Z ]+$'),   
+    office_address  VARCHAR(200) UNIQUE CHECK(office_address ~ '^[#.0-9a-zA-Z\s,-]+$'),
+
+    PRIMARY KEY(city_id)
+);
+
+INSERT INTO location (city_name, country_name, office_address) 
+  VALUES ('HOUSTON', 'UNITED STATES', '12345 Rock Bridge LN'),
+  ('NEW YORK', 'UNITED STATES', '54321 OTHER ROCK DRIVE'),
+  ('LOS ANGELES', 'UNITED STATES', '50 ORANGE DRIVE');
+
+
+
+CREATE TABLE employee (
+  employee_id INT           GENERATED ALWAYS AS IDENTITY (START WITH 1000000),
+  first_name  VARCHAR(50)   NOT NULL CHECK(first_name ~ '^[A-Z ]+$'),
+  m_initial   CHAR(1),  
+  last_name   VARCHAR(50)   NOT NULL CHECK(last_name ~ '^[A-Z ]+$'),
+  ssn         CHAR(9)       UNIQUE CHECK(ssn ~ '^\d{9}$'),
+  dob         DATE          NOT NULL,
+  gender      CHAR(1)       NOT NULL CHECK(gender ~ '^[MFO]$'),
+  phone       VARCHAR(15)   CHECK(phone ~ '^[0-9 ]+$'),
+  email       VARCHAR(100)  UNIQUE CHECK(email ~ '^[\w\.\+]{1,64}@(\w+\.[A-Za-z]+){1,100}$'),
+  address     VARCHAR(255)  NOT NULL,
+  job_id      INT           DEFAULT 0 NOT NULL,
+  city_id INT           NOT NULL,
+
+  PRIMARY KEY(employee_id),
+  FOREIGN KEY(job_id)
+    REFERENCES job(job_id)
+    ON DELETE SET DEFAULT,
+  FOREIGN KEY(city_id)
+    REFERENCES location(city_id)
+);
+
+INSERT INTO employee (first_name, m_initial, last_name, ssn, dob, gender, phone, email, address, job_id, city_id) 
+  VALUES ('JOHN', 'P', 'DOE', 123456789, '2001-11-21', 'M', '8323459253', 'john.p.doe@gmail.com', '12345 Heather Bridge LN', 4, 1),
+  ('JANE', 'M', 'AUSTERE', 195836284, '1985-01-30', 'F', '8329272847', 'jane.m.austere@gmail.com', '12345 Heather Bridge LN', 5, 2),
+  ('KEVIN', 'T', 'HOANG', 171662836, '2000-7-15', 'M', '8322778264', 'kevin.t.hoang@gmail.com', '12345 Heather Bridge LN', 6, 3);
+
+
+
+
+
+
+
+
+
 CREATE TABLE salary (
-    salary_id    INT GENERATE ALWAYS AS IDENTITY,
+    salary_id    INT GENERATED ALWAYS AS IDENTITY,
     job_id       INT NOT NULL,
     annual_bonus INT NOT NULL,
 
@@ -75,7 +120,7 @@ CREATE TABLE salary (
 );
 
 CREATE TABLE leave (
-    leave_id    INT           GENERATE ALWAYS AS IDENTITY,
+    leave_id    INT           GENERATED ALWAYS AS IDENTITY,
     employee_id INT           NOT NULL,
     date        DATE          NOT NULL,
     reason      VARCHAR(100)  NOT NULL CHECK(reason ~ '^[A-Z ]+$'),
@@ -87,7 +132,7 @@ CREATE TABLE leave (
 );
 
 CREATE TABLE payroll (
-    payroll_id   INT  GENERATE ALWAYS AS IDENTITY,
+    payroll_id   INT  GENERATED ALWAYS AS IDENTITY,
     employee_id  INT  NOT NULL, 
     job_id       INT  NOT NULL,
     salary_id    INT  NOT NULL,
@@ -104,16 +149,5 @@ CREATE TABLE payroll (
 
 );
 
-CREATE TABLE location (
-    city_id         INT          GENERATE ALWAYS AS IDENTITY,
-    city_name       VARCHAR(50)  NOT NULL CHECK(department_name ~ '^[A-Z ]+$'),
-    country_name    VARCHAR(50)  NOT NULL CHECK(department_name ~ '^[A-Z ]+$'),   
-    office_address  VARCHAR(200) UNIQUE CHECK(office_address ~ '^[#.0-9a-zA-Z\s,-]+$'),
 
-    PRIMARY KEY(city_id)
-);
 
-INSERT INTO Employee (employee_id, first_name, m_initial, last_name, ssn, dob, gender, phone, email, address, job_id, location_id) 
-    VALUES (DEFAULT, 'John', 'P', 'Doe', 123456789, '2001-11-21', 'M', '832-345-9253', 'john.p.doe@gmail.com', '12345 Heather Bridge LN', 1, 1);
-    VALUES (DEFAULT, 'Jane', 'M', 'Austere', 195836284, '1985-01-30', 'F', '832-927-2847', 'jane.m.austere@gmail.com', '12345 Heather Bridge LN', 1, 1);
-    VALUES (DEFAULT, 'Kevin', 'T', 'Hoang', 171662836, '2000-7-15', 'M', '832-277-8264', 'john.p.doe@gmail.com', '12345 Heather Bridge LN', 1, 1);

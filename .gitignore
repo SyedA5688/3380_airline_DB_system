@@ -3,6 +3,7 @@
 
 /db/query.sql
 /db/transaction.sql
+/db/log.txt
 
 esql_creds.json
 .env
