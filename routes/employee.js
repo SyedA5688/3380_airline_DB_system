@@ -111,7 +111,9 @@ router.get('/employee', async (req, res) => {
   const joinArgs = [
     tableParams.empTable,
     tableParams.jobTable,
-    tableParams.depTable
+    tableParams.job_id,
+    tableParams.depTable,
+    tableParams.dep_id
   ];
   const orderArgs = [  
     sortBy, 
@@ -119,7 +121,7 @@ router.get('/employee', async (req, res) => {
     limit * (page - 1), 
     limit 
   ];
-  const queryString = `SELECT %I\nFROM %I\n\tNATURAL JOIN %I\n\tNATURAL JOIN %I\n${filterString}ORDER BY %I %s\nOFFSET %s\nLIMIT %s;`;
+  const queryString = `SELECT %I\nFROM %I e\n\tJOIN %I j\n\tON e.%4$s = j.%4$s\n\tJOIN %I d\n\tON j.%6$s = d.%6$s\n${filterString}ORDER BY %I %s\nOFFSET %s\nLIMIT %s;`;
   const dbQuery = format(queryString, columnArgs, ...joinArgs,...orderArgs);
 
   try {
@@ -138,4 +140,8 @@ router.get('/employee', async (req, res) => {
       transaction: false
     });
   }
+});
+
+router.post('/employee', async (req, res) => {
+
 });
