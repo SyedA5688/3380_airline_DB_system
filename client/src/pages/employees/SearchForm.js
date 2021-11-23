@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import '../App.css';
 
 class SearchForm extends Component {
   constructor(props) {
@@ -29,7 +28,7 @@ class SearchForm extends Component {
   
   render() {
     return (
-      <div className="search-form-container" >
+      <div className="" >
         <form onSubmit={this.handleSubmit}>
           <label>
             Search

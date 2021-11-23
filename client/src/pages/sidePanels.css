@@ -1,0 +1,30 @@
+ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+  font-size: larger;
+}
+
+.container-fluid {
+  padding-right:0;
+  padding-left:0;
+  margin-right:auto;
+  margin-left:auto;
+  margin-top: auto;
+  /* height: 100vh; */
+  /* border-style: solid;
+  border-width: 1px;
+  border-color: green; */
+}
+
+#sidebar-wrapper {
+  border-style: solid;
+  border-width: 1px;
+  border-color: gray;
+  background-color: #ECECEC;
+  padding-left: 4%;
+  padding-right: 4%;
+}
