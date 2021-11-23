@@ -1,3 +1,20 @@
+html, body, #root, .App {
+  height: 100%;
+  
+  /* border-style: solid;
+  border-width: 1px;
+  border-color: red;  */
+}
+
+.entire-page-container {
+  height: 100%;
+  /* border-style: solid;
+  border-width: 1px;
+  border-color: blue;  */
+}
+
+
+/* Old CSS */
 /* table {
   align-items: center;
   margin-left: auto; 

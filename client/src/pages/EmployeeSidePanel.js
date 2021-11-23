@@ -11,9 +11,10 @@ class EmployeeSidePanel extends Component {
           <div class="col-3" id="sidebar-wrapper" >
             <nav class="sidebar-nav" >
               <ul class="sidebar-ul" >
-                <li class="mt-5 my-4" ><a href="/employeespage/insert" >First Option</a></li>
-                <li class="my-4" ><a href="/employeespage" >Second Option</a></li>
-                <li class="my-4"><a href="/employeespage" >Third Option</a></li>
+                <li class="mt-5 my-4" ><a href="/employees/search" >Search for Employee</a></li>
+                <li class="my-4" ><a href="/employees/insert" >Insert New Employee</a></li>
+                <li class="my-4"><a href="/employees/update" >Update Employee Information</a></li>
+                <li class="my-4"><a href="/employees/delete" >Delete Employee From System</a></li>
               </ul>
             </nav>
           </div>
