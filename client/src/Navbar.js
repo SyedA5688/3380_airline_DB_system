@@ -4,7 +4,7 @@ import { Outlet } from "react-router-dom";
 
 export default function Navbar() {
   return (
-    <div style={{ borderWidth: 1, borderStyle: 'solid', borderColor: 'red', height: '100%' }} > 
+    <div class="navbar-page-container" > 
       <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
         <a class="navbar-brand mx-4" href="/">Airline HR Database System</a>
         <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,7 +34,7 @@ export default function Navbar() {
           </ul>
         </div>
       </nav>
-      <div  style={{ borderWidth: 1, borderStyle: 'solid', borderColor: 'blue' }} >
+      <div class="page-container" >
         <Outlet />
       </div>
     </div>

@@ -6,12 +6,36 @@ html, body, #root, .App {
   border-color: red;  */
 }
 
+/* App.js */
 .entire-page-container {
   height: 100%;
   /* border-style: solid;
   border-width: 1px;
-  border-color: blue;  */
+  border-color: blue; */
 }
+
+/* Navbar.js */
+.navbar-page-container {
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+  /* border-width: 1px;
+  border-style: solid;
+  border-color: red; */
+}
+
+.navbar {
+  flex: 0 1 auto;
+}
+
+.page-container {
+  flex: 1 1 auto;
+  border-width: 2px;
+  border-style: solid;
+  border-color: blue;
+}
+
+
 
 
 /* Old CSS */
