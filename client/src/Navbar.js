@@ -20,7 +20,7 @@ export default function Navbar() {
               <a class="nav-link" href="/jobs">Jobs</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/">Departments</a>
+              <a class="nav-link" href="/department">Departments</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/">Payroll</a>

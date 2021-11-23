@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './Navbar';
-import EmployeeSidePanel from './pages/EmployeeSidePanel'
+import EmployeeSidePanel from './pages/EmployeeSidePanel';
 import SearchForm from './pages/employees/SearchForm';
 import InsertForm from './pages/employees/InsertForm';
 import UpdateForm from './pages/employees/UpdateForm';
 import DeleteForm from './pages/employees/DeleteForm';
-import JobPage from './pages/JobPage';
+import JobsSidePanel from './pages/JobsSidePanel';
+import DepartmentsSidePanel from './pages/DepartmentSidePanel';
 import './App.css'
 // import EmployeeDBTable from './pages/employees/EmployeeDBTable';
 
@@ -25,7 +26,10 @@ class App extends Component {
                   <Route exact path="update" element={<UpdateForm />} />
                   <Route exact path="delete" element={<DeleteForm />} />
                 </Route>
-                <Route exact path="jobs" element={<JobPage />} />
+
+                <Route exact path="jobs" element={<JobsSidePanel />} />
+
+                <Route exact path="department" element={<DepartmentsSidePanel />} />
               </Route>
               
             </Routes>
