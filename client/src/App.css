@@ -30,9 +30,9 @@ html, body, #root, .App {
 
 .page-container {
   flex: 1 1 auto;
-  border-width: 2px;
+  /* border-width: 2px;
   border-style: solid;
-  border-color: blue;
+  border-color: blue; */
 }
 
 
