@@ -53,10 +53,10 @@ VALUES  (123, 123, NULL),
 
 DROP TABLE IF EXISTS department;
 CREATE TABLE department (
-  department_id    INT          GENERATED ALWAYS AS IDENTITY,
-  department_name  VARCHAR(50)  NOT NULL CHECK(department_name ~ '^[A-Z ]+$'),
-  creation_date    DATE         NOT NULL, 
-  manager_id       INT,
+  department_id       INT          GENERATED ALWAYS AS IDENTITY,
+  department_name     VARCHAR(50)  NOT NULL CHECK(department_name ~ '^[A-Z ]+$'),
+  creation_date       DATE         NOT NULL, 
+  department_head_id  INT,
 
   PRIMARY KEY(department_id)
 );
