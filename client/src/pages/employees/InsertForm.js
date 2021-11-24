@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './employeeForms.css'
 
 
 class InsertForm extends Component {
@@ -91,10 +92,10 @@ class InsertForm extends Component {
   
   render() {
     return (
-      <div className="container mt-5">
-        <div className="" >
+      <div className="container mt-5 px-5">
+        <div >
           <h4>Insert New Employee Into Database</h4>
-          <form className="form-inline" onSubmit={this.handleSubmit}>
+          <form className="form-inline mt-3" onSubmit={this.handleSubmit}>
             <div className="input-group">
               <div className="form-group">
                 <label className="sr-only" htmlFor="inputEmployeeFirstName">First Name</label>
@@ -153,7 +154,7 @@ class InsertForm extends Component {
                 <input type="number" className="form-control" id="inputEmployeeJobID" placeholder="4" name="insertJobID" value={this.state.insertJobID} onChange={this.handleChange} />
               </div>
             </div>
-            <button type="submit" className="btn btn-outline-secondary">Submit</button>
+            <button type="submit" className="btn btn-outline-secondary mt-3">Submit</button>
           </form>
         </div>
       </div>

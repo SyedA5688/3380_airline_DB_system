@@ -6,19 +6,19 @@ import './sidePanels.css'
 class EmployeeSidePanel extends Component {
   render() {
     return (
-      <div class="container-fluid" >
-        <div class="row">
-          <div class="col-3" id="sidebar-wrapper" >
-            <nav class="sidebar-nav" >
-              <ul class="sidebar-ul" >
-                <li class="mt-5 my-4" ><a href="/employees/search" >Search for Employee</a></li>
-                <li class="my-4" ><a href="/employees/insert" >Insert New Employee</a></li>
-                <li class="my-4"><a href="/employees/update" >Update Employee Information</a></li>
-                <li class="my-4"><a href="/employees/delete" >Delete Employee From System</a></li>
+      <div className="container-fluid" >
+        <div className="row">
+          <div className="col-3" id="sidebar-wrapper" >
+            <nav className="sidebar-nav" >
+              <ul className="sidebar-ul" >
+                <li className="mt-5 my-4" ><a href="/employees/search" >Search for Employee</a></li>
+                <li className="my-4" ><a href="/employees/insert" >Insert New Employee</a></li>
+                <li className="my-4"><a href="/employees/update" >Update Employee Information</a></li>
+                <li className="my-4"><a href="/employees/delete" >Delete Employee From System</a></li>
               </ul>
             </nav>
           </div>
-          <div class="col-9" >
+          <div className="col-9" >
             <Outlet />
           </div>
         </div>
