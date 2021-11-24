@@ -103,7 +103,7 @@ CREATE TABLE employee (
   ssn         CHAR(9)       UNIQUE CHECK(ssn ~ '^\d{9}$'),
   dob         DATE          NOT NULL,
   gender      CHAR(1)       NOT NULL CHECK(gender ~ '^[MFO]$'),
-  phone       VARCHAR(15)   CHECK(phone ~ '^[0-9 ]+$'),
+  phone       VARCHAR(15)   CHECK(phone ~ '^\+[0-9]+$'),
   email       VARCHAR(100)  UNIQUE CHECK(email ~ '^[\w\.\+]{1,64}@(\w+\.[A-Za-z]+){1,100}$'),
   job_id      INT           DEFAULT 0 NOT NULL,
   address_id  INT           NOT NULL,
@@ -118,9 +118,9 @@ CREATE TABLE employee (
 );
 
 INSERT INTO employee (first_name, m_initial, last_name, ssn, dob, gender, phone, email , job_id, address_id, manager_id) 
-VALUES  ('JOHN', 'P', 'DOE', 123456789, '2001-11-21', 'M', '8323459253', 'john.p.doe@gmail.com', 3, 2, NULL),
-        ('JANE', 'M', 'AUSTERE', 195836284, '1985-01-30', 'F', '8329272847', 'jane.m.austere@company.org', 1, 3, NULL),
-        ('KEVIN', 'T', 'HOANG', 171662836, '2000-7-15', 'M', '8322778264', 'kevin.t.hoang@example.com', 5, 4, 1000001);
+VALUES  ('JOHN', 'P', 'DOE', 123456789, '2001-11-21', 'M', '+18323459253', 'john.p.doe@gmail.com', 3, 2, NULL),
+        ('JANE', 'M', 'AUSTERE', 195836284, '1985-01-30', 'F', '+18329272847', 'jane.m.austere@company.org', 1, 3, NULL),
+        ('KEVIN', 'T', 'HOANG', 171662836, '2000-7-15', 'M', '+18322778264', 'kevin.t.hoang@example.com', 5, 4, 1000001);
 
 DROP TABLE IF EXISTS salary;
 CREATE TABLE salary (

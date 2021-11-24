@@ -1,0 +1,74 @@
+{
+  "benefits": {
+    "id": "benefits_package_id",
+    "amount": "amount",
+    "stock_options": "stock_options",
+    "health_insurance_provider": "health_insurance_provider",
+    "retirement": "retirement_plan"
+  },
+  "department": {
+    "id": "department_id",
+    "name": "department_name",
+    "creation_date": "creation_date",
+    "dep_head_id": "department_head_id"
+  },
+  "employee": {
+    "id": "employee_id",
+    "fname": "first_name",
+    "minitial": "m_initial",
+    "lname": "last_name",
+    "ssn": "ssn",
+    "dob": "dob",
+    "gender": "gender",
+    "phone": "phone",
+    "email": "email",
+    "job_id": "job_id",
+    "address_id": "address_id",
+    "manager_id": "manager_id"
+  },
+  "employee_address": {
+    "id": "address_id",
+    "street_address": "street_address",
+    "city": "city",
+    "zip": "zip_code",
+    "state": "state",
+    "country": "country"
+  },
+  "job": {
+    "id": "job_id",
+    "title": "job_title",
+    "dep_id": "department_id",
+    "location_id": "location_id",
+    "weekly_hours": "weekly_hours",
+    "benefits_id": "benefits_package_id"
+  },
+  "job_location": {
+    "id": "location_id",
+    "airport_id": "airport_id",
+    "address_id": "address_id",
+    "flight_id": "flight_id"
+  },
+  "leave": {
+    "id": "leave_id",
+    "emp_id": "employee_id",
+    "date": "date",
+    "reason": "reason",
+    "status": "status"
+  },
+  "payroll": {
+    "id": "payroll_id",
+    "emp_id": "employee_id",
+    "job_id": "job_id",
+    "salary_id": "salary_id",
+    "leave_id": "leave_id",
+    "hours_worked": "hours_worked",
+    "pay_period": "pay_period",
+    "tax_rate": "tax_rate"
+  },
+  "salary": {
+    "id": "salary_id",
+    "emp_id": "employee_id",
+    "hourly_wage": "hourly_wage",
+    "bonus": "annual_bonus"
+  }
+}
