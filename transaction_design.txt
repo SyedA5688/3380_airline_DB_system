@@ -1,1 +1,27 @@
 
+Employee Table
+  Employee ID:
+    *Search for the total number of employee ID's 
+    *
+    
+Leave Table
+	*Search for the total number of available employees
+	(Display status of the employee available/absent)
+	*Display Reason of the employee being absent if the employee is absent. If the employee is present leave it blank. 
+	(Status    Reason
+	 Available
+	 Absent    Sick
+	 Absent    Vacation)
+	*Display the expected return date of the employee
+	 (Date Leave Expected Return
+	  10/10/2021 11/11/2021)
+	 (Based on the online research airline workers can have maximum of 5 weeks rest)    
+Salary Table
+	*Search employees based on their hourly wage from lowest to highest
+	(From 10$ to x) 
+	*Search for the employees earning more than > x amount of money in a year
+  (let x be 200,000$ in that case salary table should display: pilots, Aerospace Engineers, etc..)
+	*Search for employees earning overtime money 
+	(Usually those who worked more than 40 hours in a week)
+	*Search for the employees earning most amount of annual bonuses 
+	(Annual Bonus is calculated based on the number of flights employee completes each year)
