@@ -269,6 +269,7 @@ router.post('/employee', async (req, res) => {
   } else {
     res.status(422).json({
       error: 'Missing required fields',
+      requiredFields: ['first_name', 'last_name', 'dob', 'gender', 'street_address', 'city', 'country'],
       queries: [],
       transaction: false
     });
