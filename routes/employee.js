@@ -13,7 +13,7 @@ const tableGetInfo = require('./employee-get-db.js');
  * @apiName GetAllEmployees
  * @apiGroup Employee
  * @apiDescription Returns an array of objects containing basic employee information. 
- * See "Get all employee info" for specific information about one employee.
+ * See "Get employee details" for specific information about one employee.
  * 
  * @apiQuery {String {1-3 non-empty strings}}           [q]             Filter rows based on query. Maximum of 3 arguments
  * @apiQuery {String=id,name,title,department}          [searchBy=name] Used if <code>q</code> is specified
@@ -154,12 +154,14 @@ router.get('/employee', async (req, res) => {
  * @apiBody {String {non-empty}=A-Z}    first_name         First name
  * @apiBody {String {non-empty}=A-Z}    last_name          Last name
  * @apiBody {String=M,F,O}              gender             M = Male, F = Female, O = Other
- * @apiBody {String {9 characters}=1-9} [ssn=null]         Social Security Number
+ * @apiBody {String=$[0-9].[0-9]}       hourly_wage        Hourly wage
+ * @apiBody {String {9 characters}=0-9} [ssn=null]         Social Security Number
  * @apiBody {String {1 character}=A-Z}  [m_initial=null]   Middle initial
- * @apiBody {String=+,1-9}              [phone=null]       Phone number using E.164 standard
+ * @apiBody {String=+,0-9}              [phone=null]       Phone number using E.164 standard
  * @apiBody {String{...100}}            [email=null]       Email address
  * @apiBody {Number}                    [job_id=0]         Job ID for new employee. If id does not exist, employee will have job_id of 0 (unassigned).
- * @apiBody {Number}                    [manager_id=null]  The manager's ID.   
+ * @apiBody {Number}                    [manager_id=null]  The manager's ID
+ * @apiBody {Number}                    [annual_bonus=0]   Annual bonus
  * 
  * @apiBody {String {non-empty}=0-9,A-Z,/,#,-,.,\,} street_address  Street address
  * @apiBody {String {non-empty}=A-Z}                city            City
@@ -227,6 +229,10 @@ router.post('/employee', async (req, res) => {
         query = format('INSERT INTO %I (%I)\nVALUES (%L)\nRETURNING employee_id;', 'employee', employeeParams.names, employeeParams.values);
         const employee_id = (await transacQuery(queries, client, query)).rows[0].employee_id;
 
+        const salaryParams = getParamaters(['hourly_wage'], ['annual_bonus'], body);
+        query = format('INSERT INTO %I (%I,%I)\nVALUES (%L,%L)\nRETURNING employee_id;', 'salary', 'employee_id', salaryParams.names, employee_id, salaryParams.values);
+        await transacQuery(queries, client, query);
+
         await transacQuery(queries, client, 'COMMIT;');
         await transacQuery(queries, client, 'END TRANSACTION;\n');
         client.release();
@@ -278,7 +284,7 @@ router.post('/employee', async (req, res) => {
 
 // Checks that required fields exist
 const checkRequiredFields = (body) => {
-  for(const reqField of ['first_name', 'last_name', 'dob', 'gender', 'street_address', 'city', 'country']) {
+  for(const reqField of ['first_name', 'last_name', 'dob', 'gender', 'street_address', 'city', 'country', 'hourly_wage']) {
     if(!(body[reqField] && body[reqField].toString().trim())) return false;
   }
   return true;

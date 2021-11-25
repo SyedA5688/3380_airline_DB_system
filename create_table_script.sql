@@ -127,7 +127,7 @@ CREATE TABLE salary (
   salary_id    INT    GENERATED ALWAYS AS IDENTITY,
   employee_id  INT    NOT NULL,
   hourly_wage  MONEY  NOT NULL,
-  annual_bonus INT    NOT NULL,
+  annual_bonus MONEY  DEFAULT 0 NOT NULL,
 
   PRIMARY KEY(salary_id),
   FOREIGN KEY(employee_id)
