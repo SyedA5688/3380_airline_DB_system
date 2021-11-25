@@ -24,13 +24,13 @@ const tableGetInfo = require('./employee-get-db.js');
  * 
  * @apiSuccess {Object[]} rows                  Results from the database
  * @apiSuccess {Number}   rows.employee_id      Employee's ID number
- * @apiSuccess {String}   rows.first_name       Employee's first name
- * @apiSuccess {String}   [rows.m_initial]      Employee's middle initial (can be null)
- * @apiSuccess {String}   rows.last_name        Employee's last name
+ * @apiSuccess {String}   rows.first_name       First name
+ * @apiSuccess {String}   [rows.m_initial]      Middle initial (can be null)
+ * @apiSuccess {String}   rows.last_name        Last name
  * @apiSuccess {String}   rows.job_title        Employee's job title
  * @apiSuccess {String}   rows.department_name  Department employee works in
- * @apiSuccess {String[]} queries     Array of queries used
- * @apiSuccess {Boolean}  transaction True if transactions were used
+ * @apiSuccess {String[]} queries               Array of queries used
+ * @apiSuccess {Boolean}  transaction           True if transactions were used
  * 
  * @apiSuccessExample {json} Success-Response example:
  *    HTTP/1.1 200 OK

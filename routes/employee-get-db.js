@@ -1,6 +1,6 @@
 /*
  * Table column names used in GET /employee route
-*/
+ */
 const tableInfo = require('../db/table-info.json');
 
 module.exports = {

@@ -27,7 +27,8 @@
     "description": "Quick reference to the endpoints used",
     "order": [
       "GetAllEmployees",
-      "AddEmployee"
+      "AddEmployee",
+      "GetEmployeePersonal"
     ]
   }
 }
