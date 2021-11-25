@@ -1,3 +1,8 @@
+/* 
+ * Utility functions used often in routes
+ */
+const dbInfo = require('../db/table-info.json');
+
 module.exports = {
   // Checks that required fields exist
   checkRequiredFields: (required, body) => {
@@ -20,5 +25,26 @@ module.exports = {
       names: paramNames,
       values: paramValues
     };
+  },
+  // Separate body fields into their corresponding tables
+  separateFields: (tables, body) => {
+    let fields = {};
+    tables.forEach((key) => fields[key] = {});
+    Object.keys(body).forEach((field) => {
+      let found = false;
+      for(const table of tables) {
+        if(dbInfo[table][field]) {
+          found = true;
+          fields[table][field] = body[field];
+          break;
+        }
+      }
+      if(!found) return;
+    });
+    return fields;
+  },
+  
+  isEmpty: (object) => {
+    return Object.keys(object).length === 0;
   }
 };
