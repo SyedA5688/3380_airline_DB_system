@@ -1,6 +1,7 @@
 const Router = require('express-promise-router');
 const format = require('pg-format');
 const db = require('../db');
+const utils = require('./route-utils');
 
 const router = new Router();
 module.exports = router;
@@ -198,7 +199,8 @@ router.post('/employee', async (req, res) => {
   // TODO: input validation
   const body = req.body;
   // Check required fields exist
-  if(checkRequiredFields(body)) {
+  const requiredFields = ['first_name', 'last_name', 'dob', 'gender', 'street_address', 'city', 'country', 'hourly_wage'];
+  if(utils.checkRequiredFields(requiredFields, body)) {
     Object.keys(body).forEach((key) => {
       if(key !== 'email') body[key] = body[key].toString().trim().toUpperCase();
     });
@@ -219,18 +221,21 @@ router.post('/employee', async (req, res) => {
         await transacQuery(queries, client, 'BEGIN TRANSACTION;');
         await transacQuery(queries, client, 'SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;');
 
-        const addressParams = getParamaters(['street_address', 'city', 'country'], ['zip_code', 'state'], body);
-        let query = format('INSERT INTO %I (%I)\nVALUES (%L)\nRETURNING address_id;', 'employee_address', addressParams.names, addressParams.values);
+        const addressParams = utils.getParameters(['street_address', 'city', 'country'], ['zip_code', 'state'], body);
+        let query = format('INSERT INTO %I (%I)\nVALUES (%L)\nRETURNING address_id;',
+         'employee_address', addressParams.names, addressParams.values);
         body.address_id = (await transacQuery(queries, client, query)).rows[0].address_id;
 
         const reqArgs = ['first_name', 'last_name', 'dob', 'gender', 'address_id'];
         const optArgs = ['m_initial', 'ssn', 'phone', 'email', 'job_id', 'manager_id'];
-        const employeeParams = getParamaters(reqArgs, optArgs, body);
-        query = format('INSERT INTO %I (%I)\nVALUES (%L)\nRETURNING employee_id;', 'employee', employeeParams.names, employeeParams.values);
+        const employeeParams = utils.getParameters(reqArgs, optArgs, body);
+        query = format('INSERT INTO %I (%I)\nVALUES (%L)\nRETURNING employee_id;',
+         'employee', employeeParams.names, employeeParams.values);
         const employee_id = (await transacQuery(queries, client, query)).rows[0].employee_id;
 
-        const salaryParams = getParamaters(['hourly_wage'], ['annual_bonus'], body);
-        query = format('INSERT INTO %I (%I,%I)\nVALUES (%L,%L)\nRETURNING employee_id;', 'salary', 'employee_id', salaryParams.names, employee_id, salaryParams.values);
+        const salaryParams = utils.getParameters(['hourly_wage'], ['annual_bonus'], body);
+        query = format('INSERT INTO %I (%I,%I)\nVALUES (%L,%L)\nRETURNING employee_id;',
+         'salary', 'employee_id', salaryParams.names, employee_id, salaryParams.values);
         await transacQuery(queries, client, query);
 
         await transacQuery(queries, client, 'COMMIT;');
@@ -275,39 +280,15 @@ router.post('/employee', async (req, res) => {
   } else {
     res.status(422).json({
       error: 'Missing required fields',
-      requiredFields: ['first_name', 'last_name', 'dob', 'gender', 'street_address', 'city', 'country'],
+      requiredFields: requiredFields,
       queries: [],
       transaction: false
     });
   }
 });
 
-// Checks that required fields exist
-const checkRequiredFields = (body) => {
-  for(const reqField of ['first_name', 'last_name', 'dob', 'gender', 'street_address', 'city', 'country', 'hourly_wage']) {
-    if(!(body[reqField] && body[reqField].toString().trim())) return false;
-  }
-  return true;
-};
-
 // Utility function to push query to array and query the database
 const transacQuery = async (queries, client, query) => {
   queries.push(query);
   return await client.query(query);
-};
-
-// Returns an object containing required and optional parameter names and their values that are in body
-const getParamaters = (required, optional, body) => {
-  let paramNames = required;
-  optional.forEach((optParam) => {
-    if(body[optParam]) paramNames.push(optParam);
-  });
-  let paramValues = [];
-  paramNames.forEach((param) => {
-    paramValues.push(body[param]);
-  });
-  return {
-    names: paramNames,
-    values: paramValues
-  };
 };

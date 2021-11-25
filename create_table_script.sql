@@ -139,8 +139,8 @@ CREATE TABLE leave (
   leave_id    INT           GENERATED ALWAYS AS IDENTITY,
   employee_id INT           NOT NULL,
   date        DATE          NOT NULL,
-  reason      VARCHAR(100)  NOT NULL CHECK(reason ~ '^[A-Z ]+$'),
-  status      VARCHAR(50)   NOT NULL CHECK(status ~ '^[A-Z ]+$'),
+  reason      VARCHAR(100)  NOT NULL CHECK(reason ~ '^[A-Z \.\d]+$'),
+  status      VARCHAR(50)   NOT NULL CHECK(status ~ '^[A-Z \.\d]+$'),
 
   PRIMARY KEY(leave_id),
   FOREIGN KEY(employee_id)

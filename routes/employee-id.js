@@ -75,12 +75,12 @@ router.get('/employee/:id', async (req, res) => {
  * @api {post} /employee/:id Change employee details*
  * @apiName ChangeEmployeeDetails
  * @apiGroup Employee
- * @apiDescription Attempts to alter employee details based on body parameters. *Not yet implemented
+ * @apiDescription Attempts to alter employee details based on body parameters. Returns employee ID. *Not yet implemented
  * 
  * @apiParam {Number}     id  Employee's ID number
  * 
  * 
- * @apiSuccess {Object[]} rows                  Results from the database. Returns employee ID.
+ * @apiSuccess {Object[]} rows                  Results from the database
  * @apiSuccess {String[]} queries               Array of queries used
  * @apiSuccess {Boolean}  transaction           True if transactions were used
  * 

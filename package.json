@@ -29,8 +29,9 @@
       "GetAllEmployees",
       "AddEmployee",
       "GetEmployeeDetails",
+      "ChangeEmployeeDetails",
       "GetEmployeeLeave",
-      "ChangeEmployeeDetails"
+      "AddNewLeave"
     ]
   }
 }
