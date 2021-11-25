@@ -7,24 +7,21 @@ class SearchForm extends Component {
     super(props);
     this.state = {
       searchBy: 'all',
-      searchFirstName: '',
-      searchMiddleInitial: '',
-      searchLastName: '',
-      searchID: '',
+      searchFirstName: null,
+      searchMiddleInitial: null,
+      searchLastName: null,
+      searchID: null,
       searchTitle: null,
-      searchDepartment: '',
+      searchDepartment: null,
       sort: 'id',
       order: 'asc',
       limit: 10,
-      page: 1,
+      page: 1
     };
     
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  componentDidMount() {
-    this.listenForFormSubmission();
+    this.handleClear = this.handleClear.bind(this);
   }
 
   handleChange = async (event) => {
@@ -34,15 +31,19 @@ class SearchForm extends Component {
 
     if (event.target.name === "searchBy") {
       this.setState({
-        searchFirstName: '',
-        searchMiddleInitial: '',
-        searchLastName: '',
-        searchID: '',
+        searchFirstName: null,
+        searchMiddleInitial: null,
+        searchLastName: null,
+        searchID: null,
         searchTitle: null,
-        searchDepartment: '',
+        searchDepartment: null
       });
     }
   };
+
+  componentDidMount() {
+    this.listenForFormSubmission();
+  }
 
   listenForFormSubmission() {
     // Fetch HTML form we want to check and validate
@@ -53,11 +54,10 @@ class SearchForm extends Component {
       if (!this.checkInputValidity()) {
         event.preventDefault();
         event.stopPropagation();
-        console.log("Ran invalid input block");
       }
       form.classList.add('was-validated');
     }, false);
-  }
+  }  
 
   checkInputValidity() {
     let validInput = true;
@@ -70,12 +70,12 @@ class SearchForm extends Component {
         break;
       
       case "name": {
-        validInput = re.test(this.state.searchFirstName) && re.test(this.state.searchMiddleInitial) && re.test(this.state.searchLastName);
+        validInput = (this.state.searchFirstName && re.test(this.state.searchFirstName)) || (this.state.searchMiddleInitial && re.test(this.state.searchMiddleInitial)) || (this.state.searchLastName && re.test(this.state.searchLastName));
         break;
       }
 
       case "id":
-        validInput = re.test(this.state.searchID);
+        validInput = this.state.searchID && re.test(this.state.searchID);
         break;
       
       case "title":
@@ -83,7 +83,7 @@ class SearchForm extends Component {
         break;
       
       case "department":
-        validInput = re.test(this.state.searchDepartment);
+        validInput = this.state.searchDepartment && re.test(this.state.searchDepartment);
         break;
       
       default:
@@ -143,31 +143,55 @@ class SearchForm extends Component {
       default:
         query = "";
     }
-    // console.log("State:", this.state);
-    // console.log("Query", query);
-
+    
+    // Attempt GET request, catch and display any errors in popup modal
     try {
+      console.log("Making GET request to /employee API endpoint")
       const response = await fetch(`/employee?q=${query}&searchBy=${this.state.searchBy}&page=${this.state.page}&sort=${this.state.sort}&order=${this.state.order}&limit=${this.state.limit}`);
       const body = await response.json();
 
-      // Currently just logging the results. Later display as a table or form, etc
       this.assertValidGETResponse(body);
       // console.log("Body:", body);
-      console.log("Rows:", body.rows);
+      // console.log("Rows:", body.rows);
 
       this.setState({
         returnedEmployees: body.rows
       });
     }
     catch (e) {
-      console.log("Error occured while sending GET request to /employee endpoint,", e)
-      //TODO: Error popup if an error occurred. May be invalid input, or exception returned from GET request. Show error message in popup
+      console.log("Error occurred while sending GET request to /employee endpoint,", e)
+      // this.setState({
+      //   showErrorModal: true
+      // });
+      document.getElementById("errorModal").style.display = "block"
+      document.getElementById("errorModal").classList.add("show")
     }
 
     // Remove was-validated class from form to reset its appearance
     const form = document.querySelector('#searchFormHTML');
     form.classList.remove('was-validated');
   };
+
+  closeModal = () => {
+    document.getElementById("errorModal").style.display = "none"
+    document.getElementById("errorModal").classList.remove("show");
+  }
+
+  handleClear = async (event) => {
+    this.setState({
+      searchFirstName: null,
+      searchMiddleInitial: null,
+      searchLastName: null,
+      searchID: null,
+      searchTitle: null,
+      searchDepartment: null,
+      returnedEmployees: null
+    });
+
+    // Remove was-validated class from form to reset its appearance
+    const form = document.querySelector('#searchFormHTML');
+    form.classList.remove('was-validated');
+  }
 
   SearchByInputElement(searchBy) {
     if (searchBy === "all") {
@@ -179,21 +203,23 @@ class SearchForm extends Component {
           <div className="input-group-prepend">
             <span className="input-group-text" id="">First, MI, Last</span>
           </div>
-          <input type="text" className="form-control" id="inputSearchFirstName" placeholder="John (Optional)" name="searchFirstName" value={this.state.searchFirstName} onChange={this.handleChange} />
-          <input type="text" className="form-control" id="inputSearchMiddleInitial" placeholder="M (Optional)" name="searchMiddleInitial" value={this.state.searchMiddleInitial} onChange={this.handleChange} />
-          <input type="text" className="form-control" id="inputSearchLastName" placeholder="Doe (Optional)" name="searchLastName" value={this.state.searchLastName} onChange={this.handleChange} />
+          <input type="text" className="form-control" id="inputSearchFirstName" placeholder="John (Optional)" name="searchFirstName" onChange={this.handleChange} />
+          <input type="text" className="form-control" id="inputSearchMiddleInitial" placeholder="M (Optional)" name="searchMiddleInitial" onChange={this.handleChange} />
+          <input type="text" className="form-control" id="inputSearchLastName" placeholder="Doe (Optional)" name="searchLastName" onChange={this.handleChange} />
+          <div className="invalid-feedback">Please provide valid possible names (a-z, A-Z).</div>
+          <div className="valid-feedback">Valid name.</div>
         </div>
       )
     }
     else if (searchBy === "id") {
       return <div className="form-group">
-        {/* <label className="sr-only" htmlFor="inputSearchID">Employee ID</label> */}
-        <input type="number" min="1" className="form-control" id="inputSearchID" placeholder="(e.g. 1000003)" name="searchID" value={this.state.searchID} onChange={this.handleChange} />
+        <input type="number" min="1" className="form-control" id="inputSearchID" placeholder="(e.g. 1000003)" name="searchID" onChange={this.handleChange} required />
+        <div className="invalid-feedback">Please provide a valid employee id number.</div>
+        <div className="valid-feedback">Valid employee id number.</div>
       </div>
     }
     else if (searchBy === "title") {
       return <div className="form-group">
-        {/* <label className="sr-only" htmlFor="inputSearchTitle">Job Title</label> */}
         <input type="text" className="form-control" id="inputSearchTitle" placeholder="(e.g. Pilot)" name="searchTitle" onChange={this.handleChange} required />
         <div className="invalid-feedback">Please provide a valid job title.</div>
         <div className="valid-feedback">Valid job title.</div>
@@ -201,8 +227,9 @@ class SearchForm extends Component {
     }
     else if (searchBy === "department") {
       return <div className="form-group">
-        {/* <label className="sr-only" htmlFor="inputSearchDepartment">Department</label> */}
-        <input type="text" className="form-control" id="inputSearchDepartment" placeholder="(e.g. Flight Crew)" name="searchDepartment" value={this.state.searchDepartment} onChange={this.handleChange} />
+        <input type="text" className="form-control" id="inputSearchDepartment" placeholder="(e.g. Flight Crew)" name="searchDepartment" onChange={this.handleChange} required />
+        <div className="invalid-feedback">Please provide a valid department name.</div>
+        <div className="valid-feedback">Valid department name.</div>
       </div>
     }
     else {
@@ -214,6 +241,24 @@ class SearchForm extends Component {
     let searchByInputElement = this.SearchByInputElement(this.state.searchBy)
     return (
       <div className="container mt-5 px-5">
+        {/* Error Modal popup, only shows up if React state is toggled by some error in try-catch of GET request */}
+        <div className="modal fade" id="errorModal" tabIndex="-1" role="dialog" aria-hidden="true">
+          <div className="modal-dialog" role="document">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="exampleModalLabel">Error Occurred</h5>
+              </div>
+              <div className="modal-body">
+                Something went wrong while processing your database request, please try again later. <br />
+
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-primary" onClick={this.closeModal} >Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <h3>Search Database for Employee(s)</h3>
 
         <form className="border border-secondary mt-3 px-5 py-4 rounded needs-validation" id="searchFormHTML" onSubmit={this.handleSubmit} noValidate>
@@ -257,6 +302,7 @@ class SearchForm extends Component {
           </div>
 
           <button type="submit" className="btn btn-outline-secondary mt-3">Submit</button>
+          <button type="button" className="btn btn-outline-secondary mt-3 mx-3" onClick={this.handleClear} >Clear</button>
         </form>
 
         {this.state.returnedEmployees ? <table align="center" className="table mt-5 border" >
