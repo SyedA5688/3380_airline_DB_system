@@ -155,7 +155,8 @@ router.get('/employee', async (req, res) => {
  * @apiBody {String {non-empty}=A-Z}    first_name         First name
  * @apiBody {String {non-empty}=A-Z}    last_name          Last name
  * @apiBody {String=M,F,O}              gender             M = Male, F = Female, O = Other
- * @apiBody {String=$[0-9].[0-9]}       hourly_wage        Hourly wage
+ * @apiBody {String}                    dob                Date of birth
+ * @apiBody {String=[0-9].[0-9]}       hourly_wage        Hourly wage
  * @apiBody {String {9 characters}=0-9} [ssn=null]         Social Security Number
  * @apiBody {String {1 character}=A-Z}  [m_initial=null]   Middle initial
  * @apiBody {String=+,0-9}              [phone=null]       Phone number using E.164 standard
