@@ -11,7 +11,7 @@ class SearchForm extends Component {
       searchMiddleInitial: '',
       searchLastName: '',
       searchID: '',
-      searchTitle: '',
+      searchTitle: null,
       searchDepartment: '',
       sort: 'id',
       order: 'asc',
@@ -21,6 +21,10 @@ class SearchForm extends Component {
     
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentDidMount() {
+    this.listenForFormSubmission();
   }
 
   handleChange = async (event) => {
@@ -34,60 +38,110 @@ class SearchForm extends Component {
         searchMiddleInitial: '',
         searchLastName: '',
         searchID: '',
-        searchTitle: '',
+        searchTitle: null,
         searchDepartment: '',
       });
     }
   };
 
-  checkInput() {  // look up input validation
+  listenForFormSubmission() {
+    // Fetch HTML form we want to check and validate
+    const form = document.querySelector('#searchFormHTML');
+
+    // Add event listener for form submissions, prevent submission if input is invalid
+    form.addEventListener('submit', (event) => {
+      if (!this.checkInputValidity()) {
+        event.preventDefault();
+        event.stopPropagation();
+        console.log("Ran invalid input block");
+      }
+      form.classList.add('was-validated');
+    }, false);
+  }
+
+  checkInputValidity() {
     let validInput = true;
-    // throw new Error("Invalid input:"...)
+    const re = /^[a-z0-9 ]+$/i
+
+    // Validate input based on React state
+    switch(this.state.searchBy) {
+      case "all":
+        validInput = true;
+        break;
+      
+      case "name": {
+        validInput = re.test(this.state.searchFirstName) && re.test(this.state.searchMiddleInitial) && re.test(this.state.searchLastName);
+        break;
+      }
+
+      case "id":
+        validInput = re.test(this.state.searchID);
+        break;
+      
+      case "title":
+        validInput = this.state.searchTitle && re.test(this.state.searchTitle);
+        break;
+      
+      case "department":
+        validInput = re.test(this.state.searchDepartment);
+        break;
+      
+      default:
+        validInput = true;
+    }
+    console.log("Input validity:", validInput, "\nsearchTitle:", this.state.searchTitle, "\nsearch by:", this.state.searchBy);
     return validInput;
   }
 
   assertValidGETResponse(body) {
     if (!("rows" in body)) {
-      throw new Error("GET assertion failed, response returned by GET request to /employees has no rows attribute");
+      throw new Error("Something went wrong; GET Request to Database did not return results object.");
     }
     else if (!Array.isArray(body.rows)) {
-      throw new Error("GET assertion failed, rows attribute returned by GET request to /employees is not an Array");
+      throw new Error("Something went wrong; GET Request to Database returned results object that is not recognized by webpage.");
     }
   }
 
   handleSubmit = async (event) => {
     event.preventDefault();
     // TODO implement input validation
-    this.checkInput();
+    // this.checkInputValidity();  // Event listener will catch 
 
     let query = "";
-    if (this.state.searchBy === "all") {
-      query = "";
-    }
-    else if (this.state.searchBy === "name") {
-      query = "";
-      if (this.state.searchFirstName !== "") {
-        query += this.state.searchFirstName.trim();
+    switch(this.state.searchBy) {
+      case "all":
+        query = "";
+        break;
+      
+      case "name": {
+        query = "";
+        if (this.state.searchFirstName !== "") {
+          query += this.state.searchFirstName.trim();
+        }
+        if (this.state.searchMiddleInitial !== "") {
+          query += " " + this.state.searchMiddleInitial.trim();
+        }
+        if (this.state.searchLastName !== "") {
+          query += " " + this.state.searchLastName.trim();
+        }
+        query = query.trim();
+        break;
       }
-      if (this.state.searchMiddleInitial !== "") {
-        query += " " + this.state.searchMiddleInitial.trim();
-      }
-      if (this.state.searchLastName !== "") {
-        query += " " + this.state.searchLastName.trim();
-      }
-      query = query.trim();
-    }
-    else if (this.state.searchBy === "id") {
-      query = this.state.searchID;
-    }
-    else if (this.state.searchBy === "title") {
-      query = this.state.searchTitle.trim();
-    }
-    else if (this.state.searchBy === "department") {
-      query = this.state.searchDepartment.trim();
-    }
-    else {
-      query = "";
+
+      case "id":
+        query = this.state.searchID;
+        break;
+      
+      case "title":
+        query = this.state.searchTitle.trim();
+        break;
+      
+      case "department":
+        query = this.state.searchDepartment.trim();
+        break;
+      
+      default:
+        query = "";
     }
     // console.log("State:", this.state);
     // console.log("Query", query);
@@ -109,6 +163,10 @@ class SearchForm extends Component {
       console.log("Error occured while sending GET request to /employee endpoint,", e)
       //TODO: Error popup if an error occurred. May be invalid input, or exception returned from GET request. Show error message in popup
     }
+
+    // Remove was-validated class from form to reset its appearance
+    const form = document.querySelector('#searchFormHTML');
+    form.classList.remove('was-validated');
   };
 
   SearchByInputElement(searchBy) {
@@ -130,13 +188,15 @@ class SearchForm extends Component {
     else if (searchBy === "id") {
       return <div className="form-group">
         {/* <label className="sr-only" htmlFor="inputSearchID">Employee ID</label> */}
-        <input type="number" className="form-control" id="inputSearchID" placeholder="(e.g. 1000003)" name="searchID" value={this.state.searchID} onChange={this.handleChange} />
+        <input type="number" min="1" className="form-control" id="inputSearchID" placeholder="(e.g. 1000003)" name="searchID" value={this.state.searchID} onChange={this.handleChange} />
       </div>
     }
     else if (searchBy === "title") {
       return <div className="form-group">
         {/* <label className="sr-only" htmlFor="inputSearchTitle">Job Title</label> */}
-        <input type="text" className="form-control" id="inputSearchTitle" placeholder="(e.g. Pilot)" name="searchTitle" value={this.state.searchTitle} onChange={this.handleChange} />
+        <input type="text" className="form-control" id="inputSearchTitle" placeholder="(e.g. Pilot)" name="searchTitle" onChange={this.handleChange} required />
+        <div className="invalid-feedback">Please provide a valid job title.</div>
+        <div className="valid-feedback">Valid job title.</div>
       </div>
     }
     else if (searchBy === "department") {
@@ -156,7 +216,7 @@ class SearchForm extends Component {
       <div className="container mt-5 px-5">
         <h3>Search Database for Employee(s)</h3>
 
-        <form className="border border-secondary mt-3 px-5 py-4 rounded" onSubmit={this.handleSubmit}>
+        <form className="border border-secondary mt-3 px-5 py-4 rounded needs-validation" id="searchFormHTML" onSubmit={this.handleSubmit} noValidate>
 
           <div className="form-group mb-2" >
             <label className="sr-only" htmlFor="inputSearchBy">Search by:</label>
@@ -192,8 +252,8 @@ class SearchForm extends Component {
             <div className="input-group-prepend">
               <span className="input-group-text" id="">Results per Page, Page Number</span>
             </div>
-            <input type="number" className="form-control" id="inputSearchLimit" name="limit" value={this.state.limit} onChange={this.handleChange} />
-            <input type="number" className="form-control" id="inputSearchPage" name="page" value={this.state.page} onChange={this.handleChange} />
+            <input type="number" min="1" className="form-control" id="inputSearchLimit" name="limit" value={this.state.limit} onChange={this.handleChange} />
+            <input type="number" min="1" className="form-control" id="inputSearchPage" name="page" value={this.state.page} onChange={this.handleChange} />
           </div>
 
           <button type="submit" className="btn btn-outline-secondary mt-3">Submit</button>
