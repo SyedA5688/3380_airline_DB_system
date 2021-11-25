@@ -43,9 +43,9 @@ module.exports = {
   },
 
   query: async (text, params) => {
+    await fs.writeFile('./db/query.sql', text+'\n\n' ,{ flag: 'a' }, logError);
     const res = await pool.query(text, params);
     console.log('pool executed query:', { text, rows: res.rowCount });
-    await fs.writeFile('./db/query.sql', text+'\n\n' ,{ flag: 'a' }, logError);
     return res;
   }
 };

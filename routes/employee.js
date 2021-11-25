@@ -1,6 +1,7 @@
 const Router = require('express-promise-router');
 const format = require('pg-format');
 const db = require('../db');
+const utils = require('./route-utils');
 
 const router = new Router();
 module.exports = router;
@@ -13,7 +14,7 @@ const tableGetInfo = require('./employee-get-db.js');
  * @apiName GetAllEmployees
  * @apiGroup Employee
  * @apiDescription Returns an array of objects containing basic employee information. 
- * See "Get all employee info" for specific information about one employee.
+ * See "Get employee details" for specific information about one employee.
  * 
  * @apiQuery {String {1-3 non-empty strings}}           [q]             Filter rows based on query. Maximum of 3 arguments
  * @apiQuery {String=id,name,title,department}          [searchBy=name] Used if <code>q</code> is specified
@@ -24,13 +25,13 @@ const tableGetInfo = require('./employee-get-db.js');
  * 
  * @apiSuccess {Object[]} rows                  Results from the database
  * @apiSuccess {Number}   rows.employee_id      Employee's ID number
- * @apiSuccess {String}   rows.first_name       Employee's first name
- * @apiSuccess {String}   [rows.m_initial]      Employee's middle initial (can be null)
- * @apiSuccess {String}   rows.last_name        Employee's last name
+ * @apiSuccess {String}   rows.first_name       First name
+ * @apiSuccess {String}   [rows.m_initial]      Middle initial (can be null)
+ * @apiSuccess {String}   rows.last_name        Last name
  * @apiSuccess {String}   rows.job_title        Employee's job title
  * @apiSuccess {String}   rows.department_name  Department employee works in
- * @apiSuccess {String[]} queries     Array of queries used
- * @apiSuccess {Boolean}  transaction True if transactions were used
+ * @apiSuccess {String[]} queries               Array of queries used
+ * @apiSuccess {Boolean}  transaction           True if transactions were used
  * 
  * @apiSuccessExample {json} Success-Response example:
  *    HTTP/1.1 200 OK
@@ -154,12 +155,15 @@ router.get('/employee', async (req, res) => {
  * @apiBody {String {non-empty}=A-Z}    first_name         First name
  * @apiBody {String {non-empty}=A-Z}    last_name          Last name
  * @apiBody {String=M,F,O}              gender             M = Male, F = Female, O = Other
- * @apiBody {String {9 characters}=1-9} [ssn=null]         Social Security Number
+ * @apiBody {String}                    dob                Date of birth
+ * @apiBody {String=[0-9].[0-9]}        hourly_wage        Hourly wage
+ * @apiBody {String {9 characters}=0-9} [ssn=null]         Social Security Number
  * @apiBody {String {1 character}=A-Z}  [m_initial=null]   Middle initial
- * @apiBody {String=+,1-9}              [phone=null]       Phone number using E.164 standard
+ * @apiBody {String=+,0-9}              [phone=null]       Phone number using E.164 standard
  * @apiBody {String{...100}}            [email=null]       Email address
  * @apiBody {Number}                    [job_id=0]         Job ID for new employee. If id does not exist, employee will have job_id of 0 (unassigned).
- * @apiBody {Number}                    [manager_id=null]  The manager's ID.   
+ * @apiBody {Number}                    [manager_id=null]  The employee's manager's ID
+ * @apiBody {Number}                    [annual_bonus=0]   Annual bonus
  * 
  * @apiBody {String {non-empty}=0-9,A-Z,/,#,-,.,\,} street_address  Street address
  * @apiBody {String {non-empty}=A-Z}                city            City
@@ -196,7 +200,8 @@ router.post('/employee', async (req, res) => {
   // TODO: input validation
   const body = req.body;
   // Check required fields exist
-  if(checkRequiredFields(body)) {
+  const requiredFields = ['first_name', 'last_name', 'dob', 'gender', 'street_address', 'city', 'country', 'hourly_wage'];
+  if(utils.checkRequiredFields(requiredFields, body)) {
     Object.keys(body).forEach((key) => {
       if(key !== 'email') body[key] = body[key].toString().trim().toUpperCase();
     });
@@ -217,15 +222,22 @@ router.post('/employee', async (req, res) => {
         await transacQuery(queries, client, 'BEGIN TRANSACTION;');
         await transacQuery(queries, client, 'SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;');
 
-        const addressParams = getParamaters(['street_address', 'city', 'country'], ['zip_code', 'state'], body);
-        let query = format('INSERT INTO %I (%I)\nVALUES (%L)\nRETURNING address_id;', 'employee_address', addressParams.names, addressParams.values);
+        const addressParams = utils.getParameters(['street_address', 'city', 'country'], ['zip_code', 'state'], body);
+        let query = format('INSERT INTO %I (%I)\nVALUES (%L)\nRETURNING address_id;',
+         'employee_address', addressParams.names, addressParams.values);
         body.address_id = (await transacQuery(queries, client, query)).rows[0].address_id;
 
         const reqArgs = ['first_name', 'last_name', 'dob', 'gender', 'address_id'];
         const optArgs = ['m_initial', 'ssn', 'phone', 'email', 'job_id', 'manager_id'];
-        const employeeParams = getParamaters(reqArgs, optArgs, body);
-        query = format('INSERT INTO %I (%I)\nVALUES (%L)\nRETURNING employee_id;', 'employee', employeeParams.names, employeeParams.values);
+        const employeeParams = utils.getParameters(reqArgs, optArgs, body);
+        query = format('INSERT INTO %I (%I)\nVALUES (%L)\nRETURNING employee_id;',
+         'employee', employeeParams.names, employeeParams.values);
         const employee_id = (await transacQuery(queries, client, query)).rows[0].employee_id;
+
+        const salaryParams = utils.getParameters(['hourly_wage'], ['annual_bonus'], body);
+        query = format('INSERT INTO %I (%I,%I)\nVALUES (%L,%L)\nRETURNING employee_id;',
+         'salary', 'employee_id', salaryParams.names, employee_id, salaryParams.values);
+        await transacQuery(queries, client, query);
 
         await transacQuery(queries, client, 'COMMIT;');
         await transacQuery(queries, client, 'END TRANSACTION;\n');
@@ -269,38 +281,15 @@ router.post('/employee', async (req, res) => {
   } else {
     res.status(422).json({
       error: 'Missing required fields',
+      requiredFields: requiredFields,
       queries: [],
       transaction: false
     });
   }
 });
 
-// Checks that required fields exist
-const checkRequiredFields = (body) => {
-  for(const reqField of ['first_name', 'last_name', 'dob', 'gender', 'street_address', 'city', 'country']) {
-    if(!(body[reqField] && body[reqField].toString().trim())) return false;
-  }
-  return true;
-};
-
 // Utility function to push query to array and query the database
 const transacQuery = async (queries, client, query) => {
   queries.push(query);
   return await client.query(query);
-};
-
-// Returns an object containing required and optional parameter names and their values that are in body
-const getParamaters = (required, optional, body) => {
-  let paramNames = required;
-  optional.forEach((optParam) => {
-    if(body[optParam]) paramNames.push(optParam);
-  });
-  let paramValues = [];
-  paramNames.forEach((param) => {
-    paramValues.push(body[param]);
-  });
-  return {
-    names: paramNames,
-    values: paramValues
-  };
 };
