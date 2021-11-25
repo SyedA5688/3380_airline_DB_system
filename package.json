@@ -28,7 +28,9 @@
     "order": [
       "GetAllEmployees",
       "AddEmployee",
-      "GetEmployeeDetails"
+      "GetEmployeeDetails",
+      "GetEmployeeLeave",
+      "ChangeEmployeeDetails"
     ]
   }
 }
