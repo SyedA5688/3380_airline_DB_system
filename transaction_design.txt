@@ -1,9 +1,29 @@
 
+// By default Airline workers name should be displayed by the Alphabetical Order 
+// If the employee leaves/retires the company all his information should be still kept for a certain amount of time (Up to 10 years based on some companies according to google)
+// User should have an option to order the employees by the postion they have in the airline: pilots, flight attendant, stewards and etc.  
+
 Employee Table
-  Employee ID:
-    *Search for the total number of employee ID's 
-    *
-    
+	*
+Employee Address Table
+	*Display the employees from the same country
+	 (First name Last Name  Country Name
+	  Arno       Dunstatter USA
+          Rizvi      Syed       USA)
+	*Display the employees from the same city
+	 (First name Last Name  City Name
+	  Arno       Dunstatter Stafford
+          Rizvi      Syed       Stafford) 
+Payroll Table
+	*Display the employees that worked most amount of hours for a week/month/year
+         (Employee First Name    Hours Worked this week
+          Arno                   100
+	  Rizvi                  88
+	*Send the money to the employee every two weeks 
+	 (As a check via mail)
+	*As a default every employee must pay the same amount of tax rate 
+	 (According to google every employee will pay the same amount of tax rate, but tax rate varies based on the state as well)
+	 (Texas have: 6.25% tax rate while California have: 12.3% tax rate.)
 Leave Table
 	*Search for the total number of available employees
 	(Display status of the employee available/absent)
@@ -25,3 +45,43 @@ Salary Table
 	(Usually those who worked more than 40 hours in a week)
 	*Search for the employees earning most amount of annual bonuses 
 	(Annual Bonus is calculated based on the number of flights employee completes each year)
+Benefits Table
+	*Paid Vacation/Sick time
+	 (Employees must receive money for their vacation/sick time if they are eligible for it)
+	 (Paid vacation/sick time is calculated based on the how long the employee worked at the airline)
+	*Reduced Rate Travels 
+	 (Employee and their Family members must get a 25% off on flights)
+	*Dental Insurance 
+	 (Given well performing employees since it is pretty expensive)
+	*Offer health Insurance by company
+	 (Based on the google every worker who works full-time must receive a health insurance, but the coverage may vary by position of the employee)
+	 (Flight attendant might have a 25% rate health insurance while Pilots have a 50% rate health insurance coverage)
+	*Employees should receive a better Retirement plan
+	 (Company providing a certain payout after an employee is retired)
+	*Stock options for the employees in a higher positions
+	 (According to google most airline companies don't offer stock options, but some do like jetBlue, AmericanAirlines.)
+	 (Also, most of the time stock options are only given to the managers and higher up's by the position)
+Job Location Table
+	*List all the employees based on the Airport location
+	 (All the employees from George Bush airport)
+	*Calculate total number of the employees based on their airport location
+	 (George Bush airport number of employees: 172,000)
+Job Table 
+	*Display for each employee position that they have
+	 (Andy Wang pilot)
+	*Display the department that the employee belongs to
+	 (Andy Wang pilot Flight Operations)
+	 (According to the Web most of the time employees in airline fall into 3 categories: Flight operations, Sales and marketing, and Engineering and maintenance.)
+	*Search for all the jobs in the airline
+	 (When searching for all the jobs in the airline by default it should go by an alphabetical order A-Z)
+	*Create a new job
+	 (When creating a new job it should automatically go to one the 3 departments: Flight operations, Sales and marketing, and Engineering and maintenance.)
+	*Reassign Employee to another team
+	 (If the vacancy exists)
+	 (For example: one of the pilots are retiring in this case employee can swtich his department to replace retiring pilot if he meets requirements)	
+Department Table
+	*List the employees based on the deparment they belong to
+	 (When listing the deparment employees order by alphabetically)
+	*Also if the users searches for the employees in the Flight operations department make managers appear first but still in the A-Z order
+	 (Andy  Wang Flight operations Supervisor
+	  Rizvi Syed Flight operations Pilot)
