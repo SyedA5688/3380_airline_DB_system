@@ -40,7 +40,9 @@
       "AddJob",
       "ChangeJobDetails",
 
-      "GetAllBenefits"
+      "GetAllBenefits",
+      "AddNewBenefits",
+      "ChangeBenefitsDetails"
     ]
   }
 }

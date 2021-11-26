@@ -184,7 +184,113 @@ router.post('/benefits', async (req, res) => {
   }
 });
 
-// Change existing benefits package details
+/**
+ * @api {put} /benefits/:id Change benefits package details
+ * @apiName ChangeBenefitsDetails
+ * @apiGroup Benefits
+ * @apiDescription Attempts to alter a benefits package based on body parameters. Returns the benefits package id on success.
+ * 
+ * @apiBody {String}  [health_insurance_provider]   Health insurance provider
+ * @apiBody {Number}  [amount]                      Amount
+ * @apiBody {String}  [stock_options]               Stock options
+ * @apiBody {String}  [retirement_plan]             Retirement plan
+ * 
+ * @apiSuccess {Object[]} rows                      Results from the database
+ * @apiSuccess {Number}   rows.benefits_package_id  Benefits package ID
+ * @apiSuccess {String[]} queries                   Array of queries used
+ * @apiSuccess {Boolean}  transaction               True if transactions were used
+ * 
+ * @apiSuccessExample {json} Success-Response example:
+ *    HTTP/1.1 200 OK
+ *    {
+ *      "rows": [{
+ *                "benefits_package_id": 123
+ *               }],
+ *      "queries": ["INSERT INTO table VALUES(...);"],
+ *      "transaction": true
+ *    }
+ */
 router.put('/benefits/:id', async (req, res) => {
-  
+  const id = req.params.id;
+  if(id && /^\d+$/.test(id)) {
+    const body = req.body;
+    if(body['benefits_package_id']) {
+      res.status(403).json({
+        error: 'Cannot modify blacklisted attributes',
+        blacklist: ['benefits_package_id'],
+        queries: [],
+        transaction: false
+      });
+    } else {
+      const params = utils.separateFields(['benefits'], body);
+      if(!utils.isEmpty(params['benefits']) ) {
+        const client = await db.connect().catch((err) => {
+          console.log(err.stack);
+          res.status(422).json({
+            error: 'Error connecting to database',
+            queries: [],
+            transaction: false
+          });
+        });
+        if(client) {
+          let queries = [];
+          try {
+            await utils.transacQuery(queries, client, 'BEGIN TRANSACTION;');
+            await utils.transacQuery(queries, client, 'SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;');
+
+            // Check benefits package exists first
+            let query = format('SELECT %1$I\nFROM %I\nWHERE %1$I = %3$L;', 'benefits_package_id', 'benefits', id);
+            if(!(await utils.transacQuery(queries, client, query)).rows.length) throw new Error('Benefits package not found!');
+
+            let updateString = '';
+            Object.keys(params['benefits']).forEach((key) => {
+              params['benefits'][key] = params['benefits'][key].toString().trim().toUpperCase();
+              if(!params['benefits'][key]) throw new Error(`${key} is empty!`);
+              updateString += `\t${key} = '${params['benefits'][key]}',\n`;
+            });
+            updateString = updateString.substring(0, updateString.length - 2);
+
+            const args = [
+              'benefits',
+              updateString,
+              'benefits_package_id',
+              id
+            ];
+            const dbQuery = format('UPDATE %I\nSET\n%s\nWHERE %I = %L\nRETURNING %3$I;', ...args);
+            const result = await utils.transacQuery(queries, client, dbQuery);
+
+            await utils.transacQuery(queries, client, 'COMMIT;');
+            await utils.transacQuery(queries, client, 'END TRANSACTION;\n');
+            client.release();
+            res.json({
+              rows: result.rows,
+              queries: queries,
+              transaction: true
+            });
+          } catch(err) {
+            console.log(err.stack);
+            await utils.transacQuery(queries, client, 'ROLLBACK;\n');
+            client.release();
+            res.status(422).json({
+              error: err.message,
+              queries: queries,
+              transaction: true
+            });
+          }
+        }
+      } else {
+        res.status(400).json({
+          error: 'Empty body',
+          queries: [],
+          transaction: false
+        });
+      }
+    }
+  } else {
+    res.status(400).json({
+      error: 'Invalid or missing job id',
+      queries: [],
+      transaction: false
+    });
+  }
 });
