@@ -35,8 +35,8 @@ module.exports = router;
  *    HTTP/1.1 200 OK
  *    {
  *      "rows": [{
- *                "leave_id": "123",
- *                "employee_id": "1000000",
+ *                "leave_id": 123,
+ *                "employee_id": 1000000,
  *                "date": "2010-05-05",
  *                "reason": "MEDICAL",
  *                "status": "APPROVED"
@@ -127,8 +127,8 @@ module.exports = router;
  *    HTTP/1.1 200 OK
  *    {
  *      "rows": [{
- *                "leave_id": "123",
- *                "employee_id": "1000000",
+ *                "leave_id": 123,
+ *                "employee_id": 1000000,
  *                "date": "2010-05-05",
  *                "reason": "MEDICAL",
  *                "status": "APPROVED"
@@ -231,8 +231,8 @@ module.exports = router;
  *    HTTP/1.1 200 OK
  *    {
  *      "rows": [{
- *                "leave_id": "123",
- *                "employee_id": "1000000",
+ *                "leave_id": 123,
+ *                "employee_id": 1000000,
  *                "date": "2021-11-25",
  *                "reason": "MEDICAL",
  *                "status": "PENDING"
@@ -260,9 +260,9 @@ router.get('/leave', async (req, res) => {
   let filterString = '';
   if(query){
     const searchBy = params.searchBy && sortParams[params.searchBy] ? sortParams[params.searchBy] : 'text';
-    if(searchBy === 'leave_id') filterString += format('WHERE %I = %L\n', searchBy, query);
-    else if(searchBy !== 'text') filterString += format('WHERE %I LIKE \'%s%%\'\n', searchBy, query);
-    else filterString += format('WHERE %1$I LIKE \'%3$s%%\' OR %2$I LIKE \'%3$s%%\'\n', sortParams.reason, sortParams.status, query);
+    if(searchBy === 'leave_id') filterString = format('WHERE %I = %L\n', searchBy, query);
+    else if(searchBy !== 'text') filterString = format('WHERE %I LIKE \'%s%%\'\n', searchBy, query);
+    else filterString = format('WHERE %1$I LIKE \'%3$s%%\' OR %2$I LIKE \'%3$s%%\'\n', sortParams.reason, sortParams.status, query);
   }
   const orderArgs = [  
     sortBy, 
@@ -311,7 +311,7 @@ router.get('/leave', async (req, res) => {
  *    HTTP/1.1 200 OK
  *    {
  *      "rows": [{
- *                "leave_id": "123"
+ *                "leave_id": 123
  *               }],
  *      "queries": ["UPDATE table\nSET column = value\nWHERE leave_id = 123;"],
  *      "transaction": true
