@@ -10,7 +10,7 @@ module.exports = router;
 /**
  * @api {get} /employee/:id Get employee details
  * @apiName GetEmployeeDetails
- * @apiGroup Employee
+ * @apiGroup Employees
  * @apiDescription Returns the employee with the given id's details
  * 
  * @apiParam {Number}     id  Employee's ID number
@@ -76,7 +76,7 @@ router.get('/employee/:id', async (req, res) => {
 /**
  * @api {put} /employee/:id Change employee details
  * @apiName ChangeEmployeeDetails
- * @apiGroup Employee
+ * @apiGroup Employees
  * @apiDescription Attempts to alter employee details based on body parameters. 
  * Returns the employee's id on success.
  * 

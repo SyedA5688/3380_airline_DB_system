@@ -12,7 +12,7 @@ const tableGetInfo = require('./employee-get-db.js');
 /**
  * @api {get} /employee Get all employees
  * @apiName GetAllEmployees
- * @apiGroup Employee
+ * @apiGroup Employees
  * @apiDescription Returns an array of objects containing basic employee information. 
  * See "Get employee details" for specific information about one employee.
  * 
@@ -26,7 +26,7 @@ const tableGetInfo = require('./employee-get-db.js');
  * @apiSuccess {Object[]} rows                  Results from the database
  * @apiSuccess {Number}   rows.employee_id      Employee's ID number
  * @apiSuccess {String}   rows.first_name       First name
- * @apiSuccess {String}   [rows.m_initial]      Middle initial (can be null)
+ * @apiSuccess {String}   [rows.m_initial]      Middle initial
  * @apiSuccess {String}   rows.last_name        Last name
  * @apiSuccess {String}   rows.job_title        Employee's job title
  * @apiSuccess {String}   rows.department_name  Department employee works in
@@ -52,7 +52,6 @@ const tableGetInfo = require('./employee-get-db.js');
 router.get('/employee', async (req, res) => {
   // TODO: Input validation
   const params = req.query;
-  console.log(params);
   const page = params.page ? params.page : 1;
   const sortBy = tableGetInfo[params.sort] ? tableGetInfo[params.sort] : tableGetInfo.id;
   const order = params.order ? params.order.toUpperCase() : 'ASC';
@@ -149,7 +148,7 @@ router.get('/employee', async (req, res) => {
 /**
  * @api {post} /employee Add new employee
  * @apiName AddEmployee
- * @apiGroup Employee
+ * @apiGroup Employees
  * @apiDescription Attempts to insert a new employee into the database. Returns the new employee's basic information.
  * 
  * @apiBody {String {non-empty}=A-Z}    first_name         First name

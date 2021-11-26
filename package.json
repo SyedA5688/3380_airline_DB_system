@@ -31,7 +31,8 @@
       "GetEmployeeDetails",
       "ChangeEmployeeDetails",
       "GetEmployeeLeave",
-      "AddNewLeave"
+      "AddNewLeave",
+      "GetAllJobs"
     ]
   }
 }

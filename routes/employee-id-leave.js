@@ -9,7 +9,7 @@ module.exports = router;
 /**
  * @api {get} /employee/:id Get employee leave details
  * @apiName GetEmployeeLeave
- * @apiGroup Employee
+ * @apiGroup Employees
  * @apiDescription Returns the employee with the given id's leave details.
  * 
  * @apiParam {Number}     id  Employee's ID number
@@ -75,7 +75,7 @@ module.exports = router;
 /**
  * @api {post} /employee/:id Create new leave for employee
  * @apiName AddNewLeave
- * @apiGroup Employee
+ * @apiGroup Employees
  * @apiDescription Attempts to insert a new leave report for an employee. Returns the inserted leave report.
  * 
  * @apiParam  {Number}         id       Employee's ID number
