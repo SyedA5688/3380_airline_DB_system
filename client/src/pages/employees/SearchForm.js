@@ -89,7 +89,7 @@ class SearchForm extends Component {
       default:
         validInput = true;
     }
-    console.log("Input validity:", validInput, "\nsearchTitle:", this.state.searchTitle, "\nsearch by:", this.state.searchBy);
+    // console.log("Input validity:", validInput, "\nsearchTitle:", this.state.searchTitle, "\nsearch by:", this.state.searchBy);
     return validInput;
   }
 
@@ -146,14 +146,11 @@ class SearchForm extends Component {
     
     // Attempt GET request, catch and display any errors in popup modal
     try {
-      console.log("Making GET request to /employee API endpoint")
+      // console.log("Making GET request to /employee API endpoint")
       const response = await fetch(`/employee?q=${query}&searchBy=${this.state.searchBy}&page=${this.state.page}&sort=${this.state.sort}&order=${this.state.order}&limit=${this.state.limit}`);
       const body = await response.json();
 
       this.assertValidGETResponse(body);
-      // console.log("Body:", body);
-      // console.log("Rows:", body.rows);
-
       this.setState({
         returnedEmployees: body.rows
       });
