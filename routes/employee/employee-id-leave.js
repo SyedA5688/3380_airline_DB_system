@@ -14,6 +14,13 @@ module.exports = router;
  * 
  * @apiParam {Number}     id  Employee's ID number
  * 
+ * @apiQuery {String {non-empty}}                 [q]             Filter rows based on query
+ * @apiQuery {String=text,id,date,status,reason}  [searchBy=text] Used if <code>q</code> is specified. Text searches by status and reason simultaneously.
+ * @apiQuery {Number {1+}}                        [page=1]        Specify <code>page</code> if there are more results than <code>limit</code>
+ * @apiQuery {String=id,date,status,reason}       [sort=date]     How rows are sorted
+ * @apiQuery {String=asc,desc}                    [order=asc]     Receive rows in ascending or descending order
+ * @apiQuery {Number {1-100}}                     [limit=10]      The maximum number of rows to receive
+ * 
  * @apiSuccess {Object[]} rows                  Results from the database
  * @apiSuccess {Number}   rows.leave_id         Leave ID
  * @apiSuccess {Number}   rows.employee_id      Employee ID
@@ -42,12 +49,35 @@ module.exports = router;
  router.get('/employee/:id/leave', async (req, res) => {
   const id = req.params.id;
   if(id && /^\d+$/.test(id)) {
-    const args = [
-      'leave',
-      'employee_id',
-      id
+    const params = req.query;
+    const page = params.page ? params.page : 1;
+    const sortParams = {
+      id: 'leave_id',
+      date: 'date',
+      reason: 'reason',
+      status: 'status'
+    };
+    const sortBy = sortParams[params.sort] ? sortParams[params.sort] : sortParams.date;
+    const order = params.order ? params.order.toUpperCase() : 'ASC';
+    const limit = params.limit ? Math.min(Math.max(params.limit, 1), 100) : 10;
+
+    // Filtering logic
+    const query = params.q && params.q.toString().trim() !== '' ? params.q.toString().trim().toUpperCase() : '';
+    let filterString = format('WHERE %I = %L\n', 'employee_id', id);
+    if(query){
+      const searchBy = params.searchBy && sortParams[params.searchBy] ? sortParams[params.searchBy] : 'text';
+      if(searchBy === 'leave_id') filterString += format('\tAND %I = %L\n', searchBy, query);
+      else if(searchBy !== 'text') filterString += format('\tAND %I LIKE \'%s%%\'\n', searchBy, query);
+      else filterString += format('\tAND (%1$I LIKE \'%3$s%%\' OR %2$I LIKE \'%3$s%%\')\n', sortParams.reason, sortParams.status, query);
+    }
+    const orderArgs = [  
+      sortBy, 
+      order, 
+      limit * (page - 1), 
+      limit 
     ];
-    const dbQuery = format('SELECT *\nFROM %I\nWHERE %I = %L;', ...args);
+    const queryString = `SELECT *\nFROM %I\n${filterString}ORDER BY %I %s\nOFFSET %s\nLIMIT %s;`;
+    const dbQuery = format(queryString, 'leave',...orderArgs);
     try {
       const result = await db.query(dbQuery); 
       res.json({
@@ -55,7 +85,7 @@ module.exports = router;
         queries: [dbQuery],
         transaction: false
       });
-    } catch {
+    } catch(err) {
       console.error(err.stack);
       res.status(422).json({
         error: err.message,
