@@ -130,16 +130,16 @@ module.exports = router;
       if(client) {
         let queries = [];
         try {
-          await transacQuery(queries, client, 'BEGIN TRANSACTION;');
-          await transacQuery(queries, client, 'SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;');
+          await utils.transacQuery(queries, client, 'BEGIN TRANSACTION;');
+          await utils.transacQuery(queries, client, 'SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;');
 
           const params = utils.getParameters(requiredFields, [], body);
           const dbQuery = format('INSERT INTO %I (%I,%I)\nVALUES (%L,%L)\nRETURNING *;',
             'leave', 'employee_id', params.names, id, params.values);
-          const result = await transacQuery(queries, client, dbQuery);
+          const result = await utils.transacQuery(queries, client, dbQuery);
 
-          await transacQuery(queries, client, 'COMMIT;');
-          await transacQuery(queries, client, 'END TRANSACTION;\n');
+          await utils.transacQuery(queries, client, 'COMMIT;');
+          await utils.transacQuery(queries, client, 'END TRANSACTION;\n');
           client.release();
           res.json({
             rows: result.rows,
@@ -148,7 +148,7 @@ module.exports = router;
           });
         } catch(err) {
           console.log(err.stack);
-          await transacQuery(queries, client, 'ROLLBACK;\n');
+          await utils.transacQuery(queries, client, 'ROLLBACK;\n');
           client.release();
           res.status(422).json({
             error: err.message,
@@ -173,9 +173,3 @@ module.exports = router;
     });
   }
 });
-
-// Utility function to push query to array and query the database
-const transacQuery = async (queries, client, query) => {
-  queries.push(query);
-  return await client.query(query);
-};

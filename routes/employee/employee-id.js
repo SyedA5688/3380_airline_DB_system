@@ -144,11 +144,11 @@ router.put('/employee/:id', async (req, res) => {
         if(client) {
           let queries = [];
           try {
-            await transacQuery(queries, client, 'BEGIN TRANSACTION;');
-            await transacQuery(queries, client, 'SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;');
+            await utils.transacQuery(queries, client, 'BEGIN TRANSACTION;');
+            await utils.transacQuery(queries, client, 'SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;');
             // Check employee exists first
             const query = format('SELECT %1$I\nFROM %I\nWHERE %1$I = %3$L;', 'employee_id', 'employee', id);
-            if(!(await transacQuery(queries, client, query)).rows.length) throw new Error('ID not found!');
+            if(!(await utils.transacQuery(queries, client, query)).rows.length) throw new Error('ID not found!');
             // Modifying employee
             if(!utils.isEmpty(params['employee'])) {
               let updateString = '';
@@ -166,7 +166,7 @@ router.put('/employee/:id', async (req, res) => {
                 id
               ];
               const dbQuery = format('UPDATE %I\nSET\n%s\nWHERE %I = %L;', ...args);
-              await transacQuery(queries, client, dbQuery);
+              await utils.transacQuery(queries, client, dbQuery);
             }
             // Modifying employee address
             if(!utils.isEmpty(params['employee_address'])) {
@@ -177,7 +177,7 @@ router.put('/employee/:id', async (req, res) => {
                 id
               ];
               let dbQuery = format('SELECT %I\nFROM %I\nWHERE %I = %L;', ...args); 
-              const address_id = (await transacQuery(queries, client, dbQuery)).rows[0].address_id;
+              const address_id = (await utils.transacQuery(queries, client, dbQuery)).rows[0].address_id;
 
               let updateString = '';
               Object.keys(params['employee_address']).forEach((key) => {
@@ -194,7 +194,7 @@ router.put('/employee/:id', async (req, res) => {
                 address_id
               ];
               dbQuery = format('UPDATE %I\nSET\n%s\nWHERE %I = %L;', ...args);
-              await transacQuery(queries, client, dbQuery);
+              await utils.transacQuery(queries, client, dbQuery);
             }
             // Modifying salary
             if(!utils.isEmpty(params['salary'])) {
@@ -213,10 +213,10 @@ router.put('/employee/:id', async (req, res) => {
                 id
               ];
               const dbQuery = format('UPDATE %I\nSET\n%s\nWHERE %I = %L;', ...args);
-              await transacQuery(queries, client, dbQuery);
+              await utils.transacQuery(queries, client, dbQuery);
             }
-            await transacQuery(queries, client, 'COMMIT;');
-            await transacQuery(queries, client, 'END TRANSACTION;\n');
+            await utils.transacQuery(queries, client, 'COMMIT;');
+            await utils.transacQuery(queries, client, 'END TRANSACTION;\n');
             client.release();
             res.json({
               rows: [{'employee_id': id}],
@@ -225,7 +225,7 @@ router.put('/employee/:id', async (req, res) => {
             });
           } catch(err) {
             console.log(err.stack);
-            await transacQuery(queries, client, 'ROLLBACK;\n');
+            await utils.transacQuery(queries, client, 'ROLLBACK;\n');
             client.release();
             res.status(422).json({
               error: err.message,
@@ -250,9 +250,3 @@ router.put('/employee/:id', async (req, res) => {
     });
   }
 });
-
-// Utility function to push query to array and query the database
-const transacQuery = async (queries, client, query) => {
-  queries.push(query);
-  return await client.query(query);
-};

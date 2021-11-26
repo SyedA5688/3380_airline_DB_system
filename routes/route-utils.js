@@ -43,8 +43,12 @@ module.exports = {
     });
     return fields;
   },
-  
   isEmpty: (object) => {
     return Object.keys(object).length === 0;
+  },
+  // Utility function to push query to array and query the database
+  transacQuery: async (queries, client, query) => {
+    queries.push(query);
+    return await client.query(query);
   }
 };

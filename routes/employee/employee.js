@@ -218,28 +218,28 @@ router.post('/employee', async (req, res) => {
     if(client) {
       let queries = [];
       try {
-        await transacQuery(queries, client, 'BEGIN TRANSACTION;');
-        await transacQuery(queries, client, 'SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;');
+        await utils.transacQuery(queries, client, 'BEGIN TRANSACTION;');
+        await utils.transacQuery(queries, client, 'SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;');
 
         const addressParams = utils.getParameters(['street_address', 'city', 'country'], ['zip_code', 'state'], body);
         let query = format('INSERT INTO %I (%I)\nVALUES (%L)\nRETURNING address_id;',
          'employee_address', addressParams.names, addressParams.values);
-        body.address_id = (await transacQuery(queries, client, query)).rows[0].address_id;
+        body.address_id = (await utils.transacQuery(queries, client, query)).rows[0].address_id;
 
         const reqArgs = ['first_name', 'last_name', 'dob', 'gender', 'address_id'];
         const optArgs = ['m_initial', 'ssn', 'phone', 'email', 'job_id', 'manager_id'];
         const employeeParams = utils.getParameters(reqArgs, optArgs, body);
         query = format('INSERT INTO %I (%I)\nVALUES (%L)\nRETURNING employee_id;',
          'employee', employeeParams.names, employeeParams.values);
-        const employee_id = (await transacQuery(queries, client, query)).rows[0].employee_id;
+        const employee_id = (await utils.transacQuery(queries, client, query)).rows[0].employee_id;
 
         const salaryParams = utils.getParameters(['hourly_wage'], ['annual_bonus'], body);
         query = format('INSERT INTO %I (%I,%I)\nVALUES (%L,%L)\nRETURNING employee_id;',
          'salary', 'employee_id', salaryParams.names, employee_id, salaryParams.values);
-        await transacQuery(queries, client, query);
+        await utils.transacQuery(queries, client, query);
 
-        await transacQuery(queries, client, 'COMMIT;');
-        await transacQuery(queries, client, 'END TRANSACTION;\n');
+        await utils.transacQuery(queries, client, 'COMMIT;');
+        await utils.transacQuery(queries, client, 'END TRANSACTION;\n');
         client.release();
 
         const queryString = `SELECT %I\nFROM %I e\n\tJOIN %I j\n\tON e.%4$s = j.%4$s\n\tJOIN %I d\n\tON j.%6$s = d.%6$s\nWHERE employee_id = ${employee_id};`;
@@ -268,7 +268,7 @@ router.post('/employee', async (req, res) => {
         });
       } catch(err) {
         console.log(err.stack);
-        await transacQuery(queries, client, 'ROLLBACK;\n');
+        await utils.transacQuery(queries, client, 'ROLLBACK;\n');
         client.release();
         res.status(422).json({
           error: err.message,
@@ -286,9 +286,3 @@ router.post('/employee', async (req, res) => {
     });
   }
 });
-
-// Utility function to push query to array and query the database
-const transacQuery = async (queries, client, query) => {
-  queries.push(query);
-  return await client.query(query);
-};
