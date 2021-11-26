@@ -74,7 +74,7 @@ router.get('/employee/:id', async (req, res) => {
 });
 
 /**
- * @api {put} /employee/:id Change employee details
+ * @api {put} /employee/:id Change existing employee details
  * @apiName ChangeEmployeeDetails
  * @apiGroup Employees
  * @apiDescription Attempts to alter employee details based on body parameters. 
@@ -113,7 +113,7 @@ router.get('/employee/:id', async (req, res) => {
  *      "rows": [{
  *                "employee_id": 1000000
  *               }],
- *      "queries": ["UPDATE table\nSET column\nWHERE employee_id = 1000000;"],
+ *      "queries": ["UPDATE table\nSET column = value\nWHERE employee_id = 1000000;"],
  *      "transaction": true
  *    }
  * 
@@ -148,7 +148,7 @@ router.put('/employee/:id', async (req, res) => {
             await utils.transacQuery(queries, client, 'SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;');
             // Check employee exists first
             const query = format('SELECT %1$I\nFROM %I\nWHERE %1$I = %3$L;', 'employee_id', 'employee', id);
-            if(!(await utils.transacQuery(queries, client, query)).rows.length) throw new Error('ID not found!');
+            if(!(await utils.transacQuery(queries, client, query)).rows.length) throw new Error('Employee not found!');
             // Modifying employee
             if(!utils.isEmpty(params['employee'])) {
               let updateString = '';
