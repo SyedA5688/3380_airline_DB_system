@@ -122,10 +122,7 @@ class SearchForm extends Component {
       });
     }
     catch (e) {
-      console.log("Error occurred while sending GET request to /employee endpoint,", e)
-      // this.setState({
-      //   showErrorModal: true
-      // });
+      console.log("Error occurred while sending GET request to /employee endpoint,", e);
       document.getElementById("errorModal").style.display = "block"
       document.getElementById("errorModal").classList.add("show")
     }

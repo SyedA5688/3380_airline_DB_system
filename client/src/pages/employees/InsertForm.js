@@ -6,23 +6,23 @@ class InsertForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      insertFirstName: null,
-      insertLastName: null,
-      insertGender: null,
-      insertDOB: null,
-      insertHourlyWage: null,
-      insertSSN: null,
-      insertMiddleInitial: null,
-      insertPhone: null,
-      insertEmail: null,
-      insertJobID: null,
-      insertManagerID: null,
-      insertAnnualBonus: null,
-      insertStreetAddress: null,
-      insertCity: null,
-      insertCountry: null,
-      insertZipCode: null,
-      insertState: null
+      insertFirstName: '',
+      insertLastName: '',
+      insertGender: '',
+      insertDOB: '',
+      insertHourlyWage: '',
+      insertSSN: '',
+      insertMiddleInitial: '',
+      insertPhone: '',
+      insertEmail: '',
+      insertJobID: '',
+      insertManagerID: '',
+      insertAnnualBonus: '',
+      insertStreetAddress: '',
+      insertCity: '',
+      insertCountry: '',
+      insertZipCode: '',
+      insertState: ''
     };
     
     this.handleChange = this.handleChange.bind(this);
@@ -41,26 +41,15 @@ class InsertForm extends Component {
   }
 
   listenForFormSubmission() {
-    // Fetch HTML form we want to check and validate
     const form = document.querySelector('#insertFormHTML');
 
-    // Add event listener for form submissions, prevent submission if input is invalid
     form.addEventListener('submit', (event) => {
-      if (!this.checkInputValidity()) {
+      if (!form.checkValidity()) {
         event.preventDefault();
         event.stopPropagation();
       }
       form.classList.add('was-validated');
     }, false);
-  }
-
-  checkInputValidity() {
-    let validInput = true;
-    const re = /^[a-z0-9 ]+$/i  // alphanumeric and spaces, length > 0
-
-    // TODO: Validate each input
-    
-    return validInput;
   }
 
   assertValidDBResponse(body) {
@@ -76,7 +65,6 @@ class InsertForm extends Component {
   handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      // Insert new employee to /employees with POST request
       const body = { 
         first_name: this.state.insertFirstName, 
         last_name: this.state.insertLastName,
@@ -108,30 +96,64 @@ class InsertForm extends Component {
       console.log("Employee added into Postgres Employees table:", newEmployee);
   
       this.setState({
-        insertFirstName: null,
-        insertLastName: null,
-        insertGender: null,
-        insertDOB: null,
-        insertHourlyWage: null,
-        insertSSN: null,
-        insertMiddleInitial: null,
-        insertPhone: null,
-        insertEmail: null,
-        insertJobID: null,
-        insertManagerID: null,
-        insertAnnualBonus: null,
-        insertStreetAddress: null,
-        insertCity: null,
-        insertCountry: null,
-        insertZipCode: null,
-        insertState: null,
+        insertFirstName: '',
+        insertLastName: '',
+        insertGender: '',
+        insertDOB: '',
+        insertHourlyWage: '',
+        insertSSN: '',
+        insertMiddleInitial: '',
+        insertPhone: '',
+        insertEmail: '',
+        insertJobID: '',
+        insertManagerID: '',
+        insertAnnualBonus: '',
+        insertStreetAddress: '',
+        insertCity: '',
+        insertCountry: '',
+        insertZipCode: '',
+        insertState: '',
         insertedEmployee: newEmployee
       })
     }
     catch (err) {
       console.log("Error occurred while sending Insert Employee POST request to web server:", err.message);
+      document.getElementById("errorModal").style.display = "block"
+      document.getElementById("errorModal").classList.add("show")
     }
   };
+
+  closeModal = () => {
+    document.getElementById("errorModal").style.display = "none"
+    document.getElementById("errorModal").classList.remove("show");
+  }
+
+  handleClear = async (event) => {
+    this.setState({
+      insertFirstName: '',
+      insertLastName: '',
+      insertGender: '',
+      insertDOB: '',
+      insertHourlyWage: '',
+      insertSSN: '',
+      insertMiddleInitial: '',
+      insertPhone: '',
+      insertEmail: '',
+      insertJobID: '',
+      insertManagerID: '',
+      insertAnnualBonus: '',
+      insertStreetAddress: '',
+      insertCity: '',
+      insertCountry: '',
+      insertZipCode: '',
+      insertState: '',
+      insertedEmployee: null
+    });
+
+    // Remove was-validated class from form to reset its appearance
+    const form = document.querySelector('#insertFormHTML');
+    form.classList.remove('was-validated');
+  }
   
   render() {
     return (
@@ -163,16 +185,18 @@ class InsertForm extends Component {
             <div className="input-group-prepend">
               <span className="input-group-text" id="">First*, MI, Last*</span>
             </div>
-            <input type="text" className="form-control" id="inputEmployeeFirstName" placeholder="John" name="insertFirstName" onChange={this.handleChange} required />
-            <input type="text" className="form-control" id="inputEmployeeMiddleInitial" placeholder="M (Optional)" name="insertMiddleInitial" onChange={this.handleChange} />
-            <input type="text" className="form-control" id="inputEmployeeLastName" placeholder="Doe" name="insertLastName" onChange={this.handleChange} required />
+            <input type="text" className="form-control" id="inputEmployeeFirstName" placeholder="John" value={this.state.insertFirstName} name="insertFirstName" onChange={this.handleChange} required />
+            <input type="text" className="form-control" id="inputEmployeeMiddleInitial" placeholder="M (Optional)" value={this.state.insertMiddleInitial} name="insertMiddleInitial" onChange={this.handleChange} />
+            <input type="text" className="form-control" id="inputEmployeeLastName" placeholder="Doe" value={this.state.insertLastName} name="insertLastName" onChange={this.handleChange} required />
             <div className="invalid-feedback">Please provide valid possible names (a-z, A-Z).</div>
             <div className="valid-feedback">Valid name.</div>
           </div>
 
+          {/* ToDo: On all form elements, add pattern to check valid input */}
+
           <div className="form-group mt-2" >
             <label className="sr-only" htmlFor="inputEmployeeGender">Gender*</label>
-            <select  className="form-select" id="inputEmployeeGender" name="insertGender" onChange={this.handleChange } required >
+            <select  className="form-select" id="inputEmployeeGender" value={this.state.insertGender} name="insertGender" onChange={this.handleChange } required >
               <option value="M">Male</option>
               <option value="F">Female</option>
               <option value="O">Other</option>
@@ -181,73 +205,89 @@ class InsertForm extends Component {
             <div className="valid-feedback">Valid gender selection.</div>
           </div>
           
-
           <div className="form-group">
             <label className="sr-only" htmlFor="inputEmployeeDOB">Date of Birth*</label>
-            <input type="date" className="form-control" id="inputEmployeeDOB" name="insertDOB" onChange={this.handleChange} required />
+            <input type="date" className="form-control" id="inputEmployeeDOB" value={this.state.insertDOB} name="insertDOB" onChange={this.handleChange} required />
             <div className="invalid-feedback">Please select your date of birth.</div>
             <div className="valid-feedback">Valid date selected.</div>
           </div>
 
           <div className="form-group">
             <label className="sr-only" htmlFor="inputEmployeeSSN">Social Security Number</label>
-            <input type="text" className="form-control" id="inputEmployeeSSN" placeholder="123456789" name="insertSSN" onChange={this.handleChange} />
+            <input type="text" className="form-control" id="inputEmployeeSSN" placeholder="123456789" value={this.state.insertSSN} name="insertSSN" onChange={this.handleChange} />
+            <div className="invalid-feedback">Please provide valid SSN number.</div>
+            <div className="valid-feedback">Valid SSN.</div>
           </div>
 
           <div className="form-group">
             <label className="sr-only" htmlFor="inputEmployeeHourlyWage">Hourly Wage*</label>
-            <input type="number" step=".01" className="form-control" id="inputEmployeeHourlyWage" placeholder="15.25" name="insertHourlyWage" onChange={this.handleChange} required />
+            <input type="number" step=".01" className="form-control" id="inputEmployeeHourlyWage" placeholder="15.25" value={this.state.insertHourlyWage} name="insertHourlyWage" onChange={this.handleChange} required />
+            <div className="invalid-feedback">Please provide valid hourly wage.</div>
+            <div className="valid-feedback">Valid hourly wage.</div>
           </div>
 
           <div className="form-group">
             <label className="sr-only" htmlFor="inputEmployeeAnnualBonus">Annual Bonus</label>
-            <input type="number" step="1" className="form-control" id="inputEmployeeAnnualBonus" placeholder="20000" name="insertAnnualBonus" onChange={this.handleChange} required />
+            <input type="number" step="1" className="form-control" id="inputEmployeeAnnualBonus" placeholder="20000" value={this.state.insertAnnualBonus} name="insertAnnualBonus" onChange={this.handleChange} required />
+            <div className="invalid-feedback">Please provide valid annual bonus.</div>
+            <div className="valid-feedback">Valid annual bonus.</div>
           </div>
 
           <div className="form-group">
             <label className="sr-only" htmlFor="inputEmployeePhone">Phone</label>
-            <input type="text" className="form-control" id="inputEmployeePhone" placeholder="8321111111" name="insertPhone" onChange={this.handleChange} />
+            <input type="text" className="form-control" id="inputEmployeePhone" placeholder="8321111111" value={this.state.insertPhone} name="insertPhone" onChange={this.handleChange} />
+            <div className="invalid-feedback">Please provide valid phone number.</div>
+            <div className="valid-feedback">Valid phone number.</div>
           </div>
 
           <div className="form-group">
             <label className="sr-only" htmlFor="inputEmployeeEmail">Email</label>
-            <input type="email" className="form-control" id="inputEmployeeEmail" placeholder="example@gmail.com" name="insertEmail" onChange={this.handleChange} />
+            <input type="email" className="form-control" id="inputEmployeeEmail" placeholder="example@gmail.com" value={this.state.insertEmail} name="insertEmail" onChange={this.handleChange} />
+            <div className="invalid-feedback">Please provide valid email.</div>
+            <div className="valid-feedback">Valid email.</div>
           </div>
 
           <div className="form-group">
             <label className="sr-only" htmlFor="inputEmployeeJobID">Job ID</label>
-            <input type="number" step="1" className="form-control" id="inputEmployeeJobID" placeholder="1" name="insertJobID" onChange={this.handleChange} />
+            <input type="number" step="1" className="form-control" id="inputEmployeeJobID" placeholder="1" value={this.state.insertJobID} name="insertJobID" onChange={this.handleChange} />
+            <div className="invalid-feedback">Please provide valid job ID.</div>
+            <div className="valid-feedback">Valid job ID.</div>
           </div>
 
           <div className="form-group">
             <label className="sr-only" htmlFor="inputEmployeeManagerID">Manager ID</label>
-            <input type="number" step="1" className="form-control" id="inputEmployeeManagerID" placeholder="1000000" name="insertManagerID" onChange={this.handleChange} />
+            <input type="number" step="1" className="form-control" id="inputEmployeeManagerID" placeholder="1000000" value={this.state.insertManagerID} name="insertManagerID" onChange={this.handleChange} />
+            <div className="invalid-feedback">Please provide valid manager ID.</div>
+            <div className="valid-feedback">Valid manager ID.</div>
           </div>
 
           <div className="input-group" >
             <div className="input-group-prepend">
               <span className="input-group-text" id="">Street Address*, City*</span>
             </div>
-            <input type="text" className="form-control" id="inputEmployeeStreetAddress" placeholder="12345 Some Street LN." name="insertStreetAddress" onChange={this.handleChange} required />
-            <input type="text" className="form-control" id="inputEmployeeCity" placeholder="Houston" name="insertCity" onChange={this.handleChange} required />
+            <input type="text" className="form-control" id="inputEmployeeStreetAddress" placeholder="12345 Some Street LN." value={this.state.insertStreetAddress} name="insertStreetAddress" onChange={this.handleChange} required />
+            <input type="text" className="form-control" id="inputEmployeeCity" placeholder="Houston" value={this.state.insertCity} name="insertCity" onChange={this.handleChange} required />
             <div className="invalid-feedback">Please provide valid street address and city.</div>
             <div className="valid-feedback">Valid address and city.</div>
           </div>
 
+          <div className="input-group" >
+            <div className="input-group-prepend">
+              <span className="input-group-text" id="">State, Zip Code</span>
+            </div>
+            <input type="text" className="form-control" id="inputEmployeeState" placeholder="Texas" value={this.state.insertState} name="insertState" onChange={this.handleChange} />
+            <input type="text" className="form-control" id="inputEmployeeZipCode" placeholder="77777" value={this.state.insertZipCode} name="insertZipCode" onChange={this.handleChange} />
+            <div className="invalid-feedback">Please provide valid state and zip code.</div>
+            <div className="valid-feedback">Valid state and zip code.</div>
+          </div>
 
+          <div className="form-group">
+            <label className="sr-only" htmlFor="inputEmployeeCountry">Country*</label>
+            <input type="text" className="form-control" id="inputEmployeeCountry" placeholder="United States" value={this.state.insertCountry} name="insertCountry" onChange={this.handleChange} required />
+            <div className="invalid-feedback">Please provide valid country name.</div>
+            <div className="valid-feedback">Valid country name.</div>
+          </div>
 
-          <div className="form-group">
-            <label className="sr-only" htmlFor="inputEmployeeState">State</label>
-            <input type="text" className="form-control" id="inputEmployeeEmail" placeholder="Texas" name="insertState" onChange={this.handleChange} />
-          </div>
-          <div className="form-group">
-            <label className="sr-only" htmlFor="inputEmployeeZipCode">Zip Code</label>
-            <input type="text" className="form-control" id="inputEmployeeEmail" placeholder="12345" name="insertZipCode" onChange={this.handleChange} />
-          </div>
-          <div className="form-group">
-            <label className="sr-only" htmlFor="inputEmployeeCountry">Country</label>
-            <input type="text" className="form-control" id="inputEmployeeEmail" placeholder="United States" name="insertCountry" onChange={this.handleChange} />
-          </div>
           <button type="submit" className="btn btn-outline-secondary mt-3">Submit</button>
         </form>
       </div>
