@@ -1,7 +1,7 @@
-const employee = require('./employee');
-const employeeID = require('./employee-id');
-const employeeIDLeave = require('./employee-id-leave');
-const job = require('./job');
+const employee = require('./employee/employee');
+const employeeID = require('./employee/employee-id');
+const employeeIDLeave = require('./employee/employee-id-leave');
+const job = require('./job/job');
 
 module.exports = (app) => {
   app.use(employee);

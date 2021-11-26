@@ -4,7 +4,7 @@
  * the temporary names used to the final table names.
  * TODO: Update names in /employee route to remove this file
  */
-const tableInfo = require('../db/table-info.json');
+const tableInfo = require('../../db/table-info.json');
 
 module.exports = {
   empTable: 'employee',
