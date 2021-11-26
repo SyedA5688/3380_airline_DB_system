@@ -1,7 +1,7 @@
 const Router = require('express-promise-router');
 const format = require('pg-format');
-const db = require('../db');
-const utils = require('./route-utils');
+const db = require('../../db');
+const utils = require('../route-utils');
 
 const router = new Router();
 module.exports = router;
@@ -12,7 +12,7 @@ const tableGetInfo = require('./employee-get-db.js');
 /**
  * @api {get} /employee Get all employees
  * @apiName GetAllEmployees
- * @apiGroup Employee
+ * @apiGroup Employees
  * @apiDescription Returns an array of objects containing basic employee information. 
  * See "Get employee details" for specific information about one employee.
  * 
@@ -26,7 +26,7 @@ const tableGetInfo = require('./employee-get-db.js');
  * @apiSuccess {Object[]} rows                  Results from the database
  * @apiSuccess {Number}   rows.employee_id      Employee's ID number
  * @apiSuccess {String}   rows.first_name       First name
- * @apiSuccess {String}   [rows.m_initial]      Middle initial (can be null)
+ * @apiSuccess {String}   [rows.m_initial]      Middle initial
  * @apiSuccess {String}   rows.last_name        Last name
  * @apiSuccess {String}   rows.job_title        Employee's job title
  * @apiSuccess {String}   rows.department_name  Department employee works in
@@ -52,7 +52,6 @@ const tableGetInfo = require('./employee-get-db.js');
 router.get('/employee', async (req, res) => {
   // TODO: Input validation
   const params = req.query;
-  console.log(params);
   const page = params.page ? params.page : 1;
   const sortBy = tableGetInfo[params.sort] ? tableGetInfo[params.sort] : tableGetInfo.id;
   const order = params.order ? params.order.toUpperCase() : 'ASC';
@@ -149,7 +148,7 @@ router.get('/employee', async (req, res) => {
 /**
  * @api {post} /employee Add new employee
  * @apiName AddEmployee
- * @apiGroup Employee
+ * @apiGroup Employees
  * @apiDescription Attempts to insert a new employee into the database. Returns the new employee's basic information.
  * 
  * @apiBody {String {non-empty}=A-Z}    first_name         First name
@@ -219,28 +218,28 @@ router.post('/employee', async (req, res) => {
     if(client) {
       let queries = [];
       try {
-        await transacQuery(queries, client, 'BEGIN TRANSACTION;');
-        await transacQuery(queries, client, 'SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;');
+        await utils.transacQuery(queries, client, 'BEGIN TRANSACTION;');
+        await utils.transacQuery(queries, client, 'SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;');
 
         const addressParams = utils.getParameters(['street_address', 'city', 'country'], ['zip_code', 'state'], body);
         let query = format('INSERT INTO %I (%I)\nVALUES (%L)\nRETURNING address_id;',
          'employee_address', addressParams.names, addressParams.values);
-        body.address_id = (await transacQuery(queries, client, query)).rows[0].address_id;
+        body.address_id = (await utils.transacQuery(queries, client, query)).rows[0].address_id;
 
         const reqArgs = ['first_name', 'last_name', 'dob', 'gender', 'address_id'];
         const optArgs = ['m_initial', 'ssn', 'phone', 'email', 'job_id', 'manager_id'];
         const employeeParams = utils.getParameters(reqArgs, optArgs, body);
         query = format('INSERT INTO %I (%I)\nVALUES (%L)\nRETURNING employee_id;',
          'employee', employeeParams.names, employeeParams.values);
-        const employee_id = (await transacQuery(queries, client, query)).rows[0].employee_id;
+        const employee_id = (await utils.transacQuery(queries, client, query)).rows[0].employee_id;
 
         const salaryParams = utils.getParameters(['hourly_wage'], ['annual_bonus'], body);
-        query = format('INSERT INTO %I (%I,%I)\nVALUES (%L,%L)\nRETURNING employee_id;',
+        query = format('INSERT INTO %I (%I,%I)\nVALUES (%L,%L);',
          'salary', 'employee_id', salaryParams.names, employee_id, salaryParams.values);
-        await transacQuery(queries, client, query);
+        await utils.transacQuery(queries, client, query);
 
-        await transacQuery(queries, client, 'COMMIT;');
-        await transacQuery(queries, client, 'END TRANSACTION;\n');
+        await utils.transacQuery(queries, client, 'COMMIT;');
+        await utils.transacQuery(queries, client, 'END TRANSACTION;\n');
         client.release();
 
         const queryString = `SELECT %I\nFROM %I e\n\tJOIN %I j\n\tON e.%4$s = j.%4$s\n\tJOIN %I d\n\tON j.%6$s = d.%6$s\nWHERE employee_id = ${employee_id};`;
@@ -269,7 +268,7 @@ router.post('/employee', async (req, res) => {
         });
       } catch(err) {
         console.log(err.stack);
-        await transacQuery(queries, client, 'ROLLBACK;\n');
+        await utils.transacQuery(queries, client, 'ROLLBACK;\n');
         client.release();
         res.status(422).json({
           error: err.message,
@@ -287,9 +286,3 @@ router.post('/employee', async (req, res) => {
     });
   }
 });
-
-// Utility function to push query to array and query the database
-const transacQuery = async (queries, client, query) => {
-  queries.push(query);
-  return await client.query(query);
-};
