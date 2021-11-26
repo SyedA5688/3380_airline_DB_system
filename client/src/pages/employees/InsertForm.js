@@ -8,7 +8,7 @@ class InsertForm extends Component {
     this.state = {
       insertFirstName: '',
       insertLastName: '',
-      insertGender: '',
+      insertGender: 'M',
       insertDOB: '',
       insertHourlyWage: '',
       insertSSN: '',
@@ -53,13 +53,12 @@ class InsertForm extends Component {
   }
 
   assertValidDBResponse(body) {
-    // if (!("rows" in body)) {
-    //   throw new Error("Something went wrong; GET Request to Database did not return results object.");
-    // }
-    // else if (!Array.isArray(body.rows)) {
-    //   throw new Error("Something went wrong; GET Request to Database returned results object that is not recognized by webpage.");
-    // }
-    console.log("Response:", body);
+    if (!("rows" in body)) {
+      throw new Error("Something went wrong; GET Request to Database did not return results object.");
+    }
+    else if (!Array.isArray(body.rows)) {
+      throw new Error("Something went wrong; GET Request to Database returned results object that is not recognized by webpage.");
+    }
   }
 
   handleSubmit = async (event) => {
@@ -86,19 +85,20 @@ class InsertForm extends Component {
       };
       console.log("Sending inserting new employee POST request with:", body);
   
-      const response = await fetch("/employees", {
+      const response = await fetch("/employee", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(body)
       });
   
-      const newEmployee = await response.json();
-      console.log("Employee added into Postgres Employees table:", newEmployee);
+      const responseBody = await response.json();
+      this.assertValidDBResponse(responseBody)
+      console.log("Employee added into Postgres Employees table:", responseBody.rows[0]);
   
       this.setState({
         insertFirstName: '',
         insertLastName: '',
-        insertGender: '',
+        insertGender: 'M',
         insertDOB: '',
         insertHourlyWage: '',
         insertSSN: '',
@@ -113,8 +113,9 @@ class InsertForm extends Component {
         insertCountry: '',
         insertZipCode: '',
         insertState: '',
-        insertedEmployee: newEmployee
-      })
+        insertedEmployee: responseBody.rows[0]
+      });
+      this.handleClear();
     }
     catch (err) {
       console.log("Error occurred while sending Insert Employee POST request to web server:", err.message);
@@ -132,7 +133,7 @@ class InsertForm extends Component {
     this.setState({
       insertFirstName: '',
       insertLastName: '',
-      insertGender: '',
+      insertGender: 'M',
       insertDOB: '',
       insertHourlyWage: '',
       insertSSN: '',
@@ -166,7 +167,7 @@ class InsertForm extends Component {
                 <h5 className="modal-title" id="exampleModalLabel">Error Occurred</h5>
               </div>
               <div className="modal-body">
-                Something went wrong while processing your database request, please try again later. <br />
+                Something went wrong while processing your database request, please try again or wait for assistance. <br />
 
               </div>
               <div className="modal-footer">
@@ -177,7 +178,7 @@ class InsertForm extends Component {
         </div>
 
         {/* Insert Employee Form */}
-        <h4>Insert New Employee Into Database</h4>
+        <h3>Insert New Employee Into Database</h3>
 
         <form className="border border-secondary mt-3 px-5 py-4 rounded needs-validation" id="insertFormHTML" onSubmit={this.handleSubmit} noValidate>
 
@@ -185,11 +186,10 @@ class InsertForm extends Component {
             <div className="input-group-prepend">
               <span className="input-group-text" id="">First*, MI, Last*</span>
             </div>
-            <input type="text" className="form-control" id="inputEmployeeFirstName" placeholder="John" value={this.state.insertFirstName} name="insertFirstName" onChange={this.handleChange} required />
-            <input type="text" className="form-control" id="inputEmployeeMiddleInitial" placeholder="M (Optional)" value={this.state.insertMiddleInitial} name="insertMiddleInitial" onChange={this.handleChange} />
-            <input type="text" className="form-control" id="inputEmployeeLastName" placeholder="Doe" value={this.state.insertLastName} name="insertLastName" onChange={this.handleChange} required />
+            <input type="text" pattern="[A-Za-z ]+" className="form-control" id="inputEmployeeFirstName" placeholder="John" value={this.state.insertFirstName} name="insertFirstName" onChange={this.handleChange} required />
+            <input type="text" pattern="[A-Z]{0,1}" className="form-control" id="inputEmployeeMiddleInitial" placeholder="M (Optional)" value={this.state.insertMiddleInitial} name="insertMiddleInitial" onChange={this.handleChange} />
+            <input type="text" pattern="[A-Za-z ]+" className="form-control" id="inputEmployeeLastName" placeholder="Doe" value={this.state.insertLastName} name="insertLastName" onChange={this.handleChange} required />
             <div className="invalid-feedback">Please provide valid possible names (a-z, A-Z).</div>
-            <div className="valid-feedback">Valid name.</div>
           </div>
 
           {/* ToDo: On all form elements, add pattern to check valid input */}
@@ -202,94 +202,113 @@ class InsertForm extends Component {
               <option value="O">Other</option>
             </select>
             <div className="invalid-feedback">Please select a gender option.</div>
-            <div className="valid-feedback">Valid gender selection.</div>
           </div>
           
           <div className="form-group">
             <label className="sr-only" htmlFor="inputEmployeeDOB">Date of Birth*</label>
             <input type="date" className="form-control" id="inputEmployeeDOB" value={this.state.insertDOB} name="insertDOB" onChange={this.handleChange} required />
             <div className="invalid-feedback">Please select your date of birth.</div>
-            <div className="valid-feedback">Valid date selected.</div>
           </div>
 
           <div className="form-group">
             <label className="sr-only" htmlFor="inputEmployeeSSN">Social Security Number</label>
-            <input type="text" className="form-control" id="inputEmployeeSSN" placeholder="123456789" value={this.state.insertSSN} name="insertSSN" onChange={this.handleChange} />
-            <div className="invalid-feedback">Please provide valid SSN number.</div>
-            <div className="valid-feedback">Valid SSN.</div>
+            <input type="text" pattern="[0-9]*" className="form-control" id="inputEmployeeSSN" placeholder="123456789 (Optional)" value={this.state.insertSSN} name="insertSSN" onChange={this.handleChange} />
           </div>
 
           <div className="form-group">
             <label className="sr-only" htmlFor="inputEmployeeHourlyWage">Hourly Wage*</label>
-            <input type="number" step=".01" className="form-control" id="inputEmployeeHourlyWage" placeholder="15.25" value={this.state.insertHourlyWage} name="insertHourlyWage" onChange={this.handleChange} required />
+            <input type="number" step=".01" pattern="[0-9.]+" className="form-control" id="inputEmployeeHourlyWage" placeholder="15.25" value={this.state.insertHourlyWage} name="insertHourlyWage" onChange={this.handleChange} required />
             <div className="invalid-feedback">Please provide valid hourly wage.</div>
-            <div className="valid-feedback">Valid hourly wage.</div>
           </div>
 
           <div className="form-group">
             <label className="sr-only" htmlFor="inputEmployeeAnnualBonus">Annual Bonus</label>
-            <input type="number" step="1" className="form-control" id="inputEmployeeAnnualBonus" placeholder="20000" value={this.state.insertAnnualBonus} name="insertAnnualBonus" onChange={this.handleChange} required />
+            <input type="number" step="1" pattern="[0-9]*" className="form-control" id="inputEmployeeAnnualBonus" placeholder="20000" value={this.state.insertAnnualBonus} name="insertAnnualBonus" onChange={this.handleChange} />
             <div className="invalid-feedback">Please provide valid annual bonus.</div>
-            <div className="valid-feedback">Valid annual bonus.</div>
           </div>
 
           <div className="form-group">
             <label className="sr-only" htmlFor="inputEmployeePhone">Phone</label>
-            <input type="text" className="form-control" id="inputEmployeePhone" placeholder="8321111111" value={this.state.insertPhone} name="insertPhone" onChange={this.handleChange} />
+            <input type="text" pattern="[0-9+]*" className="form-control" id="inputEmployeePhone" placeholder="8321111111" value={this.state.insertPhone} name="insertPhone" onChange={this.handleChange} />
             <div className="invalid-feedback">Please provide valid phone number.</div>
-            <div className="valid-feedback">Valid phone number.</div>
           </div>
 
           <div className="form-group">
             <label className="sr-only" htmlFor="inputEmployeeEmail">Email</label>
             <input type="email" className="form-control" id="inputEmployeeEmail" placeholder="example@gmail.com" value={this.state.insertEmail} name="insertEmail" onChange={this.handleChange} />
             <div className="invalid-feedback">Please provide valid email.</div>
-            <div className="valid-feedback">Valid email.</div>
           </div>
 
           <div className="form-group">
             <label className="sr-only" htmlFor="inputEmployeeJobID">Job ID</label>
-            <input type="number" step="1" className="form-control" id="inputEmployeeJobID" placeholder="1" value={this.state.insertJobID} name="insertJobID" onChange={this.handleChange} />
+            <input type="number" step="1"  pattern="[0-9]*" className="form-control" id="inputEmployeeJobID" placeholder="1" value={this.state.insertJobID} name="insertJobID" onChange={this.handleChange} />
             <div className="invalid-feedback">Please provide valid job ID.</div>
-            <div className="valid-feedback">Valid job ID.</div>
           </div>
 
           <div className="form-group">
             <label className="sr-only" htmlFor="inputEmployeeManagerID">Manager ID</label>
-            <input type="number" step="1" className="form-control" id="inputEmployeeManagerID" placeholder="1000000" value={this.state.insertManagerID} name="insertManagerID" onChange={this.handleChange} />
+            <input type="number" step="1"  pattern="[0-9]*" className="form-control" id="inputEmployeeManagerID" placeholder="1000000" value={this.state.insertManagerID} name="insertManagerID" onChange={this.handleChange} />
             <div className="invalid-feedback">Please provide valid manager ID.</div>
-            <div className="valid-feedback">Valid manager ID.</div>
           </div>
 
-          <div className="input-group" >
+          <div className="input-group mt-2" >
             <div className="input-group-prepend">
               <span className="input-group-text" id="">Street Address*, City*</span>
             </div>
-            <input type="text" className="form-control" id="inputEmployeeStreetAddress" placeholder="12345 Some Street LN." value={this.state.insertStreetAddress} name="insertStreetAddress" onChange={this.handleChange} required />
-            <input type="text" className="form-control" id="inputEmployeeCity" placeholder="Houston" value={this.state.insertCity} name="insertCity" onChange={this.handleChange} required />
+            <input type="text" pattern="[A-Za-z0-9#-. ]+" className="form-control" id="inputEmployeeStreetAddress" placeholder="12345 Some Street LN." value={this.state.insertStreetAddress} name="insertStreetAddress" onChange={this.handleChange} required />
+            <input type="text" pattern="[A-Za-z ]+" className="form-control" id="inputEmployeeCity" placeholder="Houston" value={this.state.insertCity} name="insertCity" onChange={this.handleChange} required />
             <div className="invalid-feedback">Please provide valid street address and city.</div>
-            <div className="valid-feedback">Valid address and city.</div>
           </div>
 
-          <div className="input-group" >
+          <div className="input-group mt-1" >
             <div className="input-group-prepend">
               <span className="input-group-text" id="">State, Zip Code</span>
             </div>
-            <input type="text" className="form-control" id="inputEmployeeState" placeholder="Texas" value={this.state.insertState} name="insertState" onChange={this.handleChange} />
-            <input type="text" className="form-control" id="inputEmployeeZipCode" placeholder="77777" value={this.state.insertZipCode} name="insertZipCode" onChange={this.handleChange} />
+            <input type="text" pattern="[A-Za-z ]*" className="form-control" id="inputEmployeeState" placeholder="Texas" value={this.state.insertState} name="insertState" onChange={this.handleChange} />
+            <input type="text"  pattern="[A-Za-z0-9]*" className="form-control" id="inputEmployeeZipCode" placeholder="77777" value={this.state.insertZipCode} name="insertZipCode" onChange={this.handleChange} />
             <div className="invalid-feedback">Please provide valid state and zip code.</div>
-            <div className="valid-feedback">Valid state and zip code.</div>
           </div>
 
           <div className="form-group">
             <label className="sr-only" htmlFor="inputEmployeeCountry">Country*</label>
-            <input type="text" className="form-control" id="inputEmployeeCountry" placeholder="United States" value={this.state.insertCountry} name="insertCountry" onChange={this.handleChange} required />
+            <input type="text" pattern="[A-Za-z ]+" className="form-control" id="inputEmployeeCountry" placeholder="United States" value={this.state.insertCountry} name="insertCountry" onChange={this.handleChange} required />
             <div className="invalid-feedback">Please provide valid country name.</div>
-            <div className="valid-feedback">Valid country name.</div>
           </div>
 
           <button type="submit" className="btn btn-outline-secondary mt-3">Submit</button>
+          <button type="button" className="btn btn-outline-secondary mt-3 mx-3" onClick={this.handleClear} >Clear</button>
         </form>
+
+        {this.state.insertedEmployee ? 
+        <div>
+          <h3>Inserted Employee</h3>
+          <table align="center" className="table mt-5 border" >
+            <thead className="table-dark">
+              <tr>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Middle Initial</th>
+                <th scope="col">Employee ID</th>
+                <th scope="col">Job Title</th>
+                <th scope="col">Department Name</th>
+              </tr>
+            </thead>
+            {/* Add Employees in tbody through HTML injection in main.js */}
+            <tbody>
+              {this.state.insertedEmployee && this.state.insertedEmployee.map((employeeObj, index) => (
+                <tr key={employeeObj.employee_id}>
+                  <th scope="col">{employeeObj.first_name}</th>
+                  <th scope="col">{employeeObj.last_name}</th>
+                  <th scope="col">{employeeObj.m_initial}</th>
+                  <th scope="col">{employeeObj.employee_id}</th>
+                  <th scope="col">{employeeObj.job_title}</th>
+                  <th scope="col">{employeeObj.department_name}</th>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>:
+        <div></div>}
       </div>
     );
   }
