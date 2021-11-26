@@ -158,63 +158,95 @@ class InsertForm extends Component {
         <h4>Insert New Employee Into Database</h4>
 
         <form className="border border-secondary mt-3 px-5 py-4 rounded needs-validation" id="insertFormHTML" onSubmit={this.handleSubmit} noValidate>
-          <div className="input-group">
-            <div className="form-group">
-              <label className="sr-only" htmlFor="inputEmployeeFirstName">First Name</label>
-              <input type="text" className="form-control" id="inputEmployeeFirstName" placeholder="John" name="insertFirstName" value={this.state.insertFirstName} onChange={this.handleChange} />
+
+          <div className="input-group" >
+            <div className="input-group-prepend">
+              <span className="input-group-text" id="">First*, MI, Last*</span>
             </div>
-            <div className="form-group">
-              <label className="sr-only" htmlFor="inputEmployeeMiddleInitial">Middle Initial</label>
-              <input type="text" className="form-control" id="inputEmployeeMiddleInitial" placeholder="A" name="insertMiddleInitial" value={this.state.insertMiddleInitial} onChange={this.handleChange} />
+            <input type="text" className="form-control" id="inputEmployeeFirstName" placeholder="John" name="insertFirstName" onChange={this.handleChange} required />
+            <input type="text" className="form-control" id="inputEmployeeMiddleInitial" placeholder="M (Optional)" name="insertMiddleInitial" onChange={this.handleChange} />
+            <input type="text" className="form-control" id="inputEmployeeLastName" placeholder="Doe" name="insertLastName" onChange={this.handleChange} required />
+            <div className="invalid-feedback">Please provide valid possible names (a-z, A-Z).</div>
+            <div className="valid-feedback">Valid name.</div>
+          </div>
+
+          <div className="form-group mt-2" >
+            <label className="sr-only" htmlFor="inputEmployeeGender">Gender*</label>
+            <select  className="form-select" id="inputEmployeeGender" name="insertGender" onChange={this.handleChange } required >
+              <option value="M">Male</option>
+              <option value="F">Female</option>
+              <option value="O">Other</option>
+            </select>
+            <div className="invalid-feedback">Please select a gender option.</div>
+            <div className="valid-feedback">Valid gender selection.</div>
+          </div>
+          
+
+          <div className="form-group">
+            <label className="sr-only" htmlFor="inputEmployeeDOB">Date of Birth*</label>
+            <input type="date" className="form-control" id="inputEmployeeDOB" name="insertDOB" onChange={this.handleChange} required />
+            <div className="invalid-feedback">Please select your date of birth.</div>
+            <div className="valid-feedback">Valid date selected.</div>
+          </div>
+
+          <div className="form-group">
+            <label className="sr-only" htmlFor="inputEmployeeSSN">Social Security Number</label>
+            <input type="text" className="form-control" id="inputEmployeeSSN" placeholder="123456789" name="insertSSN" onChange={this.handleChange} />
+          </div>
+
+          <div className="form-group">
+            <label className="sr-only" htmlFor="inputEmployeeHourlyWage">Hourly Wage*</label>
+            <input type="number" step=".01" className="form-control" id="inputEmployeeHourlyWage" placeholder="15.25" name="insertHourlyWage" onChange={this.handleChange} required />
+          </div>
+
+          <div className="form-group">
+            <label className="sr-only" htmlFor="inputEmployeeAnnualBonus">Annual Bonus</label>
+            <input type="number" step="1" className="form-control" id="inputEmployeeAnnualBonus" placeholder="20000" name="insertAnnualBonus" onChange={this.handleChange} required />
+          </div>
+
+          <div className="form-group">
+            <label className="sr-only" htmlFor="inputEmployeePhone">Phone</label>
+            <input type="text" className="form-control" id="inputEmployeePhone" placeholder="8321111111" name="insertPhone" onChange={this.handleChange} />
+          </div>
+
+          <div className="form-group">
+            <label className="sr-only" htmlFor="inputEmployeeEmail">Email</label>
+            <input type="email" className="form-control" id="inputEmployeeEmail" placeholder="example@gmail.com" name="insertEmail" onChange={this.handleChange} />
+          </div>
+
+          <div className="form-group">
+            <label className="sr-only" htmlFor="inputEmployeeJobID">Job ID</label>
+            <input type="number" step="1" className="form-control" id="inputEmployeeJobID" placeholder="1" name="insertJobID" onChange={this.handleChange} />
+          </div>
+
+          <div className="form-group">
+            <label className="sr-only" htmlFor="inputEmployeeManagerID">Manager ID</label>
+            <input type="number" step="1" className="form-control" id="inputEmployeeManagerID" placeholder="1000000" name="insertManagerID" onChange={this.handleChange} />
+          </div>
+
+          <div className="input-group" >
+            <div className="input-group-prepend">
+              <span className="input-group-text" id="">Street Address*, City*</span>
             </div>
-            <div className="form-group">
-              <label className="sr-only" htmlFor="inputEmployeeLastName">Last Name</label>
-              <input type="text" className="form-control" id="inputEmployeeLastName" placeholder="Doe" name="insertLastName" value={this.state.insertLastName} onChange={this.handleChange} />
-            </div>
-            <div className="form-group">
-              <label className="sr-only" htmlFor="inputEmployeeSSN">Social Security Number</label>
-              <input type="text" className="form-control" id="inputEmployeeSSN" placeholder="123456789" name="insertSSN" value={this.state.insertSSN} onChange={this.handleChange} />
-            </div>
-            <div className="form-group">
-              <label className="sr-only" htmlFor="inputEmployeeDOB">Date of Birth</label>
-              <input type="text" className="form-control" id="inputEmployeeDOB" placeholder="2001-11-30" name="insertDOB" value={this.state.insertDOB} onChange={this.handleChange} />
-            </div>
-            <div className="form-group">
-              <label className="sr-only" htmlFor="inputEmployeeGender">Gender</label>
-              <input type="text" className="form-control" id="inputEmployeeGender" placeholder="M" name="insertGender" value={this.state.insertGender} onChange={this.handleChange} />
-            </div>
-            <div className="form-group">
-              <label className="sr-only" htmlFor="inputEmployeePhone">Phone</label>
-              <input type="number" className="form-control" id="inputEmployeePhone" placeholder="8321111111" name="insertPhone" value={this.state.insertPhone} onChange={this.handleChange} />
-            </div>
-            <div className="form-group">
-              <label className="sr-only" htmlFor="inputEmployeeEmail">Email</label>
-              <input type="text" className="form-control" id="inputEmployeeEmail" placeholder="example@gmail.com" name="insertEmail" value={this.state.insertEmail} onChange={this.handleChange} />
-            </div>
-            <div className="form-group">
-              <label className="sr-only" htmlFor="inputEmployeeAddress">Address</label>
-              <input type="text" className="form-control" id="inputEmployeeAddress" placeholder="12345 Some Street LN" name="insertAddress" value={this.state.insertAddress} onChange={this.handleChange} />
-            </div>
-            <div className="form-group">
-              <label className="sr-only" htmlFor="inputEmployeeCity">City</label>
-              <input type="text" className="form-control" id="inputEmployeeEmail" placeholder="Houston" name="insertCity" value={this.state.insertCity} onChange={this.handleChange} />
-            </div>
-            <div className="form-group">
-              <label className="sr-only" htmlFor="inputEmployeeState">State</label>
-              <input type="text" className="form-control" id="inputEmployeeEmail" placeholder="Texas" name="insertState" value={this.state.insertState} onChange={this.handleChange} />
-            </div>
-            <div className="form-group">
-              <label className="sr-only" htmlFor="inputEmployeeZipCode">Zip Code</label>
-              <input type="text" className="form-control" id="inputEmployeeEmail" placeholder="12345" name="insertZipCode" value={this.state.insertZipCode} onChange={this.handleChange} />
-            </div>
-            <div className="form-group">
-              <label className="sr-only" htmlFor="inputEmployeeCountry">Country</label>
-              <input type="text" className="form-control" id="inputEmployeeEmail" placeholder="United States" name="insertCountry" value={this.state.insertCountry} onChange={this.handleChange} />
-            </div>
-            <div className="form-group">
-              <label className="sr-only" htmlFor="inputEmployeeJobID">Job ID</label>
-              <input type="number" className="form-control" id="inputEmployeeJobID" placeholder="4" name="insertJobID" value={this.state.insertJobID} onChange={this.handleChange} />
-            </div>
+            <input type="text" className="form-control" id="inputEmployeeStreetAddress" placeholder="12345 Some Street LN." name="insertStreetAddress" onChange={this.handleChange} required />
+            <input type="text" className="form-control" id="inputEmployeeCity" placeholder="Houston" name="insertCity" onChange={this.handleChange} required />
+            <div className="invalid-feedback">Please provide valid street address and city.</div>
+            <div className="valid-feedback">Valid address and city.</div>
+          </div>
+
+
+
+          <div className="form-group">
+            <label className="sr-only" htmlFor="inputEmployeeState">State</label>
+            <input type="text" className="form-control" id="inputEmployeeEmail" placeholder="Texas" name="insertState" onChange={this.handleChange} />
+          </div>
+          <div className="form-group">
+            <label className="sr-only" htmlFor="inputEmployeeZipCode">Zip Code</label>
+            <input type="text" className="form-control" id="inputEmployeeEmail" placeholder="12345" name="insertZipCode" onChange={this.handleChange} />
+          </div>
+          <div className="form-group">
+            <label className="sr-only" htmlFor="inputEmployeeCountry">Country</label>
+            <input type="text" className="form-control" id="inputEmployeeEmail" placeholder="United States" name="insertCountry" onChange={this.handleChange} />
           </div>
           <button type="submit" className="btn btn-outline-secondary mt-3">Submit</button>
         </form>
