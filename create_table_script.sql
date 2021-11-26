@@ -3,10 +3,10 @@
 DROP TABLE IF EXISTS benefits;
 CREATE TABLE benefits (
   benefits_package_id        INT          GENERATED ALWAYS AS IDENTITY, 
-  amount                     INT          NOT NULL,
-  stock_options              INT          NOT NULL, 
+  amount                     MONEY        NOT NULL,
+  stock_options              VARCHAR(100), 
   health_insurance_provider  VARCHAR(100) NOT NULL CHECK(health_insurance_provider ~ '^[A-Z \d]+$'),
-  retirement_plan            INT          NOT NULL,
+  retirement_plan            VARCHAR(100),
 
   PRIMARY KEY(benefits_package_id)
 );
