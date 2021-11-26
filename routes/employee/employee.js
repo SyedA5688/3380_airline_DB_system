@@ -234,7 +234,7 @@ router.post('/employee', async (req, res) => {
         const employee_id = (await utils.transacQuery(queries, client, query)).rows[0].employee_id;
 
         const salaryParams = utils.getParameters(['hourly_wage'], ['annual_bonus'], body);
-        query = format('INSERT INTO %I (%I,%I)\nVALUES (%L,%L)\nRETURNING employee_id;',
+        query = format('INSERT INTO %I (%I,%I)\nVALUES (%L,%L);',
          'salary', 'employee_id', salaryParams.names, employee_id, salaryParams.values);
         await utils.transacQuery(queries, client, query);
 
