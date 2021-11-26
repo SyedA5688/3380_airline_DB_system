@@ -104,8 +104,7 @@ class SearchForm extends Component {
 
   handleSubmit = async (event) => {
     event.preventDefault();
-    // TODO implement input validation
-    // this.checkInputValidity();  // Event listener will catch 
+    // Event listener will recognize submit and validate input, along with providing feedback on form about user's input
 
     let query = "";
     switch(this.state.searchBy) {
@@ -115,13 +114,13 @@ class SearchForm extends Component {
       
       case "name": {
         query = "";
-        if (this.state.searchFirstName !== "") {
+        if (this.state.searchFirstName !== null) {
           query += this.state.searchFirstName.trim();
         }
-        if (this.state.searchMiddleInitial !== "") {
+        if (this.state.searchMiddleInitial !== null) {
           query += " " + this.state.searchMiddleInitial.trim();
         }
-        if (this.state.searchLastName !== "") {
+        if (this.state.searchLastName !== null) {
           query += " " + this.state.searchLastName.trim();
         }
         query = query.trim();
