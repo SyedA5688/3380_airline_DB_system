@@ -9,11 +9,11 @@ class JobsSidePanel extends Component {
       <div className="container-fluid" >
         <div className="row">
           <div className="col-3" id="sidebar-wrapper" >
-            <nav className="sidebar-nav" >
+            <nav className="sidebar-nav" align="center" >
               <ul className="sidebar-ul" >
-                <li className="mt-5 my-4" ><a href="/jobs" >Search Jobs</a></li>
-                <li className="my-4" ><a href="/jobs" >Create New Job</a></li>
-                <li className="my-4"><a href="/jobs" >Update Job Details</a></li>
+                <li className="sidebar-li"><a href="/jobs" >Search Jobs</a></li>
+                <li className="sidebar-li"><a href="/jobs" >Create New Job</a></li>
+                <li className="sidebar-li"><a href="/jobs" >Update Job Details</a></li>
               </ul>
             </nav>
           </div>

@@ -9,13 +9,13 @@ class DepartmentsSidePanel extends Component {
       <div className="container-fluid" >
         <div className="row">
           <div className="col-3" id="sidebar-wrapper" >
-            <nav className="sidebar-nav" >
+            <nav className="sidebar-nav" align="center" >
               <ul className="sidebar-ul" >
-                <li className="mt-5 my-4" ><a href="/department" >Search Departments</a></li>
-                <li className="my-4" ><a href="/department" >Create New Department</a></li>
-                <li className="my-4"><a href="/department" >Update Department Details</a></li>
-                <li className="my-4"><a href="/department" >Jobs Within Department</a></li>
-                <li className="my-4"><a href="/department" >Employees Within Department</a></li>
+                <li className="sidebar-li"><a href="/department" >Search Departments</a></li>
+                <li className="sidebar-li"><a href="/department" >Create New Department</a></li>
+                <li className="sidebar-li"><a href="/department" >Update Department Details</a></li>
+                <li className="sidebar-li"><a href="/department" >Jobs Within Department</a></li>
+                <li className="sidebar-li"><a href="/department" >Employees Within Department</a></li>
               </ul>
             </nav>
           </div>

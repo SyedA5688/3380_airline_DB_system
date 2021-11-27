@@ -85,7 +85,7 @@ class UpdateForm extends Component {
         state: this.state.editState,
       };
 
-      for (let [key, value] of Object.entries(body)) {
+      for (let key of Object.keys(body)) {
         if (body[key] === '') {
           delete body[key];  // Only keep updates for fields where user entered in something
         }
@@ -168,20 +168,23 @@ class UpdateForm extends Component {
 
         <h3>Update an Employee's Information</h3>
 
-        <form className="border border-secondary mt-3 px-5 py-4 rounded needs-validation" id="editFormHTML" onSubmit={this.handleSubmit} noValidate>
+        <form className="border border-secondary mt-3 px-5 py-4 rounded needs-validation" id="updateFormHTML" onSubmit={this.handleSubmit} noValidate>
 
+          <h5>Employee to Update</h5>
           <div className="form-group">
-            <label className="sr-only" htmlFor="inputEmployeeEditID">Job ID</label>
+            <label className="sr-only" htmlFor="inputEmployeeEditID">Employee ID</label>
             <input type="number" step="1"  pattern="[0-9]*" className="form-control" id="inputEmployeeEditID" placeholder="1" value={this.state.editEmployeeID} name="editEmployeeID" onChange={this.handleChange} />
             <div className="invalid-feedback">Please provide valid Employee ID to edit.</div>
           </div>
 
+          <h5 className="mt-3" >Update Fields:</h5>
+          <small className="form-text text-muted">Note: Only enter in fields that you want updated.</small>
           <div className="input-group" >
             <div className="input-group-prepend">
               <span className="input-group-text" id="">First, MI, Last</span>
             </div>
             <input type="text" pattern="[A-Za-z ]*" className="form-control" id="inputEmployeeFirstName" placeholder="John" value={this.state.editFirstName} name="editFirstName" onChange={this.handleChange} required />
-            <input type="text" pattern="[A-Z]{0,1}" className="form-control" id="inputEmployeeMiddleInitial" placeholder="M (Optional)" value={this.state.editMiddleInitial} name="editMiddleInitial" onChange={this.handleChange} />
+            <input type="text" pattern="[A-Z]{0,1}" className="form-control" id="inputEmployeeMiddleInitial" placeholder="M" value={this.state.editMiddleInitial} name="editMiddleInitial" onChange={this.handleChange} />
             <input type="text" pattern="[A-Za-z ]*" className="form-control" id="inputEmployeeLastName" placeholder="Doe" value={this.state.editLastName} name="editLastName" onChange={this.handleChange} required />
             <div className="invalid-feedback">Please provide valid possible names (a-z, A-Z).</div>
           </div>
@@ -204,31 +207,25 @@ class UpdateForm extends Component {
 
           <div className="form-group">
             <label className="sr-only" htmlFor="inputEmployeeSSN">Social Security Number</label>
-            <input type="text" pattern="[0-9]*" className="form-control" id="inputEmployeeSSN" placeholder="123456789 (Optional)" value={this.state.editSSN} name="editSSN" onChange={this.handleChange} />
+            <input type="text" pattern="[0-9]*" className="form-control" id="inputEmployeeSSN" placeholder="123456789" value={this.state.editSSN} name="editSSN" onChange={this.handleChange} />
           </div>
 
-          <div className="form-group">
-            <label className="sr-only" htmlFor="inputEmployeeHourlyWage">Hourly Wage</label>
+          <div className="input-group mt-2" >
+            <div className="input-group-prepend">
+              <span className="input-group-text" id="">Hourly Wage, Annual Bonus</span>
+            </div>
             <input type="number" step=".01" pattern="[0-9.]*" className="form-control" id="inputEmployeeHourlyWage" placeholder="15.25" value={this.state.editHourlyWage} name="editHourlyWage" onChange={this.handleChange} required />
-            <div className="invalid-feedback">Please provide valid hourly wage.</div>
-          </div>
-
-          <div className="form-group">
-            <label className="sr-only" htmlFor="inputEmployeeAnnualBonus">Annual Bonus</label>
             <input type="number" step="1" pattern="[0-9]*" className="form-control" id="inputEmployeeAnnualBonus" placeholder="20000" value={this.state.editAnnualBonus} name="editAnnualBonus" onChange={this.handleChange} required />
-            <div className="invalid-feedback">Please provide valid annual bonus.</div>
+            <div className="invalid-feedback">Please provide valid hourly wage and/or annual bonus.</div>
           </div>
 
-          <div className="form-group">
-            <label className="sr-only" htmlFor="inputEmployeePhone">Phone</label>
+          <div className="input-group mt-2" >
+            <div className="input-group-prepend">
+              <span className="input-group-text" id="">Phone, Email</span>
+            </div>
             <input type="text" pattern="[0-9+]*" className="form-control" id="inputEmployeePhone" placeholder="8321111111" value={this.state.editPhone} name="editPhone" onChange={this.handleChange} />
-            <div className="invalid-feedback">Please provide valid phone number.</div>
-          </div>
-
-          <div className="form-group">
-            <label className="sr-only" htmlFor="inputEmployeeEmail">Email</label>
             <input type="email" className="form-control" id="inputEmployeeEmail" placeholder="example@gmail.com" value={this.state.editEmail} name="editEmail" onChange={this.handleChange} />
-            <div className="invalid-feedback">Please provide valid email.</div>
+            <div className="invalid-feedback">Please provide valid phone and/or email.</div>
           </div>
 
           <div className="form-group">
