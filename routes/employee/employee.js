@@ -6,9 +6,6 @@ const utils = require('../route-utils');
 const router = new Router();
 module.exports = router;
 
-// Database table information
-const tableGetInfo = require('./employee-get-db.js');
-
 /**
  * @api {get} /employee Get all employees
  * @apiName GetAllEmployees
@@ -53,7 +50,15 @@ router.get('/employee', async (req, res) => {
   // TODO: Input validation
   const params = req.query;
   const page = params.page ? params.page : 1;
-  const sortBy = tableGetInfo[params.sort] ? tableGetInfo[params.sort] : tableGetInfo.id;
+  const sortParams = {
+    id: 'employee_id',
+    fname: 'first_name',
+    lname: 'last_name',
+    title: 'job_title',
+    department: 'department_name',
+    minitial: 'm_initial'
+  };
+  const sortBy = sortParams[params.sort] ? sortParams[params.sort] : sortParams.id;
   const order = params.order ? params.order.toUpperCase() : 'ASC';
   const limit = params.limit ? Math.min(Math.max(params.limit, 1), 100) : 10;
 
@@ -61,15 +66,15 @@ router.get('/employee', async (req, res) => {
   const query = params.q && params.q.toString().trim() !== '' ? params.q.toString().trim().toUpperCase() : '';
   let filterString = '';
   if(query) {
-    const searchBy = params.searchBy && tableGetInfo[params.searchBy] ? params.searchBy : 'name';
+    const searchBy = params.searchBy && sortParams[params.searchBy] ? params.searchBy : 'name';
     switch(searchBy) {
       case 'title':
       case 'department':
-        filterString = format('WHERE %I LIKE \'%s%%\'\n', tableGetInfo[searchBy], query);
+        filterString = format('WHERE %I LIKE \'%s%%\'\n', sortParams[searchBy], query);
         break;
 
       case 'id':
-        filterString = format('WHERE %I = %L\n', tableGetInfo.id, query);
+        filterString = format('WHERE %I = %L\n', sortParams[searchBy], query);
         break;
 
       case 'name':
@@ -77,18 +82,25 @@ router.get('/employee', async (req, res) => {
         switch(words.length) {
           case 1:
             // Search by either first or last name
-            filterString = format('WHERE %I LIKE \'%s%%\'\n', tableGetInfo.fname, words[0]); // Case 1
-            filterString += format('\tOR %I LIKE \'%s%%\'\n', tableGetInfo.lname, words[0]); // Case 2
+            filterString = format('WHERE %I LIKE \'%s%%\'\n', sortParams.fname, words[0]); // Case 1
+            filterString += format('\tOR %I LIKE \'%s%%\'\n', sortParams.lname, words[0]); // Case 2
             break;
           case 2:
             // Search by either first, middle name; first, last name; or last, first name
-            filterString = format('WHERE %I LIKE \'%s%%\' AND %I LIKE \'%s%%\'\n', tableGetInfo.fname, words[0], tableGetInfo.minitial, words[1]); // Case 1
-            filterString += format('\tOR %I LIKE \'%s%%\' AND %I LIKE \'%s%%\'\n', tableGetInfo.fname, words[0], tableGetInfo.lname, words[1]); // Case 2
-            filterString += format('\tOR %I LIKE \'%s%%\' AND %I LIKE \'%s%%\'\n', tableGetInfo.lname, words[0], tableGetInfo.fname, words[1]); // Case 3
+            filterString = format('WHERE %I LIKE \'%s%%\' AND %I LIKE \'%s%%\'\n', sortParams.fname, words[0], sortParams.minitial, words[1]); // Case 1
+            filterString += format('\tOR %I LIKE \'%s%%\' AND %I LIKE \'%s%%\'\n', sortParams.fname, words[0], sortParams.lname, words[1]); // Case 2
+            filterString += format('\tOR %I LIKE \'%s%%\' AND %I LIKE \'%s%%\'\n', sortParams.lname, words[0], sortParams.fname, words[1]); // Case 3
             break;
           case 3:
             // Search by either first, middle, last name or last, middle, first name
-            const args = [tableGetInfo.fname, words[0], tableGetInfo.minitial, words[1], tableGetInfo.lname, words[2]];
+            const args = [
+              sortParams.fname, 
+              words[0], 
+              sortParams.minitial, 
+              words[1], 
+              sortParams.lname, 
+              words[2]
+            ];
             filterString = format('WHERE %I LIKE \'%s%%\' AND %I LIKE \'%s%%\' AND %I LIKE \'%s%%\'\n', ...args); // Case 1
             filterString += format('\tOR %5$I LIKE \'%2$s%%\' AND %3$I LIKE \'%4$s%%\' AND %1$I LIKE \'%2$s%%\'\n', ...args); // Case 2
             break;
@@ -104,19 +116,19 @@ router.get('/employee', async (req, res) => {
   }
   // Arguments used to create sql query
   const columnArgs = [ 
-    tableGetInfo.id, 
-    tableGetInfo.fname, 
-    tableGetInfo.minitial, 
-    tableGetInfo.lname,
-    tableGetInfo.title,
-    tableGetInfo.department
+    'employee_id', 
+    'first_name', 
+    'm_initial', 
+    'last_name',
+    'job_title',
+    'department_name'
   ];
   const joinArgs = [
-    tableGetInfo.empTable,
-    tableGetInfo.jobTable,
-    tableGetInfo.job_id,
-    tableGetInfo.depTable,
-    tableGetInfo.dep_id
+    'employee',
+    'job',
+    'job_id',
+    'department',
+    'department_id'
   ];
   const orderArgs = [  
     sortBy, 
@@ -244,19 +256,19 @@ router.post('/employee', async (req, res) => {
 
         const queryString = `SELECT %I\nFROM %I e\n\tJOIN %I j\n\tON e.%4$s = j.%4$s\n\tJOIN %I d\n\tON j.%6$s = d.%6$s\nWHERE employee_id = ${employee_id};`;
         const columnArgs = [ 
-          tableGetInfo.id, 
-          tableGetInfo.fname, 
-          tableGetInfo.minitial, 
-          tableGetInfo.lname,
-          tableGetInfo.title,
-          tableGetInfo.department
+          'employee_id', 
+          'first_name', 
+          'm_initial', 
+          'last_name',
+          'job_title',
+          'department_name'
         ];
         const joinArgs = [
-          tableGetInfo.empTable,
-          tableGetInfo.jobTable,
-          tableGetInfo.job_id,
-          tableGetInfo.depTable,
-          tableGetInfo.dep_id
+          'employee',
+          'job',
+          'job_id',
+          'department',
+          'department_id'
         ];
         const dbQuery = format(queryString, columnArgs, ...joinArgs);
         const result = await db.query(dbQuery);
