@@ -11,10 +11,10 @@ class EmployeeSidePanel extends Component {
           <div className="col-3" id="sidebar-wrapper" >
             <nav className="sidebar-nav" >
               <ul className="sidebar-ul" >
-                <li className="mt-5 my-4" ><a href="/employees/search" >Search for Employee</a></li>
+                <li className="mt-5 my-4" ><a href="/employees/search" >Search All Employees</a></li>
                 <li className="my-4" ><a href="/employees/insert" >Insert New Employee</a></li>
+                <li className="my-4"><a href="/employees/get" >Get Employee Details</a></li>
                 <li className="my-4"><a href="/employees/update" >Update Employee Information</a></li>
-                <li className="my-4"><a href="/employees/delete" >Delete Employee From System</a></li>
               </ul>
             </nav>
           </div>
