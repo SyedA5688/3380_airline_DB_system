@@ -9,7 +9,7 @@ class UpdateForm extends Component {
       editEmployeeID: '',
       editFirstName: '',
       editLastName: '',
-      editGender: 'M',
+      editGender: '',
       editDOB: '',
       editHourlyWage: '',
       editSSN: '',
@@ -64,7 +64,7 @@ class UpdateForm extends Component {
 
   handleSubmit = async (event) => {
     event.preventDefault();
-    try {  
+    try {
       let body = { 
         first_name: this.state.editFirstName, 
         last_name: this.state.editLastName,
@@ -85,27 +85,29 @@ class UpdateForm extends Component {
         state: this.state.editState,
       };
 
-      for (let key of Object.keys(body)) {
-        if (body[key] === '') {
-          delete body[key];  // Only keep updates for fields where user entered in something
+      for (let [key, value] of Object.entries(body)) {
+        // If value is empty string, then delete key-value pair from body object
+        if (value==="") {
+          delete body[key];
         }
       }
-
-      console.log("Updating employee with ", this.state);
+      // console.log("Updating employee with ", body);
   
       const response = await fetch(`/employee/${this.state.editEmployeeID}`, {
-        method: "POST",
+        method: "PUT",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(body)
       });
       const responseBody = await response.json();
 
       this.assertValidDBResponse(responseBody);
-      console.log("Response body:", responseBody);
 
       this.setState({
         returnedEmployee: responseBody.rows
       });
+
+      document.getElementById("successModal").style.display = "block"
+      document.getElementById("successModal").classList.add("show")
     }
     catch (err) {
       console.log("Error occurred while sending Update Employee POST request to server:", err.message);
@@ -119,12 +121,18 @@ class UpdateForm extends Component {
     document.getElementById("errorModal").classList.remove("show");
   }
 
+  closeSuccessModal = () => {
+    document.getElementById("successModal").style.display = "none"
+    document.getElementById("successModal").classList.remove("show");
+    this.handleClear();
+  }
+
   handleClear = async (event) => {
     this.setState({
       editEmployeeID: '',
       editFirstName: '',
       editLastName: '',
-      editGender: 'M',
+      editGender: '',
       editDOB: '',
       editHourlyWage: '',
       editSSN: '',
@@ -143,7 +151,7 @@ class UpdateForm extends Component {
     });
 
     // Remove was-validated class from form to reset its appearance
-    const form = document.querySelector('#getFormHTML');
+    const form = document.querySelector('#updateFormHTML');
     form.classList.remove('was-validated');
   }
   
@@ -157,10 +165,26 @@ class UpdateForm extends Component {
                 <h5 className="modal-title" id="exampleModalLabel">Error Occurred</h5>
               </div>
               <div className="modal-body">
-                Something went wrong while processing your database request. Please try again or contact airport database assistance. <br />
+                Something went wrong while processing your database request, one of your inputs may have been invalid. Please check your inputs, especially manager ID! Contact airport database assistance if necessary. <br />
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn btn-primary" onClick={this.closeModal} >Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="modal fade" id="successModal" tabIndex="-1" role="dialog" aria-hidden="true">
+          <div className="modal-dialog" role="document">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" >Success</h5>
+              </div>
+              { this.state.returnedEmployee ? <div className="modal-body">
+                Employee with ID {this.state.returnedEmployee[0]["employee_id"]} was updated. <br />
+              </div> : <div></div>}
+              <div className="modal-footer">
+                <button type="button" className="btn btn-primary" onClick={this.closeSuccessModal} >Close</button>
               </div>
             </div>
           </div>
@@ -173,7 +197,7 @@ class UpdateForm extends Component {
           <h5>Employee to Update</h5>
           <div className="form-group">
             <label className="sr-only" htmlFor="inputEmployeeEditID">Employee ID</label>
-            <input type="number" step="1"  pattern="[0-9]*" className="form-control" id="inputEmployeeEditID" placeholder="1" value={this.state.editEmployeeID} name="editEmployeeID" onChange={this.handleChange} />
+            <input type="number" step="1"  pattern="[0-9]+" className="form-control" id="inputEmployeeEditID" placeholder="1000000" value={this.state.editEmployeeID} name="editEmployeeID" onChange={this.handleChange} required />
             <div className="invalid-feedback">Please provide valid Employee ID to edit.</div>
           </div>
 
@@ -183,15 +207,16 @@ class UpdateForm extends Component {
             <div className="input-group-prepend">
               <span className="input-group-text" id="">First, MI, Last</span>
             </div>
-            <input type="text" pattern="[A-Za-z ]*" className="form-control" id="inputEmployeeFirstName" placeholder="John" value={this.state.editFirstName} name="editFirstName" onChange={this.handleChange} required />
+            <input type="text" pattern="[A-Za-z ]*" className="form-control" id="inputEmployeeFirstName" placeholder="John" value={this.state.editFirstName} name="editFirstName" onChange={this.handleChange} />
             <input type="text" pattern="[A-Z]{0,1}" className="form-control" id="inputEmployeeMiddleInitial" placeholder="M" value={this.state.editMiddleInitial} name="editMiddleInitial" onChange={this.handleChange} />
-            <input type="text" pattern="[A-Za-z ]*" className="form-control" id="inputEmployeeLastName" placeholder="Doe" value={this.state.editLastName} name="editLastName" onChange={this.handleChange} required />
+            <input type="text" pattern="[A-Za-z ]*" className="form-control" id="inputEmployeeLastName" placeholder="Doe" value={this.state.editLastName} name="editLastName" onChange={this.handleChange} />
             <div className="invalid-feedback">Please provide valid possible names (a-z, A-Z).</div>
           </div>
 
           <div className="form-group mt-2" >
             <label className="sr-only" htmlFor="inputEmployeeGender">Gender</label>
-            <select  className="form-select" id="inputEmployeeGender" value={this.state.editGender} name="editGender" onChange={this.handleChange } required >
+            <select  className="form-select" id="inputEmployeeGender" defaultValue="select" name="editGender" onChange={this.handleChange } >
+              <option disabled value="select"> -- Select an option -- </option>
               <option value="M">Male</option>
               <option value="F">Female</option>
               <option value="O">Other</option>
@@ -201,7 +226,7 @@ class UpdateForm extends Component {
 
           <div className="form-group">
             <label className="sr-only" htmlFor="inputEmployeeDOB">Date of Birth</label>
-            <input type="date" className="form-control" id="inputEmployeeDOB" value={this.state.editDOB} name="editDOB" onChange={this.handleChange} required />
+            <input type="date" className="form-control" id="inputEmployeeDOB" value={this.state.editDOB} name="editDOB" onChange={this.handleChange} />
             <div className="invalid-feedback">Please select your date of birth.</div>
           </div>
 
@@ -214,8 +239,8 @@ class UpdateForm extends Component {
             <div className="input-group-prepend">
               <span className="input-group-text" id="">Hourly Wage, Annual Bonus</span>
             </div>
-            <input type="number" step=".01" pattern="[0-9.]*" className="form-control" id="inputEmployeeHourlyWage" placeholder="15.25" value={this.state.editHourlyWage} name="editHourlyWage" onChange={this.handleChange} required />
-            <input type="number" step="1" pattern="[0-9]*" className="form-control" id="inputEmployeeAnnualBonus" placeholder="20000" value={this.state.editAnnualBonus} name="editAnnualBonus" onChange={this.handleChange} required />
+            <input type="number" step=".01" pattern="[0-9.]*" className="form-control" id="inputEmployeeHourlyWage" placeholder="15.25" value={this.state.editHourlyWage} name="editHourlyWage" onChange={this.handleChange} />
+            <input type="number" step="1" pattern="[0-9]*" className="form-control" id="inputEmployeeAnnualBonus" placeholder="20000" value={this.state.editAnnualBonus} name="editAnnualBonus" onChange={this.handleChange} />
             <div className="invalid-feedback">Please provide valid hourly wage and/or annual bonus.</div>
           </div>
 
@@ -244,8 +269,8 @@ class UpdateForm extends Component {
             <div className="input-group-prepend">
               <span className="input-group-text" id="">Street Address, City</span>
             </div>
-            <input type="text" pattern="[A-Za-z0-9#-. ]*" className="form-control" id="inputEmployeeStreetAddress" placeholder="12345 Some Street LN." value={this.state.editStreetAddress} name="editStreetAddress" onChange={this.handleChange} required />
-            <input type="text" pattern="[A-Za-z ]*" className="form-control" id="inputEmployeeCity" placeholder="Houston" value={this.state.editCity} name="editCity" onChange={this.handleChange} required />
+            <input type="text" pattern="[A-Za-z0-9#-. ]*" className="form-control" id="inputEmployeeStreetAddress" placeholder="12345 Some Street LN." value={this.state.editStreetAddress} name="editStreetAddress" onChange={this.handleChange} />
+            <input type="text" pattern="[A-Za-z ]*" className="form-control" id="inputEmployeeCity" placeholder="Houston" value={this.state.editCity} name="editCity" onChange={this.handleChange} />
             <div className="invalid-feedback">Please provide valid street address and city.</div>
           </div>
 
@@ -260,7 +285,7 @@ class UpdateForm extends Component {
 
           <div className="form-group">
             <label className="sr-only" htmlFor="inputEmployeeCountry">Country</label>
-            <input type="text" pattern="[A-Za-z ]*" className="form-control" id="inputEmployeeCountry" placeholder="United States" value={this.state.editCountry} name="editCountry" onChange={this.handleChange} required />
+            <input type="text" pattern="[A-Za-z ]*" className="form-control" id="inputEmployeeCountry" placeholder="United States" value={this.state.editCountry} name="editCountry" onChange={this.handleChange} />
             <div className="invalid-feedback">Please provide valid country name.</div>
           </div>
 
