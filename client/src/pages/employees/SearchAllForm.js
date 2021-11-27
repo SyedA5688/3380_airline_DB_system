@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './employeeForms.css'
 
 
-class SearchForm extends Component {
+class SearchAllForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -298,4 +298,4 @@ class SearchForm extends Component {
   }
 }
 
-export default SearchForm
+export default SearchAllForm

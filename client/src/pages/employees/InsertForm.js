@@ -83,7 +83,7 @@ class InsertForm extends Component {
         zip_code: this.state.insertZipCode,
         state: this.state.insertState,
       };
-      console.log("Sending inserting new employee POST request with:", body);
+      // console.log("Sending inserting new employee POST request with:", body);
   
       const response = await fetch("/employee", {
         method: "POST",
@@ -92,33 +92,15 @@ class InsertForm extends Component {
       });
   
       const responseBody = await response.json();
-      this.assertValidDBResponse(responseBody)
-      console.log("Employee added into Postgres Employees table:", responseBody.rows[0]);
+      // console.log(responseBody);
+      this.assertValidDBResponse(responseBody);
   
       this.setState({
-        insertFirstName: '',
-        insertLastName: '',
-        insertGender: 'M',
-        insertDOB: '',
-        insertHourlyWage: '',
-        insertSSN: '',
-        insertMiddleInitial: '',
-        insertPhone: '',
-        insertEmail: '',
-        insertJobID: '',
-        insertManagerID: '',
-        insertAnnualBonus: '',
-        insertStreetAddress: '',
-        insertCity: '',
-        insertCountry: '',
-        insertZipCode: '',
-        insertState: '',
-        insertedEmployee: responseBody.rows[0]
+        insertedEmployee: responseBody.rows
       });
-      this.handleClear();
     }
     catch (err) {
-      console.log("Error occurred while sending Insert Employee POST request to web server:", err.message);
+      console.log("Error occurred while sending Insert Employee POST request to server:", err.message);
       document.getElementById("errorModal").style.display = "block"
       document.getElementById("errorModal").classList.add("show")
     }
@@ -159,7 +141,6 @@ class InsertForm extends Component {
   render() {
     return (
       <div className="container mt-5 px-5">
-        {/* Error Modal popup, only shows up if React state is toggled by some error in try-catch of POST request to /employee */}
         <div className="modal fade" id="errorModal" tabIndex="-1" role="dialog" aria-hidden="true">
           <div className="modal-dialog" role="document">
             <div className="modal-content">
@@ -167,8 +148,7 @@ class InsertForm extends Component {
                 <h5 className="modal-title" id="exampleModalLabel">Error Occurred</h5>
               </div>
               <div className="modal-body">
-                Something went wrong while processing your database request, please try again or wait for assistance. <br />
-
+                Something went wrong while processing your database request. Please try again and check your form inputs, especially Manager ID! <br />
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn btn-primary" onClick={this.closeModal} >Close</button>
@@ -177,7 +157,6 @@ class InsertForm extends Component {
           </div>
         </div>
 
-        {/* Insert Employee Form */}
         <h3>Insert New Employee Into Database</h3>
 
         <form className="border border-secondary mt-3 px-5 py-4 rounded needs-validation" id="insertFormHTML" onSubmit={this.handleSubmit} noValidate>
@@ -191,8 +170,6 @@ class InsertForm extends Component {
             <input type="text" pattern="[A-Za-z ]+" className="form-control" id="inputEmployeeLastName" placeholder="Doe" value={this.state.insertLastName} name="insertLastName" onChange={this.handleChange} required />
             <div className="invalid-feedback">Please provide valid possible names (a-z, A-Z).</div>
           </div>
-
-          {/* ToDo: On all form elements, add pattern to check valid input */}
 
           <div className="form-group mt-2" >
             <label className="sr-only" htmlFor="inputEmployeeGender">Gender*</label>
@@ -222,8 +199,8 @@ class InsertForm extends Component {
           </div>
 
           <div className="form-group">
-            <label className="sr-only" htmlFor="inputEmployeeAnnualBonus">Annual Bonus</label>
-            <input type="number" step="1" pattern="[0-9]*" className="form-control" id="inputEmployeeAnnualBonus" placeholder="20000" value={this.state.insertAnnualBonus} name="insertAnnualBonus" onChange={this.handleChange} />
+            <label className="sr-only" htmlFor="inputEmployeeAnnualBonus">Annual Bonus*</label>
+            <input type="number" step="1" pattern="[0-9]+" className="form-control" id="inputEmployeeAnnualBonus" placeholder="20000" value={this.state.insertAnnualBonus} name="insertAnnualBonus" onChange={this.handleChange} required />
             <div className="invalid-feedback">Please provide valid annual bonus.</div>
           </div>
 
@@ -247,7 +224,7 @@ class InsertForm extends Component {
 
           <div className="form-group">
             <label className="sr-only" htmlFor="inputEmployeeManagerID">Manager ID</label>
-            <input type="number" step="1"  pattern="[0-9]*" className="form-control" id="inputEmployeeManagerID" placeholder="1000000" value={this.state.insertManagerID} name="insertManagerID" onChange={this.handleChange} />
+            <input type="number" step="1"  pattern="[0-9]*" className="form-control" id="inputEmployeeManagerID" placeholder="1000000 (Must be an existing ID)" value={this.state.insertManagerID} name="insertManagerID" onChange={this.handleChange} />
             <div className="invalid-feedback">Please provide valid manager ID.</div>
           </div>
 
@@ -281,8 +258,8 @@ class InsertForm extends Component {
 
         {this.state.insertedEmployee ? 
         <div>
-          <h3>Inserted Employee</h3>
-          <table align="center" className="table mt-5 border" >
+          <h3 className="mt-5 ">Inserted Employee</h3>
+          <table align="center" className="table border mt-3 mb-5" >
             <thead className="table-dark">
               <tr>
                 <th scope="col">First Name</th>
