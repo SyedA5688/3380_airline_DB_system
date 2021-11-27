@@ -53,6 +53,7 @@ class GetForm extends Component {
 
       this.assertValidDBResponse(responseBody);
       console.log(responseBody);
+
       this.setState({
         returnedEmployee: responseBody.rows
       });
@@ -99,7 +100,7 @@ class GetForm extends Component {
           </div>
         </div>
 
-        <h3>Insert New Employee Into Database</h3>
+        <h3>Get an Employee's Details</h3>
 
         <form className="border border-secondary mt-3 px-5 py-4 rounded needs-validation" id="getFormHTML" onSubmit={this.handleSubmit} noValidate>
           
@@ -115,7 +116,7 @@ class GetForm extends Component {
 
         {this.state.returnedEmployee ? 
         <div>
-          <h3>Inserted Employee</h3>
+          <h3>Employee Details:</h3>
           <table align="center" className="table mt-5 border" >
             <thead className="table-dark">
               <tr>
