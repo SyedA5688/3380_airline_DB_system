@@ -42,7 +42,10 @@
 
       "GetAllBenefits",
       "AddNewBenefits",
-      "ChangeBenefitsDetails"
+      "ChangeBenefitsDetails",
+
+      "GetAllDepartments",
+      "AddNewDepartment"
     ]
   }
 }
