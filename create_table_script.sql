@@ -1,6 +1,5 @@
 -- Run these commands in ElephantSQL postgres database in browser tab to recreate starting tables for local testing
 
-DROP TABLE IF EXISTS benefits;
 CREATE TABLE benefits (
   benefits_package_id        INT          GENERATED ALWAYS AS IDENTITY, 
   amount                     MONEY        NOT NULL,
@@ -11,13 +10,6 @@ CREATE TABLE benefits (
   PRIMARY KEY(benefits_package_id)
 );
 
-INSERT INTO benefits OVERRIDING SYSTEM VALUE VALUES(0, 0, 0, 'UNASSIGNED', 0);
-INSERT INTO benefits (amount, stock_options, health_insurance_provider, retirement_plan) 
-VALUES  (2000, 5000, 'AETNA', 3),
-        (3000, 3000, 'ALL STATE', 1),
-        (2500, 4000, 'ALL STATE', 2);
-
-DROP TABLE IF EXISTS employee_address;
 CREATE TABLE employee_address (
   address_id      INT           GENERATED ALWAYS AS IDENTITY,
   street_address  VARCHAR(100)  NOT NULL CHECK(street_address ~ '^[A-Z \/\d#\.,-]+$'),   -- Includes appt/po box info and locality info if applicable
@@ -29,13 +21,6 @@ CREATE TABLE employee_address (
   PRIMARY KEY(address_id)
 );
 
-INSERT INTO employee_address (street_address, city, zip_code, state, country) 
-VALUES  ('12345 ROCK BRIDGE LN', 'HOUSTON', '12345', 'TX', 'UNITED STATES'),
-        ('54321 OTHER ROCK DRIVE', 'NEW YORK CITY', '98765', 'NY', 'UNITED STATES'),
-        ('1 CHAPEL HILL HESWALL', 'BOURNEMOUTH', 'A11 B12', NULL, 'UNITED KINGDOM'),
-        ('10-123 1/2 MAIN STREET NW', 'MONTREAL', 'H3Z 2Y7', 'QC', 'CANADA');
-
-DROP TABLE IF EXISTS job_location;
 CREATE TABLE job_location (
   location_id INT GENERATED ALWAYS AS IDENTITY,
   airport_id  INT,
@@ -45,13 +30,6 @@ CREATE TABLE job_location (
   PRIMARY KEY(location_id)
 );
 
-INSERT INTO job_location OVERRIDING SYSTEM VALUE VALUES(0, NULL, 0, NULL);
-INSERT INTO job_location (airport_id, address_id, flight_id)
-VALUES  (123, 123, NULL),
-        (NULL, 987, NULL),
-        (123, 123, 5678);
-
-DROP TABLE IF EXISTS department;
 CREATE TABLE department (
   department_id       INT          GENERATED ALWAYS AS IDENTITY,
   department_name     VARCHAR(50)  NOT NULL CHECK(department_name ~ '^[A-Z ]+$'),
@@ -61,40 +39,28 @@ CREATE TABLE department (
   PRIMARY KEY(department_id)
 );
 
-INSERT INTO department OVERRIDING SYSTEM VALUE VALUES(0, 'UNASSIGNED', '1980-1-1');
-INSERT INTO department (department_name, creation_date) 
-VALUES  ('LINE PERSONNEL', '1980-8-14'),
-        ('CARGO', '1979-2-28'),
-        ('BOARD OF DIRECTORS', '1970-6-26'),
-        ('OPERATIONS', '1981-10-01');
-
-DROP TABLE IF EXISTS job;
 CREATE TABLE job (
   job_id              INT         GENERATED ALWAYS AS IDENTITY, 
   job_title           VARCHAR(30) NOT NULL CHECK(job_title ~ '^[A-Z \-]+$'),
   department_id       INT         NOT NULL, 
   location_id         INT         NOT NULL,
   weekly_hours        INT         CHECK(weekly_hours <= 168),
-  benefits_package_id INT         NOT NULL,
+  benefits_package_id INT         DEFAULT 0 NOT NULL,
 
   PRIMARY KEY(job_id),
   FOREIGN KEY(department_id)
-    REFERENCES department(department_id),
+    REFERENCES department(department_id)
+    ON DELETE CASCADE,
+
   FOREIGN KEY(location_id)
-    REFERENCES job_location(location_id),
+    REFERENCES job_location(location_id)
+    ON DELETE CASCADE,
+
   FOREIGN KEY(benefits_package_id)
     REFERENCES benefits(benefits_package_id)
+    ON DELETE SET DEFAULT
 );
 
-INSERT INTO job OVERRIDING SYSTEM VALUE VALUES(0, 'UNASSIGNED', 0, 0, 0, 0);
-INSERT INTO job (job_title, department_id, location_id, weekly_hours, benefits_package_id) 
-VALUES  ('PILOT', 1, 3, 40, 3),
-        ('FLIGHT ATTENDANT', 1, 3, 40, 2),
-        ('CHIEF EXECUTIVE OFFICER', 3, 2, 40, 2),
-        ('CARGO HOLDER', 2, 1, 40, 1),
-        ('CO-PILOT', 1, 3, 40, 3);
-
-DROP TABLE IF EXISTS employee;
 CREATE TABLE employee (
   employee_id INT           GENERATED ALWAYS AS IDENTITY (START WITH 1000000),
   first_name  VARCHAR(50)   NOT NULL CHECK(first_name ~ '^[A-Z ]+$'),
@@ -107,22 +73,21 @@ CREATE TABLE employee (
   email       VARCHAR(100)  UNIQUE CHECK(email ~ '^[\w\.\+]{1,64}@(\w+\.[A-Za-z]+){1,100}$'),
   job_id      INT           DEFAULT 0 NOT NULL,
   address_id  INT           NOT NULL,
-  manager_id  INT           REFERENCES employee(employee_id),
+  manager_id  INT,
 
   PRIMARY KEY(employee_id),
   FOREIGN KEY(job_id)
     REFERENCES job(job_id)
     ON DELETE SET DEFAULT,
+
   FOREIGN KEY(address_id)
-    REFERENCES employee_address(address_id)
+    REFERENCES employee_address(address_id),
+
+  FOREIGN KEY(manager_id)
+    REFERENCES employee(employee_id)
+    ON DELETE SET NULL
 );
 
-INSERT INTO employee (first_name, m_initial, last_name, ssn, dob, gender, phone, email , job_id, address_id, manager_id) 
-VALUES  ('JOHN', 'P', 'DOE', 123456789, '2001-11-21', 'M', '+18323459253', 'john.p.doe@gmail.com', 3, 2, NULL),
-        ('JANE', 'M', 'AUSTERE', 195836284, '1985-01-30', 'F', '+18329272847', 'jane.m.austere@company.org', 1, 3, NULL),
-        ('KEVIN', 'T', 'HOANG', 171662836, '2000-7-15', 'M', '+18322778264', 'kevin.t.hoang@example.com', 5, 4, 1000001);
-
-DROP TABLE IF EXISTS salary;
 CREATE TABLE salary (
   salary_id    INT    GENERATED ALWAYS AS IDENTITY,
   employee_id  INT    NOT NULL,
@@ -132,9 +97,9 @@ CREATE TABLE salary (
   PRIMARY KEY(salary_id),
   FOREIGN KEY(employee_id)
     REFERENCES employee(employee_id)
+    ON DELETE CASCADE
 );
 
-DROP TABLE IF EXISTS leave;
 CREATE TABLE leave (
   leave_id    INT           GENERATED ALWAYS AS IDENTITY,
   employee_id INT           NOT NULL,
@@ -145,9 +110,9 @@ CREATE TABLE leave (
   PRIMARY KEY(leave_id),
   FOREIGN KEY(employee_id)
     REFERENCES employee(employee_id)
+    ON DELETE CASCADE
 );
 
-DROP TABLE IF EXISTS payroll;
 CREATE TABLE payroll (
   payroll_id    INT       GENERATED ALWAYS AS IDENTITY,
   employee_id   INT       NOT NULL, 
@@ -160,9 +125,45 @@ CREATE TABLE payroll (
 
   PRIMARY KEY(payroll_id),
   FOREIGN KEY(employee_id)
-    REFERENCES employee(employee_id),
+    REFERENCES employee(employee_id)
+    ON DELETE CASCADE,
+
   FOREIGN KEY(job_id)
-    REFERENCES job(job_id),
+    REFERENCES job(job_id)
+    ON DELETE CASCADE,
+
   FOREIGN KEY(leave_id)
     REFERENCES leave(leave_id)
+    ON DELETE CASCADE
 );
+
+/* DEFAULTS */
+ALTER TABLE department
+ADD CONSTRAINT fk_head FOREIGN KEY (department_head_id) REFERENCES employee(employee_id);
+
+INSERT INTO benefits OVERRIDING SYSTEM VALUE VALUES(0, 0, 0, 'UNASSIGNED', 0);
+INSERT INTO job_location OVERRIDING SYSTEM VALUE VALUES(0, NULL, 0, NULL);
+INSERT INTO department OVERRIDING SYSTEM VALUE VALUES(0, 'UNASSIGNED', '1980-1-1');
+INSERT INTO job OVERRIDING SYSTEM VALUE VALUES(0, 'UNASSIGNED', 0, 0, 0, 0);
+
+/* Initial populated tables */
+
+-- Departments (based on https://www.avjobs.com/history/structure-of-the-airline-industry.asp)
+INSERT INTO department (department_name, creation_date) VALUES 
+('BOARD OF DIRECTORS', '1980-01-01'),
+('ENGINEERING AND MAINTENANCE', '1980-01-01'),
+('FLIGHT OPERATIONS', '1980-01-01'),
+('SALES AND MARKETING', '1980-01-01'),
+('RESERVATIONS AND TICKETING', '1980-01-01'),
+('FINANCE AND PROPERTY', '1980-01-01'),
+('INFORMATION SERVICES', '1980-01-01'),
+('PERSONNEL', '1980-01-01'),
+('MEDICAL', '1980-01-01'),
+('LEGAL', '1980-01-01'),
+('PUBLIC RELATIONS AND PLANNING', '1980-01-01');
+
+-- Benefits
+
+-- Job locations
+
+-- Jobs

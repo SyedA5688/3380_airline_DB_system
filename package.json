@@ -30,6 +30,7 @@
       "AddEmployee",
       "GetEmployeeDetails",
       "ChangeEmployeeDetails",
+      "DeleteEmployee",
       
       "GetAllLeaves",
       "GetEmployeeLeave",
