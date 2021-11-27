@@ -45,7 +45,8 @@
       "ChangeBenefitsDetails",
 
       "GetAllDepartments",
-      "AddNewDepartment"
+      "AddNewDepartment",
+      "ChangeDepartmentDetails"
     ]
   }
 }

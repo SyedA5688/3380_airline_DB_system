@@ -4,7 +4,6 @@ const leave = require('./employee/leave');
 const job = require('./job/job');
 const benefits = require('./benefits/benefits');
 const department = require('./department/department');
-const departmentID = require('./department/department-id');
 
 
 module.exports = (app) => {
@@ -14,5 +13,4 @@ module.exports = (app) => {
   app.use(job);
   app.use(benefits);
   app.use(department);
-  app.use(departmentID);
 };

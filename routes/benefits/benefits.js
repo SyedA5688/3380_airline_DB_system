@@ -190,6 +190,8 @@ router.post('/benefits', async (req, res) => {
  * @apiGroup Benefits
  * @apiDescription Attempts to alter a benefits package based on body parameters. Returns the benefits package id on success.
  * 
+ * @apiParam {Number} id  Benefits package ID
+ * 
  * @apiBody {String}  [health_insurance_provider]   Health insurance provider
  * @apiBody {Number}  [amount]                      Amount
  * @apiBody {String}  [stock_options]               Stock options
@@ -206,7 +208,7 @@ router.post('/benefits', async (req, res) => {
  *      "rows": [{
  *                "benefits_package_id": 123
  *               }],
- *      "queries": ["INSERT INTO table VALUES(...);"],
+ *      "queries": ["UPDATE table\nSET column = value;"],
  *      "transaction": true
  *    }
  */
@@ -288,7 +290,7 @@ router.put('/benefits/:id', async (req, res) => {
     }
   } else {
     res.status(400).json({
-      error: 'Invalid or missing job id',
+      error: 'Invalid or missing benefits package id',
       queries: [],
       transaction: false
     });
