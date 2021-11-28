@@ -119,7 +119,7 @@ CREATE TABLE payroll (
   job_id        INT       NOT NULL,
   salary_id     INT       NOT NULL,
   leave_id      INT       NOT NULL,
-  hours_worked  INTERVAL  NOT NULL,
+  hours_worked  REAL      NOT NULL,
   pay_period    DATE      NOT NULL,
   tax_rate      REAL      NOT NULL,
 

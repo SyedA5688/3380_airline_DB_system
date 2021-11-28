@@ -50,7 +50,9 @@
       "ChangeDepartmentDetails",
 
       "GetAllManagers",
-      "GetManager"
+      "GetManager",
+
+      "GetAllPayrolls"
     ]
   }
 }
