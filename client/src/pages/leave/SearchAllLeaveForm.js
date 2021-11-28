@@ -98,13 +98,11 @@ class SearchAllLeaveForm extends Component {
       default:
         query = "";
     }
-
-    console.log("Query:", query);
     
     try {
       const response = await fetch(`/leave?q=${query}&searchBy=${this.state.searchBy}&page=${this.state.page}&sort=${this.state.sort}&order=${this.state.order}&limit=${this.state.limit}`);
       const body = await response.json();
-      console.log("Response body rows:", body.rows);
+      // console.log("Response body rows:", body.rows);
 
       this.assertValidGETResponse(body);
       this.setState({

@@ -1,63 +1,23 @@
 import React, { Component } from 'react';
-import './employeeForms.css'
+import './leaveForms.css'
 
 
-class GetForm extends Component {
+class SearchEmployeeLeaveForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      getID: '',
-      showFirstName: false,
-      showMInitial: false,
-      showLastName: false,
-      showID: false,
-      showDOB: false,
-      showSSN: false,
-      showGender: false,
-      showEmail: false,
-      showPhone: false,
-      showStreetAddress: false,
-      showCity: false,
-      showState: false,
-      showZipCode: false,
-      showCountry: false,
-      showJobTitle: false,
-      showDepartmentName: false,
-      showWeeklyHours: false,
-      showHourlyWage: false,
-      showAnnualBonus: false,
-      showBenefitsAmount: false,
-      showStockOptions: false,
-      showHealthInsuranceProvider: false,
-      showRetirementPlanNumber: false
+      employeeID: '',
+      searchBy: 'all',
+      searchText: '',
+      searchID: '',
+      searchDate: '',
+      searchStatus: '',
+      searchReason: '',
+      page: 1,
+      sort: 'id',
+      order: 'asc',
+      limit: 10
     };
-    
-    // Bad coupling if DB response changes names/details, but need to control which response attributes are shown
-    this.db_to_state = {
-      "first_name": "showFirstName",
-      "m_initial": "showMInitial",
-      "last_name": "showLastName",
-      "employee_id": "showID",
-      "dob": "showDOB",
-      "ssn": "showSSN",
-      "gender": "showGender",
-      "email": "showEmail",
-      "phone": "showPhone",
-      "street_address": "showStreetAddress",
-      "city": "showCity",
-      "state": "showState",
-      "zip_code": "showZipCode",
-      "country": "showCountry",
-      "job_title": "showJobTitle",
-      "department_name": "showDepartmentName",
-      "weekly_hours": "showWeeklyHours",
-      "hourly_wage": "showHourlyWage",
-      "annual_bonus": "showAnnualBonus",
-      "amount": "showBenefitsAmount",
-      "stock_options": "showStockOptions",
-      "health_insurance_provider": "showHealthInsuranceProvider",
-      "retirement_plan": "showRetirementPlanNumber"
-    }
     
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -68,6 +28,17 @@ class GetForm extends Component {
     this.setState({
       [event.target.name]: event.target.value
     });
+
+    if (event.target.name === "searchBy") {
+      this.setState({
+        searchText: '',
+        searchID: '',
+        searchDate: '',
+        searchStatus: '',
+        searchReason: '',
+      });
+      this.handleClear();
+    }
   };
 
   componentDidMount() {
@@ -75,7 +46,7 @@ class GetForm extends Component {
   }
 
   listenForFormSubmission() {
-    const form = document.querySelector('#getFormHTML');
+    const form = document.querySelector('#searchFormHTML');
 
     form.addEventListener('submit', (event) => {
       if (!form.checkValidity()) {
@@ -86,7 +57,7 @@ class GetForm extends Component {
     }, false);
   }
 
-  assertValidDBResponse(body) {
+  assertValidGETResponse(body) {
     if (!("rows" in body)) {
       throw new Error("Something went wrong; GET Request to Database did not return results object.");
     }
@@ -97,22 +68,56 @@ class GetForm extends Component {
 
   handleSubmit = async (event) => {
     event.preventDefault();
-    try {  
-      const response = await fetch(`/employee/${this.state.getID}`);  
-      const responseBody = await response.json();
+    
+    let query = "";
+    switch(this.state.searchBy) {
+      case "all":
+        query = "";
+        break;
+      
+      case "text":
+        query = this.state.searchText.trim();
+        break;
+      
+      case "id": {
+        query = this.state.searchID;
+        break;
+      }
 
-      this.assertValidDBResponse(responseBody);
-      // console.log(responseBody.rows);
+      case "date":
+        query = String(this.state.searchDate.trim());
+        break;
+      
+      case "status":
+        query = this.state.searchStatus.trim();
+        break;
+        
+      case "reason":
+        query = this.state.searchReason.trim();
+        break;
 
+      default:
+        query = "";
+    }
+    
+    try {
+      const response = await fetch(`/employee/${this.state.employeeID}/leave?q=${query}&searchBy=${this.state.searchBy}&page=${this.state.page}&sort=${this.state.sort}&order=${this.state.order}&limit=${this.state.limit}`);
+      const body = await response.json();
+      // console.log("Response body rows:", body.rows);
+
+      this.assertValidGETResponse(body);
       this.setState({
-        returnedEmployee: responseBody.rows
+        returnedLeaves: body.rows
       });
     }
-    catch (err) {
-      console.log("Error occurred while sending Get Employee GET request to server:", err.message);
+    catch (e) {
+      console.log("Error occurred while sending GET request to /employee/:id/leave endpoint,", e);
       document.getElementById("errorModal").style.display = "block"
       document.getElementById("errorModal").classList.add("show")
     }
+
+    const form = document.querySelector('#searchFormHTML');
+    form.classList.remove('was-validated');
   };
 
   closeModal = () => {
@@ -122,22 +127,64 @@ class GetForm extends Component {
 
   handleClear = async (event) => {
     this.setState({
-      getID: '',
-      returnedEmployee: null
+      searchText: '',
+      searchID: '',
+      searchDate: '',
+      searchStatus: '',
+      searchReason: '',
+      returnedLeaves: null
     });
 
-    // Remove was-validated class from form to reset its appearance
-    const form = document.querySelector('#getFormHTML');
+    const form = document.querySelector('#searchFormHTML');
     form.classList.remove('was-validated');
   }
 
-  handleCheckboxChange = async (event) => {
-    this.setState({
-      [event.target.name]: event.target.checked
-    });
-  };
+  SearchByInputElement(searchBy) {
+    if (searchBy === "all") {
+      return <div></div>
+    }
+    else if (searchBy === "text") {
+      return (<div className="form-group">
+      <input type="text" pattern="[A-Za-z0-9-_ ]+"  className="form-control" id="inputLeaveText" placeholder="Any text in leave status or reason description" name="searchText" value={this.state.searchText} onChange={this.handleChange} required />
+      <div className="invalid-feedback">Please provide a valid search text.</div>
+      <div className="valid-feedback">Valid search text.</div>
+    </div>)
+    }
+    else if (searchBy === "id") {
+      return (<div className="form-group">
+      <input type="number" min="0" pattern="[0-9]+"  className="form-control" id="inputLeaveID" placeholder="0" name="searchID" value={this.state.searchID} onChange={this.handleChange} required />
+      <div className="invalid-feedback">Please provide a valid leave ID.</div>
+      <div className="valid-feedback">Valid leave ID number.</div>
+    </div>)
+    }
+    else if (searchBy === "date") {
+      return <div className="form-group">
+        <input type="date" className="form-control" id="inputLeaveDate" name="searchDate" value={this.state.searchDate} onChange={this.handleChange} required />
+        <div className="invalid-feedback">Please provide a valid leave date.</div>
+        <div className="valid-feedback">Valid leave date.</div>
+      </div>
+    }
+    else if (searchBy === "status") {
+      return <div className="form-group">
+      <input type="text" pattern="[A-Za-z0-9-_ ]+"  className="form-control" id="inputLeaveStatus" placeholder="(e.g. Returned)" name="searchStatus" value={this.state.searchStatus} onChange={this.handleChange} required />
+      <div className="invalid-feedback">Please provide valid status text to search.</div>
+      <div className="valid-feedback">Valid status text.</div>
+    </div>
+    }
+    else if (searchBy === "reason") {
+      return <div className="form-group">
+      <input type="text" pattern="[A-Za-z0-9-_ ]+"  className="form-control" id="inputLeaveReason" placeholder="(e.g. Doctor appointment on January 1st, 2021)" name="searchReason" value={this.state.searchReason} onChange={this.handleChange} required />
+      <div className="invalid-feedback">Please provide valid reason text to search.</div>
+      <div className="valid-feedback">Valid reason text.</div>
+    </div>
+    }
+    else {
+      return <div></div>
+    }
+  } 
   
   render() {
+    let searchByInputElement = this.SearchByInputElement(this.state.searchBy)
     return (
       <div className="container mt-5 px-5">
         <div className="modal fade" id="errorModal" tabIndex="-1" role="dialog" aria-hidden="true">
@@ -147,7 +194,8 @@ class GetForm extends Component {
                 <h5 className="modal-title" id="exampleModalLabel">Error Occurred</h5>
               </div>
               <div className="modal-body">
-                Something went wrong while processing your database request. Please try again or contact airport database assistance. <br />
+                Something went wrong while processing your database request, please try again later. <br />
+
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn btn-primary" onClick={this.closeModal} >Close</button>
@@ -156,166 +204,90 @@ class GetForm extends Component {
           </div>
         </div>
 
-        <h3 className="mt-3" >Get an Employee's Details</h3>
+        <h3>Search Through an Employee's Leave Entries</h3>
 
-        <form className="border border-secondary mt-3 px-5 py-4 rounded needs-validation" id="getFormHTML" onSubmit={this.handleSubmit} noValidate>
-          
-          <div className="form-group mb-3">
-            <label className="sr-only" htmlFor="getEmployeeID">Employee ID</label>
-            <input type="number" step="1" pattern="[0-9]+" className="form-control" id="getEmployeeID" value={this.state.getID} name="getID" onChange={this.handleChange} required />
-            <div className="invalid-feedback">Please input a valid Employee ID.</div>
+        <form className="border border-secondary mt-3 px-5 py-4 rounded needs-validation" id="searchFormHTML" onSubmit={this.handleSubmit} noValidate>
+
+          <h5 className="mb-2" >Employee to Query Leave Entries For:</h5>
+          <div className="form-group">
+            <label className="sr-only" htmlFor="inputEmployeeID">Employee ID</label>
+            <input type="number" step="1" min="0"  pattern="[0-9]+" className="form-control" id="inputEmployeeID" placeholder="1000000" value={this.state.employeeID} name="employeeID" onChange={this.handleChange} required />
+            <div className="invalid-feedback">Please provide a valid existing employee ID.</div>
           </div>
 
-          <div className="custom-control custom-checkbox">
-            <input type="checkbox" className="custom-control-input" id="checkbox1" name="showFirstName" onChange={this.handleCheckboxChange} />
-            <label className="custom-control-label mx-2" htmlFor="checkbox1">First Name</label>
+          <h5 className="mt-4" >Leave Entry Parameters:</h5>
+          <div className="form-group mb-2" >
+            <label className="sr-only" htmlFor="inputSearchBy">Search by:</label>
+            <select name="searchBy" className="form-select " id="inputSearchBy" defaultValue="all" onChange={this.handleChange}>
+              <option value="all">Get All Leave Entries</option>
+              <option value="text">Leave General Text</option>
+              <option value="id">Leave Entry ID</option>
+              <option value="date">Date</option>
+              <option value="status">Leave Status</option>
+              <option value="reason">Leave Reason/Description</option>
+            </select>
+          </div>
+          {searchByInputElement}
+            
+          <div className="form-group mt-2" >
+            <label className="sr-only" htmlFor="inputSortBy">Sort by:</label>
+            <select name="sort" className="form-select" id="inputSortBy" defaultValue="id" onChange={this.handleChange}>
+              <option value="id">Employee ID</option>
+              <option value="name">Name</option>
+              <option value="title">Job Title</option>
+              <option value="department">Department</option>
+            </select>
           </div>
 
-          <div className="custom-control custom-checkbox">
-            <input type="checkbox" className="custom-control-input" id="checkbox2" name="showMInitial" onChange={this.handleCheckboxChange} />
-            <label className="custom-control-label mx-2" htmlFor="checkbox2">Middle Initial</label>
+          <div className="form-group mt-2" >
+            <label className="sr-only" htmlFor="inputOrderBy">Order:</label>
+            <select name="order" className="form-select" id="inputOrderBy" defaultValue="asc" onChange={this.handleChange}>
+              <option value="asc">Ascending</option>
+              <option value="desc">Descending</option>
+            </select>
           </div>
 
-          <div className="custom-control custom-checkbox">
-            <input type="checkbox" className="custom-control-input" id="checkbox3" name="showLastName" onChange={this.handleCheckboxChange} />
-            <label className="custom-control-label mx-2" htmlFor="checkbox3">Last Name</label>
-          </div>
-
-          <div className="custom-control custom-checkbox">
-            <input type="checkbox" className="custom-control-input" id="checkbox4" name="showID" onChange={this.handleCheckboxChange} />
-            <label className="custom-control-label mx-2" htmlFor="checkbox4">Employee ID</label>
-          </div>
-
-          <div className="custom-control custom-checkbox">
-            <input type="checkbox" className="custom-control-input" id="checkbox5" name="showDOB" onChange={this.handleCheckboxChange} />
-            <label className="custom-control-label mx-2" htmlFor="checkbox5">Date of Birth</label>
-          </div>
-
-          <div className="custom-control custom-checkbox">
-            <input type="checkbox" className="custom-control-input" id="checkbox6" name="showSSN" onChange={this.handleCheckboxChange} />
-            <label className="custom-control-label mx-2" htmlFor="checkbox6">Social Security Number</label>
-          </div>
-
-          <div className="custom-control custom-checkbox">
-            <input type="checkbox" className="custom-control-input" id="checkbox7" name="showGender" onChange={this.handleCheckboxChange} />
-            <label className="custom-control-label mx-2" htmlFor="checkbox7">Gender</label>
-          </div>
-
-          <div className="custom-control custom-checkbox">
-            <input type="checkbox" className="custom-control-input" id="checkbox8" name="showEmail" onChange={this.handleCheckboxChange} />
-            <label className="custom-control-label mx-2" htmlFor="checkbox8">Email</label>
-          </div>
-
-          <div className="custom-control custom-checkbox">
-            <input type="checkbox" className="custom-control-input" id="checkbox10" name="showPhone" onChange={this.handleCheckboxChange} />
-            <label className="custom-control-label mx-2" htmlFor="checkbox10">Phone</label>
-          </div>
-
-          <div className="custom-control custom-checkbox">
-            <input type="checkbox" className="custom-control-input" id="checkbox11" name="showStreetAddress" onChange={this.handleCheckboxChange} />
-            <label className="custom-control-label mx-2" htmlFor="checkbox11">Street Address</label>
-          </div>
-
-          <div className="custom-control custom-checkbox">
-            <input type="checkbox" className="custom-control-input" id="checkbox12" name="showCity" onChange={this.handleCheckboxChange} />
-            <label className="custom-control-label mx-2" htmlFor="checkbox12">City</label>
-          </div>
-
-          <div className="custom-control custom-checkbox">
-            <input type="checkbox" className="custom-control-input" id="checkbox13" name="showState" onChange={this.handleCheckboxChange} />
-            <label className="custom-control-label mx-2" htmlFor="checkbox13">State</label>
-          </div>
-
-          <div className="custom-control custom-checkbox">
-            <input type="checkbox" className="custom-control-input" id="checkbox14" name="showZipCode" onChange={this.handleCheckboxChange} />
-            <label className="custom-control-label mx-2" htmlFor="checkbox14">Zip Code</label>
-          </div>
-
-          <div className="custom-control custom-checkbox">
-            <input type="checkbox" className="custom-control-input" id="checkbox15" name="showCountry" onChange={this.handleCheckboxChange} />
-            <label className="custom-control-label mx-2" htmlFor="checkbox15">Country</label>
-          </div>
-
-          <div className="custom-control custom-checkbox">
-            <input type="checkbox" className="custom-control-input" id="checkbox16" name="showJobTitle" onChange={this.handleCheckboxChange} />
-            <label className="custom-control-label mx-2" htmlFor="checkbox16">Job Title</label>
-          </div>
-
-          <div className="custom-control custom-checkbox">
-            <input type="checkbox" className="custom-control-input" id="checkbox17" name="showDepartmentName" onChange={this.handleCheckboxChange} />
-            <label className="custom-control-label mx-2" htmlFor="checkbox17">Department Name</label>
-          </div>
-
-          <div className="custom-control custom-checkbox">
-            <input type="checkbox" className="custom-control-input" id="checkbox18" name="showWeeklyHours" onChange={this.handleCheckboxChange} />
-            <label className="custom-control-label mx-2" htmlFor="checkbox18">Weekly Hours</label>
-          </div>
-
-          <div className="custom-control custom-checkbox">
-            <input type="checkbox" className="custom-control-input" id="checkbox19" name="showHourlyWage" onChange={this.handleCheckboxChange} />
-            <label className="custom-control-label mx-2" htmlFor="checkbox19">Hourly Wage</label>
-          </div>
-
-          <div className="custom-control custom-checkbox">
-            <input type="checkbox" className="custom-control-input" id="checkbox20" name="showAnnualBonus" onChange={this.handleCheckboxChange} />
-            <label className="custom-control-label mx-2" htmlFor="checkbox20">Annual Bonus</label>
-          </div>
-
-          <div className="custom-control custom-checkbox">
-            <input type="checkbox" className="custom-control-input" id="checkbox21" name="showBenefitsAmount" onChange={this.handleCheckboxChange} />
-            <label className="custom-control-label mx-2" htmlFor="checkbox21">Benefits Amount</label>
-          </div>
-
-          <div className="custom-control custom-checkbox">
-            <input type="checkbox" className="custom-control-input" id="checkbox22" name="showStockOptions" onChange={this.handleCheckboxChange} />
-            <label className="custom-control-label mx-2" htmlFor="checkbox22">Stock Options</label>
-          </div>
-
-          <div className="custom-control custom-checkbox">
-            <input type="checkbox" className="custom-control-input" id="checkbox23" name="showHealthInsuranceProvider" onChange={this.handleCheckboxChange} />
-            <label className="custom-control-label mx-2" htmlFor="checkbox23">Health Insurance Provider</label>
-          </div>
-
-          <div className="custom-control custom-checkbox">
-            <input type="checkbox" className="custom-control-input" id="checkbox24" name="showRetirementPlanNumber" onChange={this.handleCheckboxChange} />
-            <label className="custom-control-label mx-2" htmlFor="checkbox24">Retirement Plan Number</label>
+          <div className="input-group mt-3" >
+            <div className="input-group-prepend">
+              <span className="input-group-text" id="">Results per Page, Page Number</span>
+            </div>
+            <input type="number" min="1" className="form-control" id="inputSearchLimit" name="limit" value={this.state.limit} onChange={this.handleChange} />
+            <input type="number" min="1" className="form-control" id="inputSearchPage" name="page" value={this.state.page} onChange={this.handleChange} />
           </div>
 
           <button type="submit" className="btn btn-outline-secondary mt-3">Submit</button>
           <button type="button" className="btn btn-outline-secondary mt-3 mx-3" onClick={this.handleClear} >Clear</button>
         </form>
 
-        {this.state.returnedEmployee ? 
-        <div>
-          <h3>Employee Details:</h3>
-          <table align="center" className="table mt-5 border" >
-            <thead className="table-dark">
-              <tr>
-                <th scope="col">Employee Attribute</th>
-                <th scope="col">Returned Value</th>
+        {this.state.returnedLeaves ? <table align="center" className="table mt-5 border" >
+          <thead className="table-dark">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Leave ID</th>
+              <th scope="col">Employee ID</th>
+              <th scope="col">Date</th>
+              <th scope="col">Reason</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          
+          <tbody>
+            {this.state.returnedLeaves && this.state.returnedLeaves.map((leaveObj, index) => (
+              <tr key={leaveObj.leave_id}>
+                <th scope="col">{index + 1}</th>
+                <th scope="col">{leaveObj.leave_id}</th>
+                <th scope="col">{leaveObj.employee_id}</th>
+                <th scope="col">{leaveObj.date}</th>
+                <th scope="col">{leaveObj.reason}</th>
+                <th scope="col">{leaveObj.status}</th>
               </tr>
-            </thead>
-            <tbody>
-              {this.state.returnedEmployee && Object.keys(this.state.returnedEmployee[0]).map(responseKey => {
-                let elem = null;
-                if (this.state[this.db_to_state[responseKey]]) {
-                  elem = (<tr key={responseKey + "_row_key"}>
-                    <th scope="col">{responseKey}</th>
-                    <th scope="col">{this.state.returnedEmployee[0][responseKey]}</th>
-                  </tr>)
-                }
-                else {
-                  elem = null
-                }
-                return elem
-              })}
-            </tbody>
-          </table>
-        </div>:
+            ))}
+          </tbody>
+        </table> :
         <div></div>}
       </div>
     );
   }
 }
 
-export default GetForm
+export default SearchEmployeeLeaveForm
