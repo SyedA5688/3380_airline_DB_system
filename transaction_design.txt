@@ -6,12 +6,16 @@
 Employee Table
 	*Make SSN number private 
 	 (In a real airline company you can not see the SSN number of the employee)
+	 //encryption
 	*Same thing with their Phone number and Email address
 	 (make it private)
+	 //encryption
 	*Make it possible to sort by the Gender
 	 (Male and Female) (No other genders included) 
+	 // SELECT * FROM Employee ORDER BY Gender;
 	*Make Employee Address private
 	 (Not shown to the user but it still exists)
+	 //encryption
 	*Make it possible to update their address if the employee moves to another apartment
 	 (Update on the website the employee address info)
 Employee Address Table
