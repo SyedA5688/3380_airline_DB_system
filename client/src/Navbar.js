@@ -20,13 +20,13 @@ export default function Navbar() {
               <a className="nav-link" href="/jobs/search">Jobs</a>
             </li>
             <li className="nav-item">
+              <a className="nav-link" href="/leave/search">Leave</a>
+            </li>
+            <li className="nav-item">
               <a className="nav-link" href="/department">Departments</a>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="/">Payroll</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="/">Salary</a>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="/">Benefits</a>
