@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
-import './jobForms.css'
+import './leaveForms.css'
 
 
-class InsertJobForm extends Component {
+class InsertLeaveForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      insertJobTitle: '',
-      insertDepartmentID: '',
-      insertLocationID: '',
-      insertBenefitsPackageID: '',
-      insertWeeklyHours: ''
+      insertEmployeeID: '',
+      insertDate: '',
+      insertReason: '',
+      insertStatus: ''
     };
     
     this.handleChange = this.handleChange.bind(this);
@@ -53,15 +52,14 @@ class InsertJobForm extends Component {
     event.preventDefault();
     try {
       const body = { 
-        job_title: this.state.insertJobTitle, 
-        department_id: this.state.insertDepartmentID,
-        location_id: this.state.insertLocationID,
-        benefits_package_id: this.state.insertBenefitsPackageID,
-        weekly_hours: this.state.insertWeeklyHours
+        id: this.state.insertEmployeeID,
+        date: this.state.insertDate, 
+        reason: this.state.insertReason,
+        status: this.state.insertStatus
       };
       // console.log("Sending inserting new employee POST request with:", body);
   
-      const response = await fetch("/job", {
+      const response = await fetch("/employee/" + String(this.state.insertEmployeeID) + '/leave', {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(body)
@@ -72,11 +70,11 @@ class InsertJobForm extends Component {
       this.assertValidDBResponse(responseBody);
   
       this.setState({
-        insertedJob: responseBody.rows
+        insertedLeaveEntry: responseBody.rows
       });
     }
     catch (err) {
-      console.log("Error occurred while sending Insert Employee POST request to server:", err.message);
+      console.log("Error occurred while sending Insert Leave POST request to server:", err.message);
       document.getElementById("errorModal").style.display = "block"
       document.getElementById("errorModal").classList.add("show")
     }
@@ -89,12 +87,11 @@ class InsertJobForm extends Component {
 
   handleClear = async (event) => {
     this.setState({
-      insertJobTitle: '',
-      insertDepartmentID: '',
-      insertLocationID: '',
-      insertBenefitsPackageID: '',
-      insertWeeklyHours: '',
-      insertedJob: null
+      insertEmployeeID: '',
+      insertDate: '',
+      insertReason: '',
+      insertStatus: '',
+      insertedLeaveEntry: null
     });
 
     // Remove was-validated class from form to reset its appearance
@@ -121,70 +118,60 @@ class InsertJobForm extends Component {
           </div>
         </div>
 
-        <h3>Insert New Employee Into Database</h3>
+        <h3>Create New Leave Entry in Database</h3>
 
         <form className="border border-secondary mt-3 px-5 py-4 rounded needs-validation" id="insertFormHTML" onSubmit={this.handleSubmit} noValidate>
 
-        <div className="form-group">
-            <label className="sr-only" htmlFor="inputJobTitle">Job Title</label>
-            <input type="text" pattern="[A-Za-z ]+" className="form-control" id="inputJobTitle" placeholder="Pilot" value={this.state.insertJobTitle} name="insertJobTitle" onChange={this.handleChange} required />
-            <div className="invalid-feedback">Please provide a valid job title.</div>
+          <div className="form-group">
+            <label className="sr-only" htmlFor="inputEmployeeID">Employee ID</label>
+            <input type="number" step="1" min="0" pattern="[0-9]+" className="form-control" id="inputEmployeeID" placeholder="1000000 (Must be an existing ID)" value={this.state.insertEmployeeID} name="insertEmployeeID" onChange={this.handleChange} required />
+            <div className="invalid-feedback">Please provide a valid employee ID.</div>
           </div>
 
           <div className="form-group">
-            <label className="sr-only" htmlFor="inputDepartmentID">Department ID</label>
-            <input type="number" step="1"  pattern="[0-9]+" className="form-control" id="inputDepartmentID" placeholder="0 (Must be an existing ID)" value={this.state.insertDepartmentID} name="insertDepartmentID" onChange={this.handleChange} required />
-            <div className="invalid-feedback">Please provide a valid department ID.</div>
+            <label className="sr-only" htmlFor="inputLeaveDate">Date</label>
+            <input type="date" className="form-control" id="inputLeaveDate" value={this.state.insertDate} name="insertDate" onChange={this.handleChange} required />
+            <div className="invalid-feedback">Please select a date for the leave entry.</div>
           </div>
 
           <div className="form-group">
-            <label className="sr-only" htmlFor="inputJobLocationID">Location ID</label>
-            <input type="number" step="1"  pattern="[0-9]+" className="form-control" id="inputEmployeeManagerID" placeholder="0 (Must be an existing ID)" value={this.state.insertLocationID} name="insertLocationID" onChange={this.handleChange} required />
-            <div className="invalid-feedback">Please provide a valid location ID.</div>
+            <label className="sr-only" htmlFor="inputLeaveStatus">Status</label>
+            <input type="text" pattern="[A-Za-z-., ]+" className="form-control" id="inputLeaveStatus" placeholder="(e.g. Returned)" value={this.state.insertStatus} name="insertStatus" onChange={this.handleChange} required />
+            <div className="invalid-feedback">Please provide a valid leave status.</div>
           </div>
 
           <div className="form-group">
-            <label className="sr-only" htmlFor="inputJobBenefitsPackageID">Benefits Package ID</label>
-            <input type="number" step="1"  pattern="[0-9]+" className="form-control" id="inputJobBenefitsPackageID" placeholder="0 (Must be an existing ID)" value={this.state.insertBenefitsPackageID} name="insertBenefitsPackageID" onChange={this.handleChange} required />
-            <div className="invalid-feedback">Please provide valid Benefits Package ID.</div>
-          </div>
-
-          <div className="form-group">
-            <label className="sr-only" htmlFor="inputJobWeeklyHours">Weekly Hours (Optional)</label>
-            <input type="number" step="1"  pattern="[0-9]*" className="form-control" id="inputJobWeeklyHours" placeholder="40" value={this.state.insertWeeklyHours} name="insertWeeklyHours" onChange={this.handleChange} />
-            <div className="invalid-feedback">Please provide a valid weekly hours value.</div>
+            <label className="sr-only" htmlFor="inputLeaveReason">Reason</label>
+            <input type="text" pattern="[A-Za-z-_.,() ]+" className="form-control" id="inputLeaveReason" placeholder="(e.g. Doctor's appointment)" value={this.state.insertReason} name="insertReason" onChange={this.handleChange} required />
+            <div className="invalid-feedback">Please provide a valid leave reason/description.</div>
           </div>
 
           <button type="submit" className="btn btn-outline-secondary mt-3">Submit</button>
           <button type="button" className="btn btn-outline-secondary mt-3 mx-3" onClick={this.handleClear} >Clear</button>
         </form>
 
-        {this.state.insertedJob ? 
+        {this.state.insertedLeaveEntry ? 
         <div>
-          <h3 className="mt-5 ">Inserted Job</h3>
+          <h3 className="mt-5 ">New Leave Entry</h3>
           <table align="center" className="table border mt-3 mb-5" >
             <thead className="table-dark">
               <tr>
-                <th scope="col">Job ID</th>
-                <th scope="col">Job Title</th>
-                <th scope="col">Department ID</th>
-                <th scope="col">Department Name</th>
-                <th scope="col">Location ID</th>
-                <th scope="col">Weekly Hours</th>
-                <th scope="col">Benefits Package ID</th>
+                <th scope="col">Leave ID</th>
+                <th scope="col">Employee ID</th>
+                <th scope="col">Date</th>
+                <th scope="col">Reason</th>
+                <th scope="col">Status</th>
               </tr>
             </thead>
             
             <tbody>
-              {this.state.insertedJob && this.state.insertedJob.map(jobObj => (
-                <tr key={jobObj.job_id}>
-                  <th scope="col">{jobObj.job_id}</th>
-                  <th scope="col">{jobObj.job_title}</th>
-                  <th scope="col">{jobObj.department_id}</th>
-                  <th scope="col">{jobObj.department_name}</th>
-                  <th scope="col">{jobObj.location_id}</th>
-                  <th scope="col">{jobObj.weekly_hours}</th>
-                  <th scope="col">{jobObj.benefits_package_id}</th>
+              {this.state.insertedLeaveEntry && this.state.insertedLeaveEntry.map(leaveObj => (
+                <tr key={leaveObj.leave_id}>
+                  <th scope="col">{leaveObj.leave_id}</th>
+                  <th scope="col">{leaveObj.employee_id}</th>
+                  <th scope="col">{leaveObj.date}</th>
+                  <th scope="col">{leaveObj.reason}</th>
+                  <th scope="col">{leaveObj.status}</th>
                 </tr>
               ))}
             </tbody>
@@ -196,4 +183,4 @@ class InsertJobForm extends Component {
   }
 }
 
-export default InsertJobForm
+export default InsertLeaveForm

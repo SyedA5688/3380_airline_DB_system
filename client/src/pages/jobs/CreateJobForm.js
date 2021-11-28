@@ -125,7 +125,7 @@ class InsertJobForm extends Component {
 
         <form className="border border-secondary mt-3 px-5 py-4 rounded needs-validation" id="insertFormHTML" onSubmit={this.handleSubmit} noValidate>
 
-        <div className="form-group">
+          <div className="form-group">
             <label className="sr-only" htmlFor="inputJobTitle">Job Title</label>
             <input type="text" pattern="[A-Za-z ]+" className="form-control" id="inputJobTitle" placeholder="Pilot" value={this.state.insertJobTitle} name="insertJobTitle" onChange={this.handleChange} required />
             <div className="invalid-feedback">Please provide a valid job title.</div>
