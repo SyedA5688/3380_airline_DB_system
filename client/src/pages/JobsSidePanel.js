@@ -11,9 +11,9 @@ class JobsSidePanel extends Component {
           <div className="col-3" id="sidebar-wrapper" >
             <nav className="sidebar-nav" align="center" >
               <ul className="sidebar-ul" >
-                <li className="sidebar-li"><a href="/jobs" >Search Jobs</a></li>
-                <li className="sidebar-li"><a href="/jobs" >Create New Job</a></li>
-                <li className="sidebar-li"><a href="/jobs" >Update Job Details</a></li>
+                <li className="sidebar-li"><a href="/jobs/search" >Search All Jobs</a></li>
+                <li className="sidebar-li"><a href="/jobs/create" >Create New Job</a></li>
+                <li className="sidebar-li"><a href="/jobs/update" >Update Job Details</a></li>
               </ul>
             </nav>
           </div>

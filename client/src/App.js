@@ -7,6 +7,9 @@ import InsertForm from './pages/employees/InsertForm';
 import UpdateForm from './pages/employees/UpdateForm';
 import GetForm from './pages/employees/GetForm';
 import JobsSidePanel from './pages/JobsSidePanel';
+import SearchAllJobsForm from './pages/jobs/SearchAllJobsForm';
+import CreateJobForm from './pages/jobs/CreateJobForm';
+import UpdateJobForm from './pages/jobs/UpdateJobForm';
 import DepartmentsSidePanel from './pages/DepartmentSidePanel';
 import './App.css'
 // import EmployeeDBTable from './pages/employees/EmployeeDBTable';
@@ -27,7 +30,11 @@ class App extends Component {
                   <Route exact path="update" element={<UpdateForm />} />
                 </Route>
 
-                <Route exact path="jobs" element={<JobsSidePanel />} />
+                <Route exact path="jobs" element={<JobsSidePanel />} >
+                  <Route exact path="search" element={<SearchAllJobsForm />} />
+                  <Route exact path="create" element={<CreateJobForm />} />
+                  <Route exact path="update" element={<UpdateJobForm />} />
+                </Route>
 
                 <Route exact path="department" element={<DepartmentsSidePanel />} />
               </Route>

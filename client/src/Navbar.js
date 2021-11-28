@@ -17,7 +17,7 @@ export default function Navbar() {
               <a className="nav-link" href="/employees/search">Employees</a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/jobs">Jobs</a>
+              <a className="nav-link" href="/jobs/search">Jobs</a>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="/department">Departments</a>
