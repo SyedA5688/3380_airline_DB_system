@@ -1,5 +1,6 @@
 
 // By default Airline workers name should be displayed by the Alphabetical Order 
+(Select * from Employee ORDER BY Firstname;)
 // If the employee leaves/retires the company all his information should be still kept for a certain amount of time (Up to 10 years based on some companies according to google)
 // User should have an option to order the employees by the postion they have in the airline: pilots, flight attendant, stewards and etc.  
 
