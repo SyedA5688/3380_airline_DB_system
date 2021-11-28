@@ -212,7 +212,87 @@ router.post('/payroll', async (req, res) => {
   }
 });
 
-
+/**
+ * @api {get} /payroll/:id Get pay details
+ * @apiName GetPayroll
+ * @apiGroup Payroll
+ * @apiDescription Returns gross, taxed, and net income corresponding to a payroll entry. Returns no rows if the payroll ID does not exist.
+ * 
+ * @apiParam {Number} id Payroll ID
+ * 
+ * @apiSuccess {Object[]} rows                  Results from the database
+ * @apiSuccess {Number}   rows.payroll_id       Payroll ID
+ * @apiSuccess {Number}   rows.gross            Gross income
+ * @apiSuccess {Number}   rows.tax              Taxed income
+ * @apiSuccess {Number}   rows.net              Net income
+ * 
+ * @apiSuccess {String[]} queries               Array of queries used
+ * @apiSuccess {Boolean}  transaction           True if transactions were used
+ * 
+ * @apiSuccessExample {json} Success-Response example:
+ *    HTTP/1.1 200 OK
+ *    {
+ *      "rows": [{
+ *                "payroll_id": 123,
+ *                "gross": "$400",
+ *                "tax": "$40",
+ *                "net": "$360"
+ *               }],
+ *      "queries": ["SELECT *\nFROM table;"],
+ *      "transaction": false
+ *    }
+ * 
+ */
 router.get('/payroll/:id', async (req, res) => {
+  const id = req.params.id;
+  if(id && /^\d+$/.test(id)) {
+    let args = [
+      'hours_worked',
+      'weekly_hours',
+      'hourly_wage'
+    ];
+    const calcGross = format('\n\t\tCASE\n\t\t\tWHEN %I <= %I THEN %1$I * %3$I\n\t\t\tELSE (1.5 * %1$I - 0.5 * %I) * %I\n\t\tEND gross', ...args);
+    args = [
+      ['payroll_id', 'tax_rate'],
+      calcGross,
+      'payroll',
+      'job',
+      'job_id',
+      'salary',
+      'salary_id',
+      'payroll_id',
+      id
+    ];
+    const calcGrossString = '\n\tSELECT %I,%s\n\tFROM %I p\n\t\tJOIN %I j ON p.%5$I = j.%5$I\n\t\tJOIN %I s ON p.%7$I = s.%7$I\n\tWHERE %I = %L\n';
+    const calcGrossQuery = format(calcGrossString, ...args);
 
+    args = [
+      'payroll_id',
+      'gross',
+      'tax_rate',
+      calcGrossQuery
+    ];
+    const dbQuery = format('SELECT %I, %I, %2$I * %I AS tax, %2$I * (1 - %I) AS net\nFROM (%s) AS gross_calc;', ...args);
+    try {
+      const result = await db.query(dbQuery); 
+      res.json({
+        rows: result.rows, 
+        queries: [dbQuery],
+        transaction: false
+      });
+    } catch(err) {
+      console.error(err.stack);
+      res.status(422).json({
+        error: err.message,
+        queries: [dbQuery],
+        transaction: false
+      });
+    }
+  } else {
+    res.status(400).json({
+      error: 'Invalid or missing payroll id',
+      queries: [],
+      transaction: false
+    });
+  }
 });

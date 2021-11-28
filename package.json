@@ -53,7 +53,8 @@
       "GetManager",
 
       "GetAllPayrolls",
-      "CreatePayroll"
+      "CreatePayroll",
+      "GetPayroll"
     ]
   }
 }
