@@ -118,10 +118,11 @@ CREATE TABLE payroll (
   employee_id   INT       NOT NULL, 
   job_id        INT       NOT NULL,
   salary_id     INT       NOT NULL,
-  leave_id      INT       NOT NULL,
-  hours_worked  INTERVAL  NOT NULL,
+  leave_id      INT,
+  hours_worked  REAL      NOT NULL,
   pay_period    DATE      NOT NULL,
   tax_rate      REAL      NOT NULL,
+  UNIQUE(employee_id, pay_period),
 
   PRIMARY KEY(payroll_id),
   FOREIGN KEY(employee_id)
