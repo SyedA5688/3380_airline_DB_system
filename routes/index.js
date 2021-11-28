@@ -1,17 +1,13 @@
-const employee = require('./employee/employee');
-const employeeID = require('./employee/employee-id');
-const employeeDelete = require('./employee/employee-delete');
-const leave = require('./employee/leave');
-const job = require('./job/job');
-const benefits = require('./benefits/benefits');
-const department = require('./department/department');
+const employee = require('./employee');
+const job = require('./job');
+const benefits = require('./benefits');
+const department = require('./department');
+const manager = require('./manager');
 
 module.exports = (app) => {
   app.use(employee);
-  app.use(employeeID);
-  app.use(employeeDelete);
-  app.use(leave);
   app.use(job);
   app.use(benefits);
   app.use(department);
+  app.use(manager);
 };
