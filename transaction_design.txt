@@ -20,6 +20,7 @@ Employee Address Table
 	 //encryption
 	*Make it possible to update their address if the employee moves to another apartment
 	 (Update on the website the employee address info)
+	 // UPDATE Employee_Address SET Street_Address = '1234, KirkwoodRd' WHERE Employee_Address_ID = 1;
 	*Display the employees from the same country
 	 (First name Last Name  Country Name
 	  Arno       Dunstatter USA
