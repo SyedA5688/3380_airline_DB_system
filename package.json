@@ -47,7 +47,9 @@
 
       "GetAllDepartments",
       "AddNewDepartment",
-      "ChangeDepartmentDetails"
+      "ChangeDepartmentDetails",
+
+      "GetAllManagers"
     ]
   }
 }
