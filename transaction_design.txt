@@ -4,9 +4,6 @@
 // User should have an option to order the employees by the postion they have in the airline: pilots, flight attendant, stewards and etc.  
 
 Employee Table
-	*Attach for every employee info the manager info as well
-	 (Employee: First name Last name Middle Initial Manager name
-	            Andy       Wang      A              Rizvi Syed)
 	*Make SSN number private 
 	 (In a real airline company you can not see the SSN number of the employee)
 	*Same thing with their Phone number and Email address
