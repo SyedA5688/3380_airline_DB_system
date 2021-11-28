@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
-import './jobForms.css'
+import './leaveForms.css'
 
 
-class UpdateJobForm extends Component {
+class UpdateLeaveForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      editJobID: '',
-      editJobTitle: '',
-      editDepartmentID: '',
-      editLocationID: '',
-      editBenefitsPackageID: '',
-      editWeeklyHours: '',
+      editLeaveID: '',
+      editLeaveDate: '',
+      editLeaveReason: '',
+      editLeaveStatus: ''
     };
     
     this.handleChange = this.handleChange.bind(this);
@@ -54,11 +52,9 @@ class UpdateJobForm extends Component {
     event.preventDefault();
     try {
       let body = { 
-        job_title: this.state.editJobTitle, 
-        department_id: this.state.editDepartmentID,
-        location_id: this.state.editLocationID,
-        benefits_package_id: this.state.editBenefitsPackageID,
-        weekly_hours: this.state.editWeeklyHours,
+        date: this.state.editLeaveDate,
+        reason: this.state.editLeaveReason,
+        status: this.state.editLeaveStatus
       };
 
       for (let [key, value] of Object.entries(body)) {
@@ -66,19 +62,20 @@ class UpdateJobForm extends Component {
           delete body[key];
         }
       }
-      console.log("Updating job with ", body);
+      console.log("Updating leave with ", body);
   
-      const response = await fetch(`/job/${this.state.editJobID}`, {
+      const response = await fetch(`/leave/${this.state.editLeaveID}`, {
         method: "PUT",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(body)
       });
       const responseBody = await response.json();
+      console.log("Server Response:", responseBody);
 
       this.assertValidDBResponse(responseBody);
 
       this.setState({
-        returnedJob: responseBody.rows
+        returnedLeave: responseBody.rows
       });
 
       document.getElementById("successModal").style.display = "block"
@@ -104,16 +101,13 @@ class UpdateJobForm extends Component {
 
   handleClear = async (event) => {
     this.setState({
-      editJobID: '',
-      editJobTitle: '',
-      editDepartmentID: '',
-      editLocationID: '',
-      editBenefitsPackageID: '',
-      editWeeklyHours: '',
-      returnedJob: null
+      editLeaveID: '',
+      editLeaveDate: '',
+      editLeaveReason: '',
+      editLeaveStatus: '',
+      returnedLeave: null
     });
 
-    // Remove was-validated class from form to reset its appearance
     const form = document.querySelector('#updateFormHTML');
     form.classList.remove('was-validated');
   }
@@ -128,7 +122,7 @@ class UpdateJobForm extends Component {
                 <h5 className="modal-title" id="exampleModalLabel">Error Occurred</h5>
               </div>
               <div className="modal-body">
-                Something went wrong while processing your database request, one of your inputs may have been invalid. Please check your inputs, especially inputted IDs! These need to be existing IDs in the database. Cross reference IDs by searching through other tables, and contact airport database assistance if necessary. <br />
+                Something went wrong while processing your database request, one of your inputs may have been invalid. Please check your inputs, especially the leave ID! This needs to be an existing ID in the database. Cross reference IDs by searching through other tables, and contact airport database assistance if necessary. <br />
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn btn-primary" onClick={this.closeModal} >Close</button>
@@ -143,8 +137,8 @@ class UpdateJobForm extends Component {
               <div className="modal-header">
                 <h5 className="modal-title" >Success</h5>
               </div>
-              { this.state.returnedJob ? <div className="modal-body">
-                Job with ID {this.state.returnedJob[0]["job_id"]} was updated. <br />
+              { this.state.returnedLeave ? <div className="modal-body">
+                Leave with ID {this.state.returnedLeave[0]["leave_id"]} was updated. <br />
               </div> : <div></div>}
               <div className="modal-footer">
                 <button type="button" className="btn btn-primary" onClick={this.closeSuccessModal} >Close</button>
@@ -153,14 +147,14 @@ class UpdateJobForm extends Component {
           </div>
         </div>
 
-        <h3>Update an Job's Information</h3>
+        <h3>Update an Leave Entry's Information</h3>
 
         <form className="border border-secondary mt-3 px-5 py-4 rounded needs-validation" id="updateFormHTML" onSubmit={this.handleSubmit} noValidate>
 
-          <h5>Job to Update</h5>
+          <h5>Leave Entry to Update</h5>
           <div className="form-group">
-            <label className="sr-only" htmlFor="inputJobID">Job ID</label>
-            <input type="number" step="1" min="0"  pattern="[0-9]+" className="form-control" id="inputJobID" placeholder="0" value={this.state.editJobID} name="editJobID" onChange={this.handleChange} required />
+            <label className="sr-only" htmlFor="inputLeaveID">Leave ID</label>
+            <input type="number" step="1" min="0"  pattern="[0-9]+" className="form-control" id="inputLeaveID" placeholder="0" value={this.state.editLeaveID} name="editLeaveID" onChange={this.handleChange} required />
             <div className="invalid-feedback">Please provide a valid Job ID to update.</div>
           </div>
 
@@ -168,33 +162,21 @@ class UpdateJobForm extends Component {
           <small className="form-text text-muted">Note: Only enter in fields that you want updated.</small>
 
           <div className="form-group">
-            <label className="sr-only" htmlFor="inputJobTitle">Job Title</label>
-            <input type="text" pattern="[A-Za-z0-9-_ ]*" className="form-control" id="inputJobTitle" placeholder="Copilot" value={this.state.editJobTitle} name="editJobTitle" onChange={this.handleChange} />
-            <div className="invalid-feedback">Please provide a valid job title.</div>
+            <label className="sr-only" htmlFor="inputLeaveDate">Leave Date</label>
+            <input type="date" className="form-control" id="inputLeaveDate" value={this.state.editLeaveDate} name="editLeaveDate" onChange={this.handleChange} />
+            <div className="invalid-feedback">Please select a valid leave date.</div>
           </div>
 
           <div className="form-group">
-            <label className="sr-only" htmlFor="inputDepartmentID">Department ID</label>
-            <input type="number" step="1" min="0"  pattern="[0-9]*" className="form-control" id="inputDepartmentID" placeholder="0 (Needs to be an existing ID)" value={this.state.editDepartmentID} name="editDepartmentID" onChange={this.handleChange} />
-            <div className="invalid-feedback">Please provide a valid department ID.</div>
+            <label className="sr-only" htmlFor="inputLeaveStatus">Status</label>
+            <input type="text" pattern="[A-Za-z ]*" className="form-control" id="inputLeaveStatus" placeholder="(e.g. Returned)" value={this.state.editLeaveStatus} name="editLeaveStatus" onChange={this.handleChange} />
+            <div className="invalid-feedback">Please provide a valid status phrase. Only alphabetic characters allowed.</div>
           </div>
 
           <div className="form-group">
-            <label className="sr-only" htmlFor="inputLocationID">Location ID</label>
-            <input type="number" step="1" min="0"  pattern="[0-9]*" className="form-control" id="inputLocationID" placeholder="0 (Needs to be an existing ID)" value={this.state.editLocationID} name="editLocationID" onChange={this.handleChange} />
-            <div className="invalid-feedback">Please provide valid location ID.</div>
-          </div>
-
-          <div className="form-group">
-            <label className="sr-only" htmlFor="inputBenefitsPackageID">Benefits Package ID</label>
-            <input type="number" step="1" min="0"  pattern="[0-9]*" className="form-control" id="inputBenefitsPackageID" placeholder="0 (Needs to be an existing ID)" value={this.state.editBenefitsPackageID} name="editBenefitsPackageID" onChange={this.handleChange} />
-            <div className="invalid-feedback">Please provide valid benefits package ID.</div>
-          </div>
-
-          <div className="form-group">
-            <label className="sr-only" htmlFor="inputWeeklyHours">Weekly Hours</label>
-            <input type="number" step="1" min="0"  pattern="[0-9]*" className="form-control" id="inputWeeklyHours" placeholder="0 (Needs to be an existing ID)" value={this.state.editWeeklyHours} name="editWeeklyHours" onChange={this.handleChange} />
-            <div className="invalid-feedback">Please provide a valid weekly hours value.</div>
+            <label className="sr-only" htmlFor="inputLeaveReason">Reason</label>
+            <input type="text" pattern="[A-Za-z ]*" className="form-control" id="inputLeaveReason" placeholder="(e.g. Doctor's Appointment)" value={this.state.editLeaveReason} name="editLeaveReason" onChange={this.handleChange} />
+            <div className="invalid-feedback">Please provide a valid reason/description. Only alphabetic characters allowed.</div>
           </div>
 
           <button type="submit" className="btn btn-outline-secondary mt-3">Submit</button>
@@ -205,4 +187,4 @@ class UpdateJobForm extends Component {
   }
 }
 
-export default UpdateJobForm
+export default UpdateLeaveForm
