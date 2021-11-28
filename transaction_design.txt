@@ -13,12 +13,12 @@ Employee Table
 	*Make it possible to sort by the Gender
 	 (Male and Female) (No other genders included) 
 	 // SELECT * FROM Employee ORDER BY Gender;
+Employee Address Table
 	*Make Employee Address private
 	 (Not shown to the user but it still exists)
 	 //encryption
 	*Make it possible to update their address if the employee moves to another apartment
 	 (Update on the website the employee address info)
-Employee Address Table
 	*Display the employees from the same country
 	 (First name Last Name  Country Name
 	  Arno       Dunstatter USA
