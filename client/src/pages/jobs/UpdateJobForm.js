@@ -1,29 +1,17 @@
 import React, { Component } from 'react';
-import './employeeForms.css'
+import './jobForms.css'
 
 
-class UpdateForm extends Component {
+class UpdateJobForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      editEmployeeID: '',
-      editFirstName: '',
-      editLastName: '',
-      editGender: '',
-      editDOB: '',
-      editHourlyWage: '',
-      editSSN: '',
-      editMiddleInitial: '',
-      editPhone: '',
-      editEmail: '',
       editJobID: '',
-      editManagerID: '',
-      editAnnualBonus: '',
-      editStreetAddress: '',
-      editCity: '',
-      editCountry: '',
-      editZipCode: '',
-      editState: ''
+      editJobTitle: '',
+      editDepartmentID: '',
+      editLocationID: '',
+      editBenefitsPackageID: '',
+      editWeeklyHours: '',
     };
     
     this.handleChange = this.handleChange.bind(this);
@@ -55,10 +43,10 @@ class UpdateForm extends Component {
 
   assertValidDBResponse(body) {
     if (!("rows" in body)) {
-      throw new Error("Something went wrong; GET Request to Database did not return results object.");
+      throw new Error("Something went wrong; PUT Request to Database did not return results object.");
     }
     else if (!Array.isArray(body.rows)) {
-      throw new Error("Something went wrong; GET Request to Database returned results object that is not recognized by webpage.");
+      throw new Error("Something went wrong; PUT Request to Database returned results object that is not recognized by webpage.");
     }
   }
 
@@ -66,34 +54,21 @@ class UpdateForm extends Component {
     event.preventDefault();
     try {
       let body = { 
-        first_name: this.state.editFirstName, 
-        last_name: this.state.editLastName,
-        gender: this.state.editGender,
-        dob: this.state.editDOB,
-        hourly_wage: this.state.editHourlyWage,
-        ssn: this.state.editSSN,
-        m_initial: this.state.editMiddleInitial,
-        phone: this.state.editPhone,
-        email: this.state.editEmail,
-        job_id: this.state.editJobID,
-        manager_id: this.state.editManagerID,
-        annual_bonus: this.state.editAnnualBonus,
-        street_address: this.state.editStreetAddress,
-        city: this.state.editCity,
-        country: this.state.editCountry,
-        zip_code: this.state.editZipCode,
-        state: this.state.editState,
+        job_title: this.state.editJobTitle, 
+        department_id: this.state.editDepartmentID,
+        location_id: this.state.editLocationID,
+        benefits_package_id: this.state.editBenefitsPackageID,
+        weekly_hours: this.state.editWeeklyHours,
       };
 
       for (let [key, value] of Object.entries(body)) {
-        // If value is empty string, then delete key-value pair from body object
         if (value==="") {
           delete body[key];
         }
       }
-      // console.log("Updating employee with ", body);
+      console.log("Updating job with ", body);
   
-      const response = await fetch(`/employee/${this.state.editEmployeeID}`, {
+      const response = await fetch(`/job/${this.state.editJobID}`, {
         method: "PUT",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(body)
@@ -103,7 +78,7 @@ class UpdateForm extends Component {
       this.assertValidDBResponse(responseBody);
 
       this.setState({
-        returnedEmployee: responseBody.rows
+        returnedJob: responseBody.rows
       });
 
       document.getElementById("successModal").style.display = "block"
@@ -129,25 +104,13 @@ class UpdateForm extends Component {
 
   handleClear = async (event) => {
     this.setState({
-      editEmployeeID: '',
-      editFirstName: '',
-      editLastName: '',
-      editGender: '',
-      editDOB: '',
-      editHourlyWage: '',
-      editSSN: '',
-      editMiddleInitial: '',
-      editPhone: '',
-      editEmail: '',
       editJobID: '',
-      editManagerID: '',
-      editAnnualBonus: '',
-      editStreetAddress: '',
-      editCity: '',
-      editCountry: '',
-      editZipCode: '',
-      editState: '',
-      returnedEmployee: null
+      editJobTitle: '',
+      editDepartmentID: '',
+      editLocationID: '',
+      editBenefitsPackageID: '',
+      editWeeklyHours: '',
+      returnedJob: null
     });
 
     // Remove was-validated class from form to reset its appearance
@@ -165,7 +128,7 @@ class UpdateForm extends Component {
                 <h5 className="modal-title" id="exampleModalLabel">Error Occurred</h5>
               </div>
               <div className="modal-body">
-                Something went wrong while processing your database request, one of your inputs may have been invalid. Please check your inputs, especially manager ID! Contact airport database assistance if necessary. <br />
+                Something went wrong while processing your database request, one of your inputs may have been invalid. Please check your inputs, especially inputted IDs! These need to be existing IDs in the database. Cross reference IDs by searching through other tables, and contact airport database assistance if necessary. <br />
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn btn-primary" onClick={this.closeModal} >Close</button>
@@ -180,8 +143,8 @@ class UpdateForm extends Component {
               <div className="modal-header">
                 <h5 className="modal-title" >Success</h5>
               </div>
-              { this.state.returnedEmployee ? <div className="modal-body">
-                Employee with ID {this.state.returnedEmployee[0]["employee_id"]} was updated. <br />
+              { this.state.returnedJob ? <div className="modal-body">
+                Job with ID {this.state.returnedJob[0]["job_id"]} was updated. <br />
               </div> : <div></div>}
               <div className="modal-footer">
                 <button type="button" className="btn btn-primary" onClick={this.closeSuccessModal} >Close</button>
@@ -190,103 +153,48 @@ class UpdateForm extends Component {
           </div>
         </div>
 
-        <h3>Update an Employee's Information</h3>
+        <h3>Update an Job's Information</h3>
 
         <form className="border border-secondary mt-3 px-5 py-4 rounded needs-validation" id="updateFormHTML" onSubmit={this.handleSubmit} noValidate>
 
-          <h5>Employee to Update</h5>
+          <h5>Job to Update</h5>
           <div className="form-group">
-            <label className="sr-only" htmlFor="inputEmployeeEditID">Employee ID</label>
-            <input type="number" step="1"  pattern="[0-9]+" className="form-control" id="inputEmployeeEditID" placeholder="1000000" value={this.state.editEmployeeID} name="editEmployeeID" onChange={this.handleChange} required />
-            <div className="invalid-feedback">Please provide valid Employee ID to edit.</div>
+            <label className="sr-only" htmlFor="inputJobID">Job ID</label>
+            <input type="number" step="1" min="0"  pattern="[0-9]+" className="form-control" id="inputJobID" placeholder="0" value={this.state.editJobID} name="editJobID" onChange={this.handleChange} required />
+            <div className="invalid-feedback">Please provide a valid Job ID to update.</div>
           </div>
 
           <h5 className="mt-3" >Update Fields:</h5>
           <small className="form-text text-muted">Note: Only enter in fields that you want updated.</small>
-          <div className="input-group" >
-            <div className="input-group-prepend">
-              <span className="input-group-text" id="">First, MI, Last</span>
-            </div>
-            <input type="text" pattern="[A-Za-z ]*" className="form-control" id="inputEmployeeFirstName" placeholder="John" value={this.state.editFirstName} name="editFirstName" onChange={this.handleChange} />
-            <input type="text" pattern="[A-Z]{0,1}" className="form-control" id="inputEmployeeMiddleInitial" placeholder="M" value={this.state.editMiddleInitial} name="editMiddleInitial" onChange={this.handleChange} />
-            <input type="text" pattern="[A-Za-z ]*" className="form-control" id="inputEmployeeLastName" placeholder="Doe" value={this.state.editLastName} name="editLastName" onChange={this.handleChange} />
-            <div className="invalid-feedback">Please provide valid possible names (a-z, A-Z).</div>
-          </div>
 
-          <div className="form-group mt-2" >
-            <label className="sr-only" htmlFor="inputEmployeeGender">Gender</label>
-            <select  className="form-select" id="inputEmployeeGender" defaultValue="select" name="editGender" onChange={this.handleChange } >
-              <option disabled value="select"> -- Select an option -- </option>
-              <option value="M">Male</option>
-              <option value="F">Female</option>
-              <option value="O">Other</option>
-            </select>
-            <div className="invalid-feedback">Please select a gender option.</div>
+          <div className="form-group">
+            <label className="sr-only" htmlFor="inputJobTitle">Job Title</label>
+            <input type="text" pattern="[A-Za-z0-9-_ ]*" className="form-control" id="inputJobTitle" placeholder="Copilot" value={this.state.editJobTitle} name="editJobTitle" onChange={this.handleChange} />
+            <div className="invalid-feedback">Please provide a valid job title.</div>
           </div>
 
           <div className="form-group">
-            <label className="sr-only" htmlFor="inputEmployeeDOB">Date of Birth</label>
-            <input type="date" className="form-control" id="inputEmployeeDOB" value={this.state.editDOB} name="editDOB" onChange={this.handleChange} />
-            <div className="invalid-feedback">Please select your date of birth.</div>
+            <label className="sr-only" htmlFor="inputDepartmentID">Department ID</label>
+            <input type="number" step="1" min="0"  pattern="[0-9]*" className="form-control" id="inputDepartmentID" placeholder="0 (Needs to be an existing ID)" value={this.state.editDepartmentID} name="editDepartmentID" onChange={this.handleChange} />
+            <div className="invalid-feedback">Please provide a valid department ID.</div>
           </div>
 
           <div className="form-group">
-            <label className="sr-only" htmlFor="inputEmployeeSSN">Social Security Number</label>
-            <input type="text" pattern="[0-9]*" className="form-control" id="inputEmployeeSSN" placeholder="123456789" value={this.state.editSSN} name="editSSN" onChange={this.handleChange} />
-          </div>
-
-          <div className="input-group mt-2" >
-            <div className="input-group-prepend">
-              <span className="input-group-text" id="">Hourly Wage, Annual Bonus</span>
-            </div>
-            <input type="number" step=".01" pattern="[0-9.]*" className="form-control" id="inputEmployeeHourlyWage" placeholder="15.25" value={this.state.editHourlyWage} name="editHourlyWage" onChange={this.handleChange} />
-            <input type="number" step="1" pattern="[0-9]*" className="form-control" id="inputEmployeeAnnualBonus" placeholder="20000" value={this.state.editAnnualBonus} name="editAnnualBonus" onChange={this.handleChange} />
-            <div className="invalid-feedback">Please provide valid hourly wage and/or annual bonus.</div>
-          </div>
-
-          <div className="input-group mt-2" >
-            <div className="input-group-prepend">
-              <span className="input-group-text" id="">Phone, Email</span>
-            </div>
-            <input type="text" pattern="[0-9+]*" className="form-control" id="inputEmployeePhone" placeholder="8321111111" value={this.state.editPhone} name="editPhone" onChange={this.handleChange} />
-            <input type="email" className="form-control" id="inputEmployeeEmail" placeholder="example@gmail.com" value={this.state.editEmail} name="editEmail" onChange={this.handleChange} />
-            <div className="invalid-feedback">Please provide valid phone and/or email.</div>
+            <label className="sr-only" htmlFor="inputLocationID">Location ID</label>
+            <input type="number" step="1" min="0"  pattern="[0-9]*" className="form-control" id="inputLocationID" placeholder="0 (Needs to be an existing ID)" value={this.state.editLocationID} name="editLocationID" onChange={this.handleChange} />
+            <div className="invalid-feedback">Please provide valid location ID.</div>
           </div>
 
           <div className="form-group">
-            <label className="sr-only" htmlFor="inputEmployeeJobID">Job ID</label>
-            <input type="number" step="1"  pattern="[0-9]*" className="form-control" id="inputEmployeeJobID" placeholder="1" value={this.state.editJobID} name="editJobID" onChange={this.handleChange} />
-            <div className="invalid-feedback">Please provide valid job ID.</div>
+            <label className="sr-only" htmlFor="inputBenefitsPackageID">Benefits Package ID</label>
+            <input type="number" step="1" min="0"  pattern="[0-9]*" className="form-control" id="inputBenefitsPackageID" placeholder="0 (Needs to be an existing ID)" value={this.state.editBenefitsPackageID} name="editBenefitsPackageID" onChange={this.handleChange} />
+            <div className="invalid-feedback">Please provide valid benefits package ID.</div>
           </div>
 
           <div className="form-group">
-            <label className="sr-only" htmlFor="inputEmployeeManagerID">Manager ID</label>
-            <input type="number" step="1"  pattern="[0-9]*" className="form-control" id="inputEmployeeManagerID" placeholder="1000000 (Must be an existing ID)" value={this.state.editManagerID} name="editManagerID" onChange={this.handleChange} />
-            <div className="invalid-feedback">Please provide valid manager ID.</div>
-          </div>
-
-          <div className="input-group mt-2" >
-            <div className="input-group-prepend">
-              <span className="input-group-text" id="">Street Address, City</span>
-            </div>
-            <input type="text" pattern="[A-Za-z0-9#-. ]*" className="form-control" id="inputEmployeeStreetAddress" placeholder="12345 Some Street LN." value={this.state.editStreetAddress} name="editStreetAddress" onChange={this.handleChange} />
-            <input type="text" pattern="[A-Za-z ]*" className="form-control" id="inputEmployeeCity" placeholder="Houston" value={this.state.editCity} name="editCity" onChange={this.handleChange} />
-            <div className="invalid-feedback">Please provide valid street address and city.</div>
-          </div>
-
-          <div className="input-group mt-1" >
-            <div className="input-group-prepend">
-              <span className="input-group-text" id="">State, Zip Code</span>
-            </div>
-            <input type="text" pattern="[A-Za-z ]*" className="form-control" id="inputEmployeeState" placeholder="Texas" value={this.state.editState} name="editState" onChange={this.handleChange} />
-            <input type="text"  pattern="[A-Za-z0-9]*" className="form-control" id="inputEmployeeZipCode" placeholder="77777" value={this.state.editZipCode} name="editZipCode" onChange={this.handleChange} />
-            <div className="invalid-feedback">Please provide valid state and zip code.</div>
-          </div>
-
-          <div className="form-group">
-            <label className="sr-only" htmlFor="inputEmployeeCountry">Country</label>
-            <input type="text" pattern="[A-Za-z ]*" className="form-control" id="inputEmployeeCountry" placeholder="United States" value={this.state.editCountry} name="editCountry" onChange={this.handleChange} />
-            <div className="invalid-feedback">Please provide valid country name.</div>
+            <label className="sr-only" htmlFor="inputWeeklyHours">Weekly Hours</label>
+            <input type="number" step="1" min="0"  pattern="[0-9]*" className="form-control" id="inputWeeklyHours" placeholder="0 (Needs to be an existing ID)" value={this.state.editWeeklyHours} name="editWeeklyHours" onChange={this.handleChange} />
+            <div className="invalid-feedback">Please provide a valid weekly hours value.</div>
           </div>
 
           <button type="submit" className="btn btn-outline-secondary mt-3">Submit</button>
@@ -297,4 +205,4 @@ class UpdateForm extends Component {
   }
 }
 
-export default UpdateForm
+export default UpdateJobForm

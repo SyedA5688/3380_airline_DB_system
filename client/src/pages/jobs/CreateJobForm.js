@@ -133,7 +133,7 @@ class InsertJobForm extends Component {
 
           <div className="form-group">
             <label className="sr-only" htmlFor="inputDepartmentID">Department ID</label>
-            <input type="number" step="1"  pattern="[0-9]+" className="form-control" id="inputDepartmentID" placeholder="1" value={this.state.insertDepartmentID} name="insertDepartmentID" onChange={this.handleChange} required />
+            <input type="number" step="1"  pattern="[0-9]+" className="form-control" id="inputDepartmentID" placeholder="0 (Must be an existing ID)" value={this.state.insertDepartmentID} name="insertDepartmentID" onChange={this.handleChange} required />
             <div className="invalid-feedback">Please provide a valid department ID.</div>
           </div>
 

@@ -256,13 +256,14 @@ class SearchAllJobsForm extends Component {
           <tbody>
             {this.state.returnedJobs && this.state.returnedJobs.map((jobObj, index) => (
               <tr key={jobObj.job_id}>
-                <th scope="col">{index}</th>
-                <th scope="col">{jobObj.first_name}</th>
-                <th scope="col">{jobObj.last_name}</th>
-                <th scope="col">{jobObj.m_initial}</th>
-                <th scope="col">{jobObj.employee_id}</th>
-                <th scope="col">{jobObj.job_title}</th>
-                <th scope="col">{jobObj.department_name}</th>
+                <th scope="col">{index + 1}</th>
+                <th scope="col">{jobObj.job_id	}</th>
+                <th scope="col">{jobObj.job_title	}</th>
+                <th scope="col">{jobObj.department_id	}</th>
+                <th scope="col">{jobObj.department_name	}</th>
+                <th scope="col">{jobObj.location_id	}</th>
+                <th scope="col">{jobObj.weekly_hours}</th>
+                <th scope="col">{jobObj.benefits_package_id}</th>
               </tr>
             ))}
           </tbody>
