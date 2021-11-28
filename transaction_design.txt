@@ -24,33 +24,32 @@ Employee Address Table
 	 (First name Last Name  Country Name
 	  Arno       Dunstatter USA
           Rizvi      Syed       USA)
-	  // 
-	*Display the employees from the same city
-	 (First name Last Name  City Name
-	  Arno       Dunstatter Stafford
-          Rizvi      Syed       Stafford) 
+	  // SELECT Employee.Firstname, Employee.Lastname, Employee_Address.Country_Name FROM Employee INNER JOIN Employee_Address ON Employee.Employee_Address_Id = Employee_Address.Employee_Address_Id ORDER BY Country_Name;
 Payroll Table
-	*Display the employees that worked most amount of hours for a week/month/year
+	*Display the employees that worked most amount of hours for a week
          (Employee First Name    Hours Worked this week
           Arno                   100
 	  Rizvi                  88
-	*Send the money to the employee every two weeks 
-	 (As a check via mail)
+	  // SELECT Employee.Firstname, Employee.Lastname, Payroll.Hours_Worked FROM Employee INNER JOIN Payroll ON Employee.Employee_Id = Payroll.Employee_Id ORDER BY Hours_Worked desc;
 	*As a default every employee must pay the same amount of tax rate 
 	 (According to google every employee will pay the same amount of tax rate, but tax rate varies based on the state as well)
 	 (Texas have: 6.25% tax rate while California have: 12.3% tax rate.)
+	 // Not sure how to do this one
 Leave Table
 	*Search for the total number of available employees
 	(Display status of the employee available/absent)
+	// SELECT Employee.Firstname, Employee.Lastname, Payroll.Hours_Worked FROM Employee INNER JOIN Payroll ON Employee.Employee_Id = Payroll.Employee_Id ORDER BY Hours_Worked desc;
 	*Display Reason of the employee being absent if the employee is absent. If the employee is present leave it blank. 
 	(Status    Reason
 	 Available
 	 Absent    Sick
 	 Absent    Vacation)
+	 // User input
 	*Display the expected return date of the employee
 	 (Date Leave Expected Return
 	  10/10/2021 11/11/2021)
-	 (Based on the online research airline workers can have maximum of 5 weeks rest)    
+	 (Based on the online research airline workers can have maximum of 5 weeks rest)   
+	 // User Input
 Salary Table
 	*Search employees based on their hourly wage from lowest to highest
 	(From 10$ to x) 
