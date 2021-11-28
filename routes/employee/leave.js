@@ -260,7 +260,7 @@ router.get('/leave', async (req, res) => {
   let filterString = '';
   if(query){
     const searchBy = params.searchBy && sortParams[params.searchBy] ? sortParams[params.searchBy] : 'text';
-    if(searchBy === 'leave_id') filterString = format('WHERE %I = %L\n', searchBy, query);
+    if(searchBy === sortParams.id || searchBy === sortParams.date) filterString = format('WHERE %I = %L\n', searchBy, query);
     else if(searchBy !== 'text') filterString = format('WHERE %I LIKE \'%s%%\'\n', searchBy, query);
     else filterString = format('WHERE %1$I LIKE \'%3$s%%\' OR %2$I LIKE \'%3$s%%\'\n', sortParams.reason, sortParams.status, query);
   }
