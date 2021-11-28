@@ -12,14 +12,16 @@ module.exports = router;
  * @apiGroup Departments
  * @apiDescription Returns department information.
 
- * @apiQuery {String {non-empty}}   [q]             Filter rows based on query
- * @apiQuery {String=id,name,date}  [searchBy=name] Used if <code>q</code> is specified.
- * @apiQuery {Number {1+}}          [page=1]        Specify <code>page</code> if there are more results than <code>limit</code>
- * @apiQuery {String=id,name,date}  [sort=id]       How rows are sorted
- * @apiQuery {String=asc,desc}      [order=asc]     Receive rows in ascending or descending order
- * @apiQuery {Number {1-100}}       [limit=10]      The maximum number of rows to receive
+ * @apiQuery {String {non-empty}}                   [q]             Filter rows based on query
+ * @apiQuery {String=id,name,date}                  [searchBy=name] Used if <code>q</code> is specified.
+ * @apiQuery {Number {1+}}                          [page=1]        Specify <code>page</code> if there are more results than <code>limit</code>
+ * @apiQuery {String=id,name,date,jobs,employees}   [sort=id]       How rows are sorted
+ * @apiQuery {String=asc,desc}                      [order=asc]     Receive rows in ascending or descending order
+ * @apiQuery {Number {1-100}}                       [limit=10]      The maximum number of rows to receive
  * 
  * @apiSuccess {Object[]} rows                      Results from the database
+ * @apiSuccess {Number}   rows.job_count            Number of jobs in department
+ * @apiSuccess {Number}   rows.employee_count       Number of employees in department
  * @apiSuccess {Number}   rows.department_id        Department ID
  * @apiSuccess {String}   rows.department_name      Department name
  * @apiSuccess {String}   rows.creation_date        Date department was created
@@ -35,6 +37,8 @@ module.exports = router;
  *    HTTP/1.1 200 OK
  *    {
  *      "rows": [{
+ *                "job_count": 5,
+ *                "employee_count": 100,
  *                "department_id": 123,
  *                "department_name": "SALES",
  *                "creation_date": "2000-09-17",
@@ -53,7 +57,9 @@ router.get('/department', async (req, res) => {
   const sortParams = {
     id: 'department_id',
     name: 'department_name',
-    date: 'creation_date'
+    date: 'creation_date',
+    jobs: 'job_count',
+    employees: 'employee_count'
   };
   const sortBy = sortParams[params.sort] ? sortParams[params.sort] : sortParams.name;
   const order = params.order ? params.order.toUpperCase() : 'ASC';
@@ -79,9 +85,12 @@ router.get('/department', async (req, res) => {
   ];
   const joinArgs = [
     'department',
+    'job',
+    'department_id',
     'employee',
-    'department_head_id',
-    'employee_id'
+    'job_id',
+    'employee_id',
+    'department_head_id'
   ];
   const orderArgs = [  
     sortBy, 
@@ -89,8 +98,10 @@ router.get('/department', async (req, res) => {
     limit * (page - 1), 
     limit 
   ];
-  const queryString = `SELECT %I\nFROM %I\n\tLEFT JOIN %I\n\tON %I = %I\n${filterString}ORDER BY %I %s\nOFFSET %s\nLIMIT %s;`;
-  const dbQuery = format(queryString, columnArgs, ...joinArgs,...orderArgs);
+  const columnString = format('d.%I,%I,%I,%I,h.%I,h.%I,h.%I', ...columnArgs);
+  const joinString = format('FROM %I d\n\tLEFT JOIN %I j\n\tON j.%3$I = d.%3$I\n\tLEFT JOIN %I e\n\tON e.%5$I = j.%5$I\n\tLEFT JOIN %4$I h\n\tON h.%6$I = d.%I', ...joinArgs);
+  const queryString = `SELECT COUNT(DISTINCT j.%I) AS job_count,COUNT(DISTINCT e.%I) AS employee_count,${columnString}\n${joinString}\n${filterString}GROUP BY ${columnString}\nORDER BY %I %s\nOFFSET %s\nLIMIT %s;`;
+  const dbQuery = format(queryString, 'job_id', 'employee_id', ...orderArgs);
   try {
     const result = await db.query(dbQuery);
     res.json({
