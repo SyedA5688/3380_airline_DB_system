@@ -53,6 +53,7 @@ Leave Table
 Salary Table
 	*Search employees based on their hourly wage from lowest to highest
 	(From 10$ to x) 
+	// SELECT Employee.Firstname, Employee.Lastname, Salary.Hourly_Wage FROM Employee INNER JOIN Salary ON Employee.Employee_Id = Salary.Employee_Id ORDER BY Hourly_Wage asc;
 	*Search for the employees earning more than > x amount of money in a year
   (let x be 200,000$ in that case salary table should display: pilots, Aerospace Engineers, etc..)
 	*Search for employees earning overtime money 
