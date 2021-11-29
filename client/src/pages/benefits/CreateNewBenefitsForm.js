@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
-import './departmentForms.css'
+import './benefitsForm.css'
 
 
-class CreateDepartmentForm extends Component {
+class CreateBenefitsForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      createDepartmentName: '',
-      createDepartmentDate: '',
-      createDepartmentHeadID: '',
+      health_insurance_provider: '',
+      amount: '',
+      stock_options: '',
+      retirement_plan: '',
     };
     
     this.handleChange = this.handleChange.bind(this);
@@ -51,24 +52,25 @@ class CreateDepartmentForm extends Component {
     event.preventDefault();
     try {
       const body = { 
-        department_name: this.state.createDepartmentName, 
-        creation_date: this.state.createDepartmentDate,
-        department_head_id: this.state.createDepartmentHeadID
+        health_insurance_provider: this.state.health_insurance_provider, 
+        amount: this.state.amount,
+        stock_options: this.state.stock_options,
+        retirement_plan: this.state.retirement_plan
       };
-      // console.log("Sending creating new department POST request with:", body);
+      // console.log("Sending creating new benefits package POST request with:", body);
   
-      const response = await fetch("/department", {
+      const response = await fetch("/benefits", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(body)
       });
   
       const responseBody = await response.json();
-      // console.log("Response:", responseBody);
+      // console.log("Response body:", responseBody);
       this.assertValidDBResponse(responseBody);
   
       this.setState({
-        createdDepartment: responseBody.rows
+        createdBenefitsPackage: responseBody.rows
       });
     }
     catch (err) {
@@ -85,9 +87,10 @@ class CreateDepartmentForm extends Component {
 
   handleClear = async (event) => {
     this.setState({
-      createDepartmentName: '',
-      createDepartmentDate: '',
-      createDepartmentHeadID: '',
+      health_insurance_provider: '',
+      amount: '',
+      stock_options: '',
+      retirement_plan: '',
       createdDepartment: null
     });
 
@@ -115,56 +118,60 @@ class CreateDepartmentForm extends Component {
           </div>
         </div>
 
-        <h3>Create New Department</h3>
+        <h3>Create New Benefits Package</h3>
 
         <form className="border border-secondary mt-3 px-5 py-4 rounded needs-validation" id="createFormHTML" onSubmit={this.handleSubmit} noValidate>
 
           <div className="form-group">
-            <label className="sr-only" htmlFor="inputDepartmentName">Department Name</label>
-            <input type="text" pattern="[A-Za-z ]+" className="form-control" id="inputDepartmentName" placeholder="(e.g. Flight Personnel)" value={this.state.createDepartmentName} name="createDepartmentName" onChange={this.handleChange} required />
-            <div className="invalid-feedback">Please provide a valid department name.</div>
+            <label className="sr-only" htmlFor="inputDepartmentName">Health Insurance Provider</label>
+            <input type="text" pattern="[A-Za-z ]+" className="form-control" id="inputInsuranceProvider" placeholder="(e.g. AllState)" value={this.state.health_insurance_provider} name="health_insurance_provider" onChange={this.handleChange} required />
+            <div className="invalid-feedback">Please provide a valid health insurance provider name.</div>
           </div>
 
           <div className="form-group">
-            <label className="sr-only" htmlFor="inputCreationDate">Creation Date</label>
-            <input type="date" className="form-control" id="inputCreationDate" name="createDepartmentDate" value={this.state.createDepartmentDate} onChange={this.handleChange} required />
-            <div className="invalid-feedback">Please select a valid creation date.</div>
+            <label className="sr-only" htmlFor="inputDepartmentHeadID">Amount</label>
+            <input type="number" step="0.01" min="0" pattern="[0-9]*" className="form-control" id="inputPackageAmount" placeholder="(e.g. 5000.00)" value={this.state.amount} name="amount" onChange={this.handleChange} />
+            <div className="invalid-feedback">Please provide a valid package monetary amount.</div>
           </div>
 
           <div className="form-group">
-            <label className="sr-only" htmlFor="inputDepartmentHeadID">Department Head ID</label>
-            <input type="number" step="1" min="0" pattern="[0-9]+" className="form-control" id="inputDepartmentHeadID" placeholder="1000000 (Must be an existing ID)" value={this.state.createDepartmentHeadID} name="createDepartmentHeadID" onChange={this.handleChange} required />
-            <div className="invalid-feedback">Please provide a valid department ID.</div>
+            <label className="sr-only" htmlFor="inputDepartmentName">Stock Options</label>
+            <input type="text" pattern="[A-Za-z ]*" className="form-control" id="inputDepartmentName" placeholder="(e.g. NASDAQ)" value={this.state.stock_options} name="stock_options" onChange={this.handleChange} />
+            <div className="invalid-feedback">Please provide a valid stock options phrase.</div>
+          </div>
+
+          <div className="form-group">
+            <label className="sr-only" htmlFor="inputDepartmentName">Retirement Plan</label>
+            <input type="text" pattern="[A-Za-z0-9 ]*" className="form-control" id="inputRetirementPlan" placeholder="(e.g. 2065 Retirement Plus)" value={this.state.retirement_plan} name="retirement_plan" onChange={this.handleChange} />
+            <div className="invalid-feedback">Please provide a valid retirement plan name.</div>
           </div>
 
           <button type="submit" className="btn btn-outline-secondary mt-3">Submit</button>
           <button type="button" className="btn btn-outline-secondary mt-3 mx-3" onClick={this.handleClear} >Clear</button>
         </form>
 
-        {this.state.createdDepartment ? 
+        {this.state.createdBenefitsPackage ? 
         <div>
-          <h3 className="mt-5 ">Created Department</h3>
+          <h3 className="mt-5 ">Created Benefits Package</h3>
           <table align="center" className="table border mt-3 mb-5" >
             <thead className="table-dark">
               <tr>
-                <th scope="col">Department ID</th>
-                <th scope="col">Department Name</th>
-                <th scope="col">Creation Date</th>
-                <th scope="col">Department Head ID</th>
-                <th scope="col">First Name</th>
-                <th scope="col">Last Name</th>
+                <th scope="col">Benefits Package ID</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Stock Options</th>
+                <th scope="col">Health Insurance Provider</th>
+                <th scope="col">Retirement Plan</th>
               </tr>
             </thead>
             
             <tbody>
-              {this.state.createdDepartment && this.state.createdDepartment.map(deptObj => (
-                <tr key={deptObj.department_id}>
-                  <th scope="col">{deptObj.department_id}</th>
-                  <th scope="col">{deptObj.department_name}</th>
-                  <th scope="col">{deptObj.creation_date}</th>
-                  <th scope="col">{deptObj.department_head_id}</th>
-                  <th scope="col">{deptObj.first_name}</th>
-                  <th scope="col">{deptObj.last_name}</th>
+              {this.state.createdBenefitsPackage && this.state.createdBenefitsPackage.map(benefitsObj => (
+                <tr key={benefitsObj.benefits_package_id}>
+                  <th scope="col">{benefitsObj.benefits_package_id}</th>
+                  <th scope="col">{benefitsObj.amount}</th>
+                  <th scope="col">{benefitsObj.stock_options}</th>
+                  <th scope="col">{benefitsObj.health_insurance_provider}</th>
+                  <th scope="col">{benefitsObj.retirement_plan}</th>
                 </tr>
               ))}
             </tbody>
@@ -176,4 +183,4 @@ class CreateDepartmentForm extends Component {
   }
 }
 
-export default CreateDepartmentForm
+export default CreateBenefitsForm
