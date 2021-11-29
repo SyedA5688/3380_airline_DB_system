@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
-import './departmentForms.css'
+import './benefitsForm.css'
 
 
-class UpdateDepartmentForm extends Component {
+class UpdateBenefitsForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      departmentID: '',
-      updateDepartmentName: '',
-      updateCreationDate: '',
-      updateDepartmentHeadID: '',
+      benefitsPackageID: '',
+      health_insurance_provider: '',
+      amount: '',
+      stock_options: '',
+      retirement_plan: '',
     };
     
     this.handleChange = this.handleChange.bind(this);
@@ -52,9 +53,10 @@ class UpdateDepartmentForm extends Component {
     event.preventDefault();
     try {
       let body = { 
-        department_name: this.state.updateDepartmentName, 
-        creation_date: this.state.updateCreationDate,
-        department_head_id: this.state.updateDepartmentHeadID
+        health_insurance_provider: this.state.health_insurance_provider, 
+        amount: this.state.amount,
+        stock_options: this.state.stock_options,
+        retirement_plan: this.state.retirement_plan
       };
 
       for (let [key, value] of Object.entries(body)) {
@@ -64,17 +66,18 @@ class UpdateDepartmentForm extends Component {
       }
       // console.log("Updating department with ", body);
   
-      const response = await fetch(`/department/${this.state.departmentID}`, {
+      const response = await fetch(`/benefits/${this.state.benefitsPackageID}`, {
         method: "PUT",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(body)
       });
-      const responseBody = await response.json();
 
+      const responseBody = await response.json();
+      // console.log("Response Body:", responseBody);
       this.assertValidDBResponse(responseBody);
 
       this.setState({
-        returnedDepartment: responseBody.rows
+        returnedBenefitPackage: responseBody.rows
       });
 
       document.getElementById("successModal").style.display = "block"
@@ -100,11 +103,12 @@ class UpdateDepartmentForm extends Component {
 
   handleClear = async (event) => {
     this.setState({
-      departmentID: '',
-      updateDepartmentName: '',
-      updateCreationDate: '',
-      updateDepartmentHeadID: '',
-      returnedDepartment: null
+      benefitsPackageID: '',
+      health_insurance_provider: '',
+      amount: '',
+      stock_options: '',
+      retirement_plan: '',
+      returnedBenefitPackage: null
     });
 
     const form = document.querySelector('#updateFormHTML');
@@ -136,8 +140,8 @@ class UpdateDepartmentForm extends Component {
               <div className="modal-header">
                 <h5 className="modal-title" >Success</h5>
               </div>
-              { this.state.returnedDepartment ? <div className="modal-body">
-                Department with ID {this.state.departmentID} was updated. <br />
+              { this.state.returnedBenefitPackage ? <div className="modal-body">
+                Benefits Package with ID {this.state.benefitsPackageID} was updated. <br />
               </div> : <div></div>}
               <div className="modal-footer">
                 <button type="button" className="btn btn-primary" onClick={this.closeSuccessModal} >Close</button>
@@ -146,14 +150,14 @@ class UpdateDepartmentForm extends Component {
           </div>
         </div>
 
-        <h3>Update a Department's Information</h3>
+        <h3>Update a Benefits Package:</h3>
 
         <form className="border border-secondary mt-3 px-5 py-4 rounded needs-validation" id="updateFormHTML" onSubmit={this.handleSubmit} noValidate>
 
-          <h5>Department to Update</h5>
+          <h5>Benefits Package to Update</h5>
           <div className="form-group">
-            <label className="sr-only" htmlFor="inputDepartmentID">Department ID</label>
-            <input type="number" step="1" min="0"  pattern="[0-9]+" className="form-control" id="inputDepartmentID" placeholder="0" value={this.state.departmentID} name="departmentID" onChange={this.handleChange} required />
+            <label className="sr-only" htmlFor="inputBenefitsPackageID">Benefits Package ID</label>
+            <input type="number" step="1" min="0"  pattern="[0-9]+" className="form-control" id="inputBenefitsPackageID" placeholder="(e.g. 0)" value={this.state.benefitsPackageID} name="benefitsPackageID" onChange={this.handleChange} required />
             <div className="invalid-feedback">Please provide a valid department ID to update.</div>
           </div>
 
@@ -161,21 +165,27 @@ class UpdateDepartmentForm extends Component {
           <small className="form-text text-muted">Note: Only enter in fields that you want updated.</small>
 
           <div className="form-group">
-            <label className="sr-only" htmlFor="inputDepartmentName">Department Name</label>
-            <input type="text" pattern="[A-Za-z ]*" className="form-control" id="inputDepartmentName" placeholder="(e.g. Flight Crew)" value={this.state.updateDepartmentName} name="updateDepartmentName" onChange={this.handleChange} />
-            <div className="invalid-feedback">Please provide a valid department name.</div>
+            <label className="sr-only" htmlFor="inputInsuranceProvider">Health Insurance Provider</label>
+            <input type="text" pattern="[A-Za-z ]*" className="form-control" id="inputInsuranceProvider" placeholder="(e.g. AllState)" value={this.state.health_insurance_provider} name="health_insurance_provider" onChange={this.handleChange} />
+            <div className="invalid-feedback">Please provide a valid health insurance provider.</div>
           </div>
 
           <div className="form-group">
-            <label className="sr-only" htmlFor="inputCreationDate">Creation Date</label>
-            <input type="date" className="form-control" id="inputCreationDate" value={this.state.updateCreationDate} name="updateCreationDate" onChange={this.handleChange} />
-            <div className="invalid-feedback">Please provide a valid creation date.</div>
+            <label className="sr-only" htmlFor="inputPackageAmount">Amount</label>
+            <input type="number" step="0.01" min="0"  pattern="[0-9]*" className="form-control" id="inputPackageAmount" placeholder="(e.g. 30000.00)" value={this.state.amount} name="amount" onChange={this.handleChange} />
+            <div className="invalid-feedback">Please provide a valid package amount.</div>
           </div>
 
           <div className="form-group">
-            <label className="sr-only" htmlFor="inputDepartmentHeadID">Department Head ID</label>
-            <input type="number" step="1" min="0"  pattern="[0-9]*" className="form-control" id="inputDepartmentHeadID" placeholder="0 (Needs to be an existing ID)" value={this.state.updateDepartmentHeadID} name="updateDepartmentHeadID" onChange={this.handleChange} />
-            <div className="invalid-feedback">Please provide a valid department head ID.</div>
+            <label className="sr-only" htmlFor="inputStockOptions">Stock Options</label>
+          <input type="text" pattern="[A-Za-z ]*" className="form-control" id="inputStockOptions" placeholder="(e.g. NASDAQ)" value={this.state.stock_options} name="stock_options" onChange={this.handleChange} />
+            <div className="invalid-feedback">Please provide a valid stock options phrase.</div>
+          </div>
+
+          <div className="form-group">
+            <label className="sr-only" htmlFor="inputRetirementPlan">Retirement Plan</label>
+            <input type="text" pattern="[A-Za-z0-9 ]*" className="form-control" id="inputRetirementPlan" placeholder="(e.g. 2065 Retirement Plus)" value={this.state.retirement_plan} name="retirement_plan" onChange={this.handleChange} />
+            <div className="invalid-feedback">Please provide a valid retirement plan name.</div>
           </div>
 
           <button type="submit" className="btn btn-outline-secondary mt-3">Submit</button>
@@ -186,4 +196,4 @@ class UpdateDepartmentForm extends Component {
   }
 }
 
-export default UpdateDepartmentForm
+export default UpdateBenefitsForm
