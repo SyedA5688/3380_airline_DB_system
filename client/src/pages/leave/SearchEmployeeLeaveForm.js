@@ -232,10 +232,10 @@ class SearchEmployeeLeaveForm extends Component {
           <div className="form-group mt-2" >
             <label className="sr-only" htmlFor="inputSortBy">Sort by:</label>
             <select name="sort" className="form-select" id="inputSortBy" defaultValue="id" onChange={this.handleChange}>
-              <option value="id">Employee ID</option>
-              <option value="name">Name</option>
-              <option value="title">Job Title</option>
-              <option value="department">Department</option>
+              <option value="id">Leave ID</option>
+              <option value="date">Leave Date</option>
+              <option value="status">Status</option>
+              <option value="reason">Reason</option>
             </select>
           </div>
 

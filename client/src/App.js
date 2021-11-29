@@ -20,6 +20,9 @@ import CreateLeaveForm from './pages/leave/CreateLeaveForm';
 import UpdateLeaveForm from './pages/leave/UpdateLeaveForm';
 
 import DepartmentsSidePanel from './pages/DepartmentSidePanel';
+import CreateDepartmentForm from './pages/departments/CreateDepartmentForm';
+import SearchDepartmentsForm from './pages/departments/SearchDepartments';
+import UpdateDepartmentForm from './pages/departments/UpdateDepartment';
 import './App.css'
 
 
@@ -51,7 +54,11 @@ class App extends Component {
                   <Route exact path="update" element={<UpdateLeaveForm />} />
                 </Route>
 
-                <Route exact path="department" element={<DepartmentsSidePanel />} />
+                <Route exact path="department" element={<DepartmentsSidePanel />} >
+                  <Route exact path="create" element={<CreateDepartmentForm />} />
+                  <Route exact path="search" element={<SearchDepartmentsForm />} />
+                  <Route exact path="update" element={<UpdateDepartmentForm />} />
+                </Route>
               </Route>
               
             </Routes>

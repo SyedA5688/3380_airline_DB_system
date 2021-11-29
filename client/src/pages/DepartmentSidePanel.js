@@ -11,11 +11,9 @@ class DepartmentsSidePanel extends Component {
           <div className="col-3" id="sidebar-wrapper" >
             <nav className="sidebar-nav" align="center" >
               <ul className="sidebar-ul" >
-                <li className="sidebar-li"><a href="/department" >Search Departments</a></li>
-                <li className="sidebar-li"><a href="/department" >Create New Department</a></li>
-                <li className="sidebar-li"><a href="/department" >Update Department Details</a></li>
-                <li className="sidebar-li"><a href="/department" >Jobs Within Department</a></li>
-                <li className="sidebar-li"><a href="/department" >Employees Within Department</a></li>
+                <li className="sidebar-li"><a href="/department/search" >Search Departments</a></li>
+                <li className="sidebar-li"><a href="/department/create" >Create New Department</a></li>
+                <li className="sidebar-li"><a href="/department/update" >Update Department Details</a></li>
               </ul>
             </nav>
           </div>
