@@ -40,6 +40,9 @@
       "GetAllJobs",
       "AddJob",
       "ChangeJobDetails",
+      "DeleteJob",
+      "GetAllLocations",
+      "AddNewLocation",
 
       "GetAllBenefits",
       "AddNewBenefits",
