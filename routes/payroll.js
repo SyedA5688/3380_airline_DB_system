@@ -134,8 +134,8 @@ router.get('/payroll', async (req, res) => {
  *                "pay_period": "2021-11-01"
  *                "tax_rate": 0.10
  *               }],
- *      "queries": ["SELECT *\nFROM table;"],
- *      "transaction": false
+ *      "queries": ["INSERT INTO table VALUES(...);"],
+ *      "transaction": true
  *    }
  * 
  */
@@ -291,6 +291,100 @@ router.get('/payroll/:id', async (req, res) => {
   } else {
     res.status(400).json({
       error: 'Invalid or missing payroll id',
+      queries: [],
+      transaction: false
+    });
+  }
+});
+
+/**
+ * @api {post} /payroll/all Create a new payroll entry for all employees
+ * @apiName CreateAllPayrolls
+ * @apiGroup Payroll
+ * @apiDescription Attempts to insert a new payroll entry for every employee into the database.
+ * 
+ * @apiBody {String}   pay_period       Pay period
+ * @apiBody {Number}   tax_rate         Tax rate
+ * 
+ * @apiSuccess {Number}   rowCount      Number of payrolls created
+ * @apiSuccess {String[]} queries       Array of queries used
+ * @apiSuccess {Boolean}  transaction   True if transactions were used
+ * 
+ * @apiSuccessExample {json} Success-Response example:
+ *    HTTP/1.1 200 OK
+ *    {
+ *      "rowCount": 100,
+ *      "queries": ["INSERT INTO table VALUES(...);"],
+ *      "transaction": true
+ *    }
+ * 
+ */
+ router.post('/payroll/all', async (req, res) => {
+  // TODO: input validation
+  const body = req.body;
+  // Check required fields exist
+  const requiredFields = ['pay_period', 'tax_rate'];
+  if(utils.checkRequiredFields(requiredFields, body)) {
+    const client = await db.connect().catch((err) => {
+      console.log(err.stack);
+      res.status(422).json({
+        error: 'Error connecting to database',
+        queries: [],
+        transaction: false
+      });
+    });
+    if(client) {
+      let queries = [];
+      requiredFields.push('hours_worked');
+      body.hours_worked = 40;
+      try {
+        await utils.transacQuery(queries, client, 'BEGIN TRANSACTION;');
+        await utils.transacQuery(queries, client, 'SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;');
+
+        const empID = (await utils.transacQuery(queries, client, 'SELECT employee_ID\nFROM employee;')).rows;
+        for(const id of empID) {
+          let args = [
+            ['job_id', 'salary_id'], 
+            'employee', 
+            'salary', 
+            'leave', 
+            'employee_id',
+            id.employee_id
+          ];
+          let dbQuery = format('SELECT %I\nFROM %I e\n\tNATURAL JOIN %I\n\tLEFT JOIN %I l\n\tON l.%I = e.%5$I\nWHERE e.%5$I = %L;', ...args);
+          const ids = (await utils.transacQuery(queries, client, dbQuery)).rows[0];
+          
+          args = [
+            'payroll',
+            ['employee_id','pay_period','tax_rate','hours_worked','job_id','salary_id'],
+            [id.employee_id, body.pay_period, body.tax_rate, body.hours_worked, ids.job_id, ids.salary_id]
+          ];
+          dbQuery = format('INSERT INTO %I (%I)\nVALUES (%L);', ...args);
+          await utils.transacQuery(queries, client, dbQuery);
+        }
+        await utils.transacQuery(queries, client, 'COMMIT;');
+        await utils.transacQuery(queries, client, 'END TRANSACTION;\n');
+        client.release();
+        res.json({
+          rows: empID.length,
+          queries: queries,
+          transaction: true
+        });
+      } catch(err) {
+        console.log(err.stack);
+        await utils.transacQuery(queries, client, 'ROLLBACK;\n');
+        client.release();
+        res.status(422).json({
+          error: err.message,
+          queries: queries,
+          transaction: true
+        });
+      }
+    }
+  } else {
+    res.status(422).json({
+      error: 'Missing required fields',
+      requiredFields: requiredFields,
       queries: [],
       transaction: false
     });
