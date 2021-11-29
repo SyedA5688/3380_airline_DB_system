@@ -116,25 +116,18 @@ CREATE TABLE leave (
 CREATE TABLE payroll (
   payroll_id    INT       GENERATED ALWAYS AS IDENTITY,
   employee_id   INT       NOT NULL, 
-  job_id        INT       NOT NULL,
-  salary_id     INT       NOT NULL,
-  leave_id      INT,
   hours_worked  REAL      NOT NULL,
   pay_period    DATE      NOT NULL,
   tax_rate      REAL      NOT NULL,
+  gross_income  MONEY     NOT NULL,
+  taxed_income  MONEY     NOT NULL,
+  net_income    MONEY     NOT NULL,
+  
   UNIQUE(employee_id, pay_period),
 
   PRIMARY KEY(payroll_id),
   FOREIGN KEY(employee_id)
     REFERENCES employee(employee_id)
-    ON DELETE CASCADE,
-
-  FOREIGN KEY(job_id)
-    REFERENCES job(job_id)
-    ON DELETE CASCADE,
-
-  FOREIGN KEY(leave_id)
-    REFERENCES leave(leave_id)
     ON DELETE CASCADE
 );
 
