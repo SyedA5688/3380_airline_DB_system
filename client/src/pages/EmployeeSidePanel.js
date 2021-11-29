@@ -15,6 +15,8 @@ class EmployeeSidePanel extends Component {
                 <li className="sidebar-li" ><a href="/employees/insert" >Insert New Employee</a></li>
                 <li className="sidebar-li" ><a href="/employees/get" >Get Employee Details</a></li>
                 <li className="sidebar-li" ><a href="/employees/update" >Update Employee Information</a></li>
+                <li className="sidebar-li" ><a href="/employees/managers" >Search All Managers</a></li>
+                <li className="sidebar-li" ><a href="/employees/employeesUnderManagers" >Search Manager Supervisees</a></li>
               </ul>
             </nav>
           </div>
