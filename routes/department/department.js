@@ -71,6 +71,7 @@ router.get('/department', async (req, res) => {
   if(query){
     const searchBy = params.searchBy && sortParams[params.searchBy] ? sortParams[params.searchBy] : sortParams.name;
     if(searchBy === sortParams.name) filterString = format('WHERE %I LIKE \'%s%%\'\n', searchBy, query);
+    else if(searchBy !== sortParams.jobs || searchBy !== sortParams.employees) filterString = format('WHERE %I = d.%L\n', searchBy, query);
     else filterString = format('WHERE %I = %L\n', searchBy, query);
   }
   // Arguments used to create sql query
