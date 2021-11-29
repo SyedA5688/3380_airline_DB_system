@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
-import './leaveForms.css'
+import './departmentForms.css'
 
 
-class SearchAllLeaveForm extends Component {
+class SearchDepartmentsForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
       searchBy: 'all',
-      searchText: '',
       searchID: '',
+      searchDepartmentName: '',
       searchDate: '',
-      searchStatus: '',
-      searchReason: '',
       page: 1,
       sort: 'id',
       order: 'asc',
@@ -30,11 +28,9 @@ class SearchAllLeaveForm extends Component {
 
     if (event.target.name === "searchBy") {
       this.setState({
-        searchText: '',
         searchID: '',
+        searchDepartmentName: '',
         searchDate: '',
-        searchStatus: '',
-        searchReason: ''
       });
       this.handleClear();
     }
@@ -74,43 +70,37 @@ class SearchAllLeaveForm extends Component {
         query = "";
         break;
       
-      case "text":
-        query = this.state.searchText.trim();
-        break;
-      
       case "id": {
         query = this.state.searchID;
         break;
       }
 
-      case "date":
-        query = String(this.state.searchDate.trim());
+      case "name":
+        query = this.state.searchDepartmentName.trim();
         break;
       
-      case "status":
-        query = this.state.searchStatus.trim();
-        break;
-        
-      case "reason":
-        query = this.state.searchReason.trim();
+      case "date":
+        query = query = String(this.state.searchDate.trim());
         break;
 
       default:
         query = "";
     }
+
+    console.log("Sending query:", query);
     
     try {
-      const response = await fetch(`/leave?q=${query}&searchBy=${this.state.searchBy}&page=${this.state.page}&sort=${this.state.sort}&order=${this.state.order}&limit=${this.state.limit}`);
+      const response = await fetch(`/department?q=${query}&searchBy=${this.state.searchBy}&page=${this.state.page}&sort=${this.state.sort}&order=${this.state.order}&limit=${this.state.limit}`);
       const body = await response.json();
-      // console.log("Response body rows:", body.rows);
+      console.log("Body rows:", body.rows);
 
       this.assertValidGETResponse(body);
       this.setState({
-        returnedLeaves: body.rows
+        returnedDepartments: body.rows
       });
     }
     catch (e) {
-      console.log("Error occurred while sending GET request to /job endpoint,", e);
+      console.log("Error occurred while sending GET request to /department endpoint,", e);
       document.getElementById("errorModal").style.display = "block"
       document.getElementById("errorModal").classList.add("show")
     }
@@ -127,12 +117,11 @@ class SearchAllLeaveForm extends Component {
 
   handleClear = async (event) => {
     this.setState({
-      searchText: '',
       searchID: '',
-      searchDate: '',
-      searchStatus: '',
-      searchReason: '',
-      returnedLeaves: null
+      searchJobTitle: '',
+      searchDepartment: '',
+      searchLocation: '',
+      returnedDepartments: null
     });
 
     const form = document.querySelector('#searchFormHTML');
@@ -143,39 +132,26 @@ class SearchAllLeaveForm extends Component {
     if (searchBy === "all") {
       return <div></div>
     }
-    else if (searchBy === "text") {
-      return (<div className="form-group">
-      <input type="text" pattern="[A-Za-z0-9-_ ]+"  className="form-control" id="inputLeaveText" placeholder="Any text in leave status or reason description" name="searchText" value={this.state.searchText} onChange={this.handleChange} required />
-      <div className="invalid-feedback">Please provide a valid search text.</div>
-      <div className="valid-feedback">Valid search text.</div>
-    </div>)
-    }
     else if (searchBy === "id") {
       return (<div className="form-group">
-      <input type="number" min="0" pattern="[0-9]+"  className="form-control" id="inputLeaveID" placeholder="0" name="searchID" value={this.state.searchID} onChange={this.handleChange} required />
-      <div className="invalid-feedback">Please provide a valid leave ID.</div>
-      <div className="valid-feedback">Valid leave ID number.</div>
-    </div>)
+      <input type="number" min="0" pattern="[0-9]+"  className="form-control" id="inputSearchID" placeholder="0" name="searchID" value={this.state.searchID} onChange={this.handleChange} required />
+      <div className="invalid-feedback">Please provide a valid department ID number.</div>
+      <div className="valid-feedback">Valid department ID.</div>
+    </div>
+      )
+    }
+    else if (searchBy === "name") {
+      return <div className="form-group">
+        <input type="text" pattern="[A-Za-z ]+"  className="form-control" id="inputSearchJobTitle" placeholder="(e.g. Flight Crew)" name="searchDepartmentName" value={this.state.searchDepartmentName} onChange={this.handleChange} required />
+        <div className="invalid-feedback">Please provide a valid department name.</div>
+        <div className="valid-feedback">Valid department name.</div>
+      </div>
     }
     else if (searchBy === "date") {
       return <div className="form-group">
-        <input type="date" className="form-control" id="inputLeaveDate" name="searchDate" value={this.state.searchDate} onChange={this.handleChange} required />
-        <div className="invalid-feedback">Please provide a valid leave date.</div>
-        <div className="valid-feedback">Valid leave date.</div>
-      </div>
-    }
-    else if (searchBy === "status") {
-      return <div className="form-group">
-      <input type="text" pattern="[A-Za-z0-9-_ ]+"  className="form-control" id="inputLeaveStatus" placeholder="(e.g. Returned)" name="searchStatus" value={this.state.searchStatus} onChange={this.handleChange} required />
-      <div className="invalid-feedback">Please provide valid status text to search.</div>
-      <div className="valid-feedback">Valid status text.</div>
-    </div>
-    }
-    else if (searchBy === "reason") {
-      return <div className="form-group">
-      <input type="text" pattern="[A-Za-z0-9-_ ]+"  className="form-control" id="inputLeaveReason" placeholder="(e.g. Doctor appointment on January 1st, 2021)" name="searchReason" value={this.state.searchReason} onChange={this.handleChange} required />
-      <div className="invalid-feedback">Please provide valid reason text to search.</div>
-      <div className="valid-feedback">Valid reason text.</div>
+      <input type="date" className="form-control" id="inputLeaveDate" name="searchDate" value={this.state.searchDate} onChange={this.handleChange} required />
+      <div className="invalid-feedback">Please select a department creation date.</div>
+      <div className="valid-feedback">Valid date.</div>
     </div>
     }
     else {
@@ -204,19 +180,17 @@ class SearchAllLeaveForm extends Component {
           </div>
         </div>
 
-        <h3>Search Through All Database Leave Entries</h3>
+        <h3>Search Database for Departments</h3>
 
         <form className="border border-secondary mt-3 px-5 py-4 rounded needs-validation" id="searchFormHTML" onSubmit={this.handleSubmit} noValidate>
 
           <div className="form-group mb-2" >
             <label className="sr-only" htmlFor="inputSearchBy">Search by:</label>
             <select name="searchBy" className="form-select " id="inputSearchBy" defaultValue="all" onChange={this.handleChange}>
-              <option value="all">Get All Leave Entries</option>
-              <option value="text">Leave General Text</option>
-              <option value="id">Leave Entry ID</option>
-              <option value="date">Date</option>
-              <option value="status">Leave Status</option>
-              <option value="reason">Leave Reason/Description</option>
+              <option value="all">Get All Departments</option>
+              <option value="id">Department ID</option>
+              <option value="name">Department Name</option>
+              <option value="date">Creation Date</option>
             </select>
           </div>
           {searchByInputElement}
@@ -224,10 +198,9 @@ class SearchAllLeaveForm extends Component {
           <div className="form-group mt-2" >
             <label className="sr-only" htmlFor="inputSortBy">Sort by:</label>
             <select name="sort" className="form-select" id="inputSortBy" defaultValue="id" onChange={this.handleChange}>
-              <option value="id">Leave ID</option>
-              <option value="date">Leave Date</option>
-              <option value="status">Status</option>
-              <option value="reason">Reason</option>
+              <option value="id">Department ID</option>
+              <option value="name">Department Name</option>
+              <option value="date">Creation Date</option>
             </select>
           </div>
 
@@ -251,27 +224,33 @@ class SearchAllLeaveForm extends Component {
           <button type="button" className="btn btn-outline-secondary mt-3 mx-3" onClick={this.handleClear} >Clear</button>
         </form>
 
-        {this.state.returnedLeaves ? <table align="center" className="table mt-5 border" >
+        {this.state.returnedDepartments ? <table align="center" className="table mt-5 border" >
           <thead className="table-dark">
             <tr>
               <th scope="col">#</th>
-              <th scope="col">Leave ID</th>
-              <th scope="col">Employee ID</th>
-              <th scope="col">Date</th>
-              <th scope="col">Reason</th>
-              <th scope="col">Status</th>
+              <th scope="col">Job Count</th>
+              <th scope="col">Employee Count</th>
+              <th scope="col">Department ID</th>
+              <th scope="col">Department Name</th>
+              <th scope="col">Creation Date</th>
+              <th scope="col">Department Head ID</th>
+              <th scope="col">First Name</th>
+              <th scope="col">Last Name</th>
             </tr>
           </thead>
           
           <tbody>
-            {this.state.returnedLeaves && this.state.returnedLeaves.map((leaveObj, index) => (
-              <tr key={leaveObj.leave_id}>
+            {this.state.returnedDepartments && this.state.returnedDepartments.map((deptObj, index) => (
+              <tr key={deptObj.department_id}>
                 <th scope="col">{index + 1}</th>
-                <th scope="col">{leaveObj.leave_id}</th>
-                <th scope="col">{leaveObj.employee_id}</th>
-                <th scope="col">{leaveObj.date}</th>
-                <th scope="col">{leaveObj.reason}</th>
-                <th scope="col">{leaveObj.status}</th>
+                <th scope="col">{deptObj.job_count}</th>
+                <th scope="col">{deptObj.employee_count}</th>
+                <th scope="col">{deptObj.department_id}</th>
+                <th scope="col">{deptObj.department_name}</th>
+                <th scope="col">{deptObj.creation_date}</th>
+                <th scope="col">{deptObj.department_head_id}</th>
+                <th scope="col">{deptObj.first_name}</th>
+                <th scope="col">{deptObj.last_name}</th>
               </tr>
             ))}
           </tbody>
@@ -282,4 +261,4 @@ class SearchAllLeaveForm extends Component {
   }
 }
 
-export default SearchAllLeaveForm
+export default SearchDepartmentsForm
