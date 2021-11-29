@@ -31,6 +31,9 @@ Payroll Table
           Arno                   100
 	  Rizvi                  88
 	  // SELECT Employee.Firstname, Employee.Lastname, Payroll.Hours_Worked FROM Employee INNER JOIN Payroll ON Employee.Employee_Id = Payroll.Employee_Id ORDER BY Hours_Worked desc;
+	*Search for employees earning overtime money 
+	  (Usually those who worked more than 40 hours in a week)
+	  // SELECT Employee.Firstname, Employee.Lastname, Payroll.Hours_Worked FROM Employee INNER JOIN Payroll ON Employee.Employee_Id = Payroll.Employee_Id ORDER BY Hours_Worked desc;
 	*As a default every employee must pay the same amount of tax rate 
 	 (According to google every employee will pay the same amount of tax rate, but tax rate varies based on the state as well)
 	 (Texas have: 6.25% tax rate while California have: 12.3% tax rate.)
@@ -52,50 +55,59 @@ Leave Table
 	 // User Input
 Salary Table
 	*Search employees based on their hourly wage from lowest to highest
-	(From 10$ to x) 
-	*Search for the employees earning more than > x amount of money in a year
-  (let x be 200,000$ in that case salary table should display: pilots, Aerospace Engineers, etc..)
-	*Search for employees earning overtime money 
-	(Usually those who worked more than 40 hours in a week)
+	 (From 10$ to x) 
+	 // SELECT Employee.Firstname, Employee.Lastname, Salary.Hourly_Wage FROM Employee INNER JOIN Salary ON Employee.Employee_Id = Salary.Employee_Id ORDER BY Hourly_Wage asc;
+	*Search for the employees earning most amount of money in a year
+         (let x be 200,000$ )
+         // Select Hourly_Wage * Hours_Worked * 50 From Salary INNER JOIN Payroll ON Salary.Employee_Id = Payroll.Employee_Id ORDER BY Hourly_Wage * Hours_Worked * 50 desc; 
 	*Search for the employees earning most amount of annual bonuses 
 	(Annual Bonus is calculated based on the number of flights employee completes each year)
+	// Not sure how to do it 
 Benefits Table
 	*Paid Vacation/Sick time
 	 (Employees must receive money for their vacation/sick time if they are eligible for it)
 	 (Paid vacation/sick time is calculated based on the how long the employee worked at the airline)
+	 // Not Sure how to do it
 	*Reduced Rate Travels 
 	 (Employee and their Family members must get a 25% off on flights)
-	*Dental Insurance 
-	 (Given well performing employees since it is pretty expensive)
+	 // Not Sure how to do it
 	*Offer health Insurance by company
 	 (Based on the google every worker who works full-time must receive a health insurance, but the coverage may vary by position of the employee)
 	 (Flight attendant might have a 25% rate health insurance while Pilots have a 50% rate health insurance coverage)
+	 // Not Sure how to do it 
 	*Employees should receive a better Retirement plan
 	 (Company providing a certain payout after an employee is retired)
+	 // Not Sure how to do it 
 	*Stock options for the employees in a higher positions
 	 (According to google most airline companies don't offer stock options, but some do like jetBlue, AmericanAirlines.)
 	 (Also, most of the time stock options are only given to the managers and higher up's by the position)
+	 // User Input
 Job Location Table
-	*List all the employees based on the Airport location
-	 (All the employees from George Bush airport)
+	*List all the Airport_Id based on the Airport location
+	 (All the airports that exist)
+	 // SELECT COUNT(Airport_Id) FROM Job_Location; 
 	*Calculate total number of the employees based on their airport location
 	 (George Bush airport number of employees: 172,000)
+	 // SELECT COUNT(FirstName) FROM Employee; 
 Job Table 
 	*Display for each employee position that they have
 	 (Andy Wang pilot)
+	 // SELECT Employee.Firstname, Employee.Lastname, Job.Job_Title FROM Employee INNER JOIN Job ON Employee.Job_Id = Job.Job_Id;
 	*Display the department that the employee belongs to
 	 (Andy Wang pilot Flight Operations)
 	 (According to the Web most of the time employees in airline fall into 3 categories: Flight operations, Sales and marketing, and Engineering and maintenance.)
+	 // SELECT Employee.Firstname, Employee.Lastname, Job.Department_Id FROM Employee INNER JOIN Job ON Employee.Job_Id = Job.Job_Id;
 	*Search for all the jobs in the airline
 	 (When searching for all the jobs in the airline by default it should go by an alphabetical order A-Z)
+	 // Select Job_Title From Job ORDER BY Job_Title; 
 	*Create a new job
 	 (When creating a new job it should automatically go to one the 3 departments: Flight operations, Sales and marketing, and Engineering and maintenance.)
-	*Reassign Employee to another team
-	 (If the vacancy exists)
-	 (For example: one of the pilots are retiring in this case employee can swtich his department to replace retiring pilot if he meets requirements)	
+	 // User Input	
 Department Table
 	*List the employees based on the deparment they belong to
 	 (When listing the deparment employees order by alphabetically)
+	// SELECT Department_Id From Department ORDER BY Department_Id; 
 	*Also if the users searches for the employees in the Flight operations department make managers appear first but still in the A-Z order
 	 (Andy  Wang Flight operations Supervisor
 	  Rizvi Syed Flight operations Pilot)
+	// SELECT Department_Head_Id From Department ORDER BY Department_Head_Id;

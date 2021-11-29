@@ -213,9 +213,9 @@ class SearchAllJobsForm extends Component {
             <label className="sr-only" htmlFor="inputSortBy">Sort by:</label>
             <select name="sort" className="form-select" id="inputSortBy" defaultValue="id" onChange={this.handleChange}>
               <option value="id">Employee ID</option>
-              <option value="name">Name</option>
               <option value="title">Job Title</option>
-              <option value="department">Department</option>
+              <option value="department">Job Department</option>
+              <option value="location">Job Location</option>
             </select>
           </div>
 
