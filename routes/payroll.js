@@ -231,3 +231,129 @@ router.post('/payroll', async (req, res) => {
     });
   }
 });
+
+/**
+ * @api {post} /payroll/all Create a new payroll entry for every employee
+ * @apiName CreateAllPayrolls
+ * @apiGroup Payroll
+ * @apiDescription Attempts to insert a new payroll entry for every assigned employee into the database. Returns the inserted entries.
+ * 
+ * @apiBody {String}   pay_period       Pay period
+ * @apiBody {Number}   tax_rate         Tax rate
+ * 
+ * @apiSuccess {Object[]} rows                Results from the database
+ * @apiSuccess {Number}   rows.payroll_id     Payroll ID
+ * @apiSuccess {Number}   rows.employee_id    Employee ID
+ * @apiSuccess {Number}   rows.hours_worked   Hours worked by employee
+ * @apiSuccess {String}   rows.pay_period     Pay period
+ * @apiSuccess {Number}   rows.tax_rate       Tax rate
+ * @apiSuccess {String}   rows.gross_income   Gross income
+ * @apiSuccess {String}   rows.taxed_income   Taxed income
+ * @apiSuccess {String}   rows.net_income     Net income
+ * 
+ * @apiSuccess {String[]} queries               Array of queries used
+ * @apiSuccess {Boolean}  transaction           True if transactions were used
+ * 
+ * @apiSuccessExample {json} Success-Response example:
+ *    HTTP/1.1 200 OK
+ *    {
+ *      "rows": [{
+ *                "payroll_id": 123,
+ *                "employee_id": 1000000,
+ *                "hours_worked": 42,
+ *                "pay_period": "2021-11-01"
+ *                "tax_rate": 0.10,
+ *                "gross_income": "$3,200.00",
+ *                "taxed_income": "$320.00",
+ *                "net_income": "$2880.00",
+ *               }],
+ *      "queries": ["INSERT INTO table VALUES(...);"],
+ *      "transaction": true
+ *    }
+ * 
+ */
+router.post('/payroll/all', async(req, res) => {
+  // TODO: input validation
+  const body = req.body;
+  // Check required fields exist
+  const requiredFields = ['pay_period', 'tax_rate'];
+  if(utils.checkRequiredFields(requiredFields, body)) {
+    const client = await db.connect().catch((err) => {
+      console.log(err.stack);
+      res.status(422).json({
+        error: 'Error connecting to database',
+        queries: [],
+        transaction: false
+      });
+    });
+    if(client) {
+      let queries = [];
+      try {
+        await utils.transacQuery(queries, client, 'BEGIN TRANSACTION;');
+        await utils.transacQuery(queries, client, 'SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;');
+
+        let args = [
+          'employee_id',
+          '(4.4 * weekly_hours)::real',
+          format('%L::DATE', body.pay_period),
+          format('%L::REAL', body.tax_rate),
+          'hourly_wage'
+        ];
+        const calcGrossColumns = format('e.%I, %s AS hours_worked, %s AS pay_period, %s AS tax_rate, %2$s * %5$I AS gross_income', ...args);
+        
+        args = [
+          calcGrossColumns,
+          'employee',
+          'job',
+          'job_id',
+          'salary',
+          'employee_id'
+        ];
+        const calcGrossString = '\n\tSELECT %s\n\tFROM %I e\n\t\tJOIN %I j ON e.%4$I = j.%4$I\n\t\tJOIN %I s ON e.%6$I = s.%6$I\n\tWHERE NOT e.%4$I = 0\n';
+        const calcGrossQuery = format(calcGrossString, ...args);
+
+        args = [
+          requiredFields,
+          'gross_income',
+          'tax_rate',
+          'hours_worked',
+          'employee_id'
+        ];
+        const calcNet = format('%I,%I,%2$I * %I AS taxed_income,%2$I * (1 - %I) AS net_income,%I,%I', ...args);
+        args = [
+          'payroll',
+          [...requiredFields,'gross_income', 'taxed_income', 'net_income', 'hours_worked', 'employee_id'],
+          calcNet,
+          calcGrossQuery
+        ];
+        const dbQuery = format('INSERT INTO %I(%I)\nSELECT %s\nFROM (%s) AS gross_calc\nRETURNING *;', ...args);
+        const result = await client.query(dbQuery); 
+
+        await utils.transacQuery(queries, client, 'COMMIT;');
+        await utils.transacQuery(queries, client, 'END TRANSACTION;\n');
+        client.release();
+        res.json({
+          rows: result.rows,
+          queries: queries,
+          transaction: true
+        });
+      } catch(err) {
+        console.log(err.stack);
+        await utils.transacQuery(queries, client, 'ROLLBACK;\n');
+        client.release();
+        res.status(422).json({
+          error: err.message,
+          queries: queries,
+          transaction: true
+        });
+      }
+    }
+  } else {
+    res.status(422).json({
+      error: 'Missing required fields',
+      requiredFields: requiredFields,
+      queries: [],
+      transaction: false
+    });
+  }
+});
