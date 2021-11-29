@@ -12,22 +12,22 @@ module.exports = router;
  * @apiGroup Payroll
  * @apiDescription Returns all payroll entries.
 
- * @apiQuery {String {non-empty}}             [q]                 Filter rows based on query
- * @apiQuery {String=id,period,employee,job}  [searchBy=period]   Used if <code>q</code> is specified. <code>employee</code> and <code>job</code> searches by ID
- * @apiQuery {Number {1+}}                    [page=1]            Specify <code>page</code> if there are more results than <code>limit</code>
- * @apiQuery {String=id,period,employee,job}  [sort=period]       How rows are sorted
- * @apiQuery {String=asc,desc}                [order=asc]         Receive rows in ascending or descending order
- * @apiQuery {Number {1-100}}                 [limit=10]          The maximum number of rows to receive
+ * @apiQuery {String {non-empty}}                   [q]                 Filter rows based on query
+ * @apiQuery {String=id,period,employee,income}     [searchBy=period]   Used if <code>q</code> is specified. <code>employee</code> searches by ID. <code>income</code> searches by gross and net income
+ * @apiQuery {Number {1+}}                          [page=1]            Specify <code>page</code> if there are more results than <code>limit</code>
+ * @apiQuery {String=id,period,employee,gross,net}  [sort=period]       How rows are sorted
+ * @apiQuery {String=asc,desc}                      [order=asc]         Receive rows in ascending or descending order
+ * @apiQuery {Number {1-100}}                       [limit=10]          The maximum number of rows to receive
  * 
- * @apiSuccess {Object[]} rows                  Results from the database
- * @apiSuccess {Number}   rows.payroll_id       Payroll ID
- * @apiSuccess {Number}   rows.employee_id      Employee ID
- * @apiSuccess {Number}   rows.job_id           Job ID
- * @apiSuccess {Number}   rows.salary_id        Salary ID
- * @apiSuccess {Number}   [rows.leave_id]       Leave ID
- * @apiSuccess {Number}   rows.hours_worked     Hours worked by employee
- * @apiSuccess {String}   rows.pay_period       Pay period
- * @apiSuccess {Number}   rows.tax_rate         Tax rate
+ * @apiSuccess {Object[]} rows                Results from the database
+ * @apiSuccess {Number}   rows.payroll_id     Payroll ID
+ * @apiSuccess {Number}   rows.employee_id    Employee ID
+ * @apiSuccess {Number}   rows.hours_worked   Hours worked by employee
+ * @apiSuccess {String}   rows.pay_period     Pay period
+ * @apiSuccess {Number}   rows.tax_rate       Tax rate
+ * @apiSuccess {String}   rows.gross_income   Gross income
+ * @apiSuccess {String}   rows.taxed_income   Taxed income
+ * @apiSuccess {String}   rows.net_income     Net income
  * 
  * @apiSuccess {String[]} queries               Array of queries used
  * @apiSuccess {Boolean}  transaction           True if transactions were used
@@ -38,12 +38,12 @@ module.exports = router;
  *      "rows": [{
  *                "payroll_id": 123,
  *                "employee_id": 1000000,
- *                "job_id": 555,
- *                "salary_id": 321,
- *                "leave_id": 100,
  *                "hours_worked": 42,
  *                "pay_period": "2021-11-01"
- *                "tax_rate": 0.10
+ *                "tax_rate": 0.10,
+ *                "gross_income": "$3,200.00",
+ *                "taxed_income": "$320.00",
+ *                "net_income": "$2880.00",
  *               }],
  *      "queries": ["SELECT *\nFROM table;"],
  *      "transaction": false
@@ -57,9 +57,10 @@ router.get('/payroll', async (req, res) => {
     id: 'payroll_id',
     period: 'pay_period',
     employee: 'employee_id',
-    job: 'job_id'
+    gross: 'gross_income',
+    net: 'net_income'
   };
-  const sortBy = sortParams[params.sort] ? sortParams[params.sort] : sortParams.id;
+  const sortBy = sortParams[params.sort] ? sortParams[params.sort] : sortParams.period;
   const order = params.order ? params.order.toUpperCase() : 'ASC';
   const limit = params.limit ? Math.min(Math.max(params.limit, 1), 100) : 10;
 
@@ -67,8 +68,9 @@ router.get('/payroll', async (req, res) => {
   const query = params.q && params.q.toString().trim() !== '' ? params.q.toString().trim().toUpperCase() : '';
   let filterString = '';
   if(query){
-    const searchBy = params.searchBy && sortParams[params.searchBy] ? sortParams[params.searchBy] : sortParams.id;
-    filterString = format('WHERE %I = %L\n', searchBy, query);
+    if(params.searchBy === 'income') filterString = format('WHERE %I = %L\n\tOR %I = %2$L\n', sortParams.gross, query, sortParams.net);
+    else if(params.searchBy && sortParams[params.searchBy]) filterString = format('WHERE %I = %L\n', sortParams[params.searchBy], query);
+    else filterString = format('WHERE %I = %L\n', sortParams.period, query);
   }
 
   const orderArgs = [  
