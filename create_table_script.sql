@@ -45,7 +45,7 @@ CREATE TABLE job (
   job_title           VARCHAR(30) NOT NULL CHECK(job_title ~ '^[A-Z \-]+$'),
   department_id       INT         NOT NULL, 
   location_id         INT         NOT NULL,
-  weekly_hours        INT         CHECK(weekly_hours <= 168),
+  weekly_hours        INT         DEFAULT 40 CHECK(weekly_hours <= 168),
   benefits_package_id INT         DEFAULT 0 NOT NULL,
 
   PRIMARY KEY(job_id),
@@ -147,7 +147,7 @@ INSERT INTO job OVERRIDING SYSTEM VALUE VALUES(0, 'UNASSIGNED', 0, 0, 0, 0);
 INSERT INTO department (department_name, creation_date) VALUES 
 ('BOARD OF DIRECTORS',            '1980-01-01'),
 ('ENGINEERING AND MAINTENANCE',   '1980-01-01'),
-('FLIGHT OPERATIONS',             '1980-01-01'),
+('OPERATIONS',                    '1980-01-01'),
 ('SALES AND MARKETING',           '1980-01-01'),
 ('RESERVATIONS AND TICKETING',    '1980-01-01'),
 ('FINANCE AND PROPERTY',          '1980-01-01'),
@@ -159,18 +159,101 @@ INSERT INTO department (department_name, creation_date) VALUES
 
 -- Benefits
 INSERT INTO benefits (amount, stock_options, health_insurance_provider, retirement_plan) VALUES
-('1000',  NULL,             'INSURANCE PROVIDER A', 'RETIREMENT PLAN A'),
-('2500', 'STOCK OPTIONS A', 'INSURANCE PROVIDER A', 'RETIREMENT PLAN B'),
-('5000', 'STOCK OPTIONS A', 'INSURANCE PROVIDER B', 'RETIREMENT PLAN A'),
-('5000', 'STOCK OPTIONS B', 'INSURANCE PROVIDER C', 'RETIREMENT PLAN B'),
-('5000',  NULL,             'INSURANCE PROVIDER A', 'RETIREMENT PLAN C'),
-('6000',  NULL,             'INSURANCE PROVIDER A', 'RETIREMENT PLAN A'),
-('2500', 'STOCK OPTIONS C', 'INSURANCE PROVIDER C', 'RETIREMENT PLAN B'),
-('5000', 'STOCK OPTIONS B', 'INSURANCE PROVIDER A', 'RETIREMENT PLAN C');
+(1000,   NULL,             'INSURANCE PROVIDER A', 'RETIREMENT PLAN A'),
+(2500,  'STOCK OPTIONS A', 'INSURANCE PROVIDER A', 'RETIREMENT PLAN B'),
+(5000,  'STOCK OPTIONS A', 'INSURANCE PROVIDER B', 'RETIREMENT PLAN A'),
+(5000,  'STOCK OPTIONS B', 'INSURANCE PROVIDER C', 'RETIREMENT PLAN B'),
+(5000,   NULL,             'INSURANCE PROVIDER A', 'RETIREMENT PLAN C'),
+(6000,   NULL,             'INSURANCE PROVIDER A', 'RETIREMENT PLAN A'),
+(2500,  'STOCK OPTIONS C', 'INSURANCE PROVIDER C', 'RETIREMENT PLAN B'),
+(5000,  'STOCK OPTIONS B', 'INSURANCE PROVIDER A', 'RETIREMENT PLAN C'),
+(10000, 'STOCK OPTIONS D', 'INSURANCE PROVIDER D', 'RETIREMENT PLAN D'),
+(4500,  'STOCK OPTIONS D', 'INSURANCE PROVIDER B', 'RETIREMENT PLAN C');
 
 -- Job locations
 INSERT INTO job_location (airport_id, address_id, flight_id, location_name) VALUES
-(NULL, 1, NULL),
-(NULL, 2, NULL),
+(NULL,  1,  NULL, 'OFFICES IN CITY A'),
+(NULL,  2,  NULL, 'OFFICES IN CITY B'),
+(NULL,  6,  NULL, 'OFFICES IN CITY C'),
 
--- Jobs
+(1, 3,  NULL, 'AIRPORT IN CITY A'),
+(1, 3,  100,  'AIRPORT IN CITY A'),
+(1, 3,  101,  'AIRPORT IN CITY A'),
+(1, 3,  102,  'AIRPORT IN CITY A'),
+(1, 3,  103,  'AIRPORT IN CITY A'),
+
+(2, 4,  NULL, 'AIRPORT A IN CITY B'),
+(2, 4,  200,  'AIRPORT A IN CITY B'),
+(2, 4,  201,  'AIRPORT A IN CITY B'),
+(2, 4,  202,  'AIRPORT A IN CITY B'),
+(2, 4,  203,  'AIRPORT A IN CITY B'),
+
+(3, 5,  NULL, 'AIRPORT B IN CITY B'),
+(3, 5,  300,  'AIRPORT B IN CITY B'),
+(3, 5,  301,  'AIRPORT B IN CITY B'),
+(3, 5,  302,  'AIRPORT B IN CITY B'),
+(3, 5,  303,  'AIRPORT B IN CITY B'),
+
+(4, 7,  NULL, 'AIRPORT IN CITY C'),
+(4, 7,  400,  'AIRPORT IN CITY C'),
+(4, 7,  401,  'AIRPORT IN CITY C'),
+(4, 7,  402,  'AIRPORT IN CITY C'),
+(4, 7,  403,  'AIRPORT IN CITY C');
+
+-- Jobs (based on https://www.airlinejobfinder.com/members/airline-jobs/)
+INSERT INTO job (job_title, department_id, location_id, weekly_hours, benefits_package_id) VALUES
+-- Board of Directors
+('CHIEF EXECUTIVE OFFICER', 1,  2,  50, 9),
+('CHAIRMAN',                1,  2,  10, 9),
+('VICE CHAIR',              1,  2,  10, 9),
+('BOARD SECRETARY',         1,  2,  10, 9),
+('TREASURER',               1,  2,  10, 9),
+('BOARD MEMBER',            1,  2,  5,  9),
+
+-- Maintenance and Engineering
+('AVIATION MAINTENANCE TECHNICIAN', 2,  4,  40, 2),
+('POWERPLANT MECHANIC',             2,  4,  40, 2),
+('AIRFRAME MECHANIC',               2,  4,  40, 2),
+('AVIATION MAINTENACE TECHNICIAN',  2,  4,  40, 2),
+('AIRCRAFT MAINTENANCE SPECIALIST', 2,  4,  40, 2),
+('AIRCRAFT FUELER',                 2,  4,  40, 2),
+('AVIONIC TECHNICIAN',              2,  4,  40, 2),
+('CABIN MAINTENANCE',               2,  4,  40, 2),
+('AIRPORT EQUIPMENT DRIVER',        2,  4,  40, 2),
+('AIRPORT ENGINEER AND PLANNER',    2,  4,  40, 2),
+
+('AVIATION MAINTENANCE TECHNICIAN', 2,  9,  40, 2),
+('POWERPLANT MECHANIC',             2,  9,  40, 2),
+('AIRFRAME MECHANIC',               2,  9,  40, 2),
+('AVIATION MAINTENACE TECHNICIAN',  2,  9,  40, 2),
+('AIRCRAFT MAINTENANCE SPECIALIST', 2,  9,  40, 2),
+('AIRCRAFT FUELER',                 2,  9,  40, 2),
+('AVIONIC TECHNICIAN',              2,  9,  40, 2),
+('CABIN MAINTENANCE',               2,  9,  40, 2),
+('AIRPORT EQUIPMENT DRIVER',        2,  9,  40, 2),
+('AIRPORT ENGINEER AND PLANNER',    2,  9,  40, 2),
+
+('AVIATION MAINTENANCE TECHNICIAN', 2,  14,  40, 2),
+('POWERPLANT MECHANIC',             2,  14,  40, 2),
+('AIRFRAME MECHANIC',               2,  14,  40, 2),
+('AVIATION MAINTENACE TECHNICIAN',  2,  14,  40, 2),
+('AIRCRAFT MAINTENANCE SPECIALIST', 2,  14,  40, 2),
+('AIRCRAFT FUELER',                 2,  14,  40, 2),
+('AVIONIC TECHNICIAN',              2,  14,  40, 2),
+('CABIN MAINTENANCE',               2,  14,  40, 2),
+('AIRPORT EQUIPMENT DRIVER',        2,  14,  40, 2),
+('AIRPORT ENGINEER AND PLANNER',    2,  14,  40, 2),
+
+('AVIATION MAINTENANCE TECHNICIAN', 2,  19,  40, 2),
+('POWERPLANT MECHANIC',             2,  19,  40, 2),
+('AIRFRAME MECHANIC',               2,  19,  40, 2),
+('AVIATION MAINTENACE TECHNICIAN',  2,  19,  40, 2),
+('AIRCRAFT MAINTENANCE SPECIALIST', 2,  19,  40, 2),
+('AIRCRAFT FUELER',                 2,  19,  40, 2),
+('AVIONIC TECHNICIAN',              2,  19,  40, 2),
+('CABIN MAINTENANCE',               2,  19,  40, 2),
+('AIRPORT EQUIPMENT DRIVER',        2,  19,  40, 2),
+('AIRPORT ENGINEER AND PLANNER',    2,  19,  40, 2),
+
+-- Operations
+('BAGGAGE HANDLER', 3, 4, 40, 2),
