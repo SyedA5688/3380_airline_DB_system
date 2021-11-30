@@ -698,6 +698,24 @@ INSERT INTO employee_address (street_address, city, zip_code, state, country) VA
 ('8276 MAIN ST',        'CITY C', '54321',  'STATE C', 'COUNTRY B'),
 ('920 NEIN LN',         'CITY C', '54321',  'STATE C', 'COUNTRY B');
 
+INSERT INTO employee_address (street_address, city, zip_code, state, country) VALUES
+('8755 SLEEPY HILLS',   'CITY A', '98764',  'STATE A', 'COUNTRY A'),
+('423 FISHWATER LN',    'CITY A', '98764',  'STATE A', 'COUNTRY A'),
+('8276 MINOR ST',       'CITY A', '98764',  'STATE A', 'COUNTRY A'),
+('920 LION LN',         'CITY A', '98764',  'STATE A', 'COUNTRY A');
+
+INSERT INTO employee_address (street_address, city, zip_code, state, country) VALUES
+('8755 JUMPY HILLS',    'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('423 FISHWATER ST',    'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('8276 MINOR RD',       'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('920 LION RD',         'CITY B', '12345',  'STATE B', 'COUNTRY A');
+
+INSERT INTO employee_address (street_address, city, zip_code, state, country) VALUES
+('8755 SLEEPY SLOPES',  'CITY C', '90987',  'STATE C', 'COUNTRY B'),
+('423 FISHWATER RD',    'CITY C', '90987',  'STATE C', 'COUNTRY B'),
+('8777 MAIN ST',        'CITY C', '90987',  'STATE C', 'COUNTRY B'),
+('920 LONG LN',         'CITY C', '90987',  'STATE C', 'COUNTRY B');
+
 -- Employee
 INSERT INTO employee 
 (first_name,  m_initial,  last_name,    ssn,         dob,           gender, phone,          email,                    job_id, address_id, manager_id) VALUES
@@ -931,6 +949,36 @@ INSERT INTO employee
 ('KARL',      NULL,       'LINDQVIST',  '100000145', '1988-04-24',  'M',    NULL,           NULL,                     151,    153,        NULL),
 ('JOHN',      NULL,       'LINDQVIST',  '100000146', '1988-04-24',  'M',    NULL,           NULL,                     152,    154,        NULL);
 
+INSERT INTO employee 
+(first_name,  m_initial,  last_name,    ssn,         dob,           gender, phone,          email,                    job_id, address_id, manager_id) VALUES
+('PROPSPER',  'S',        'ALFERINK',   '100000147', '1988-04-23',  'M',    NULL,           NULL,                     153,    155,        NULL);
+
+INSERT INTO employee 
+(first_name,  m_initial,  last_name,    ssn,         dob,           gender, phone,          email,                    job_id, address_id, manager_id) VALUES
+('BEATRICE',  'S',        'ABBADELLI',  '100000148', '1988-04-23',  'F',    NULL,           NULL,                     154,    156,        1000154),
+('KUROSH',    NULL,       'ABBADELLI',  '100000149', '1988-04-23',  'M',    NULL,           NULL,                     155,    157,        1000154),
+('LUKAS',     NULL,       'ABBADELLI',  '100000150', '1988-04-23',  'M',    NULL,           NULL,                     156,    158,        1000154);
+
+INSERT INTO employee 
+(first_name,  m_initial,  last_name,    ssn,         dob,           gender, phone,          email,                    job_id, address_id, manager_id) VALUES
+('ADOLPHE',   NULL,       'SCHNUR',     '100000151', '1988-04-23',  'M',    NULL,           NULL,                     157,    159,        NULL);
+
+INSERT INTO employee 
+(first_name,  m_initial,  last_name,    ssn,         dob,           gender, phone,          email,                    job_id, address_id, manager_id) VALUES
+('FRANCO',    'S',        'CALVO',      '100000152', '1989-04-23',  'M',    NULL,           NULL,                     158,    160,        1000158),
+('ALVA',      NULL,       'SERAFINI',   '100000153', '1989-05-23',  'F',    NULL,           NULL,                     159,    161,        1000158),
+('LUKAS',     NULL,       'CALVO',      '100000154', '1985-08-28',  'M',    NULL,           NULL,                     160,    162,        1000158);
+
+INSERT INTO employee 
+(first_name,  m_initial,  last_name,    ssn,         dob,           gender, phone,          email,                    job_id, address_id, manager_id) VALUES
+('ADOLPHE',   NULL,       'SCHNUR',     '100000155', '1988-04-23',  'M',    NULL,           NULL,                     161,    163,        NULL);
+
+INSERT INTO employee 
+(first_name,  m_initial,  last_name,    ssn,         dob,           gender, phone,          email,                    job_id, address_id, manager_id) VALUES
+('JIMMY',     'S',        'JEANS',      '100000156', '1989-04-23',  'M',    NULL,           NULL,                     162,    164,        1000162),
+('HARRY',     NULL,       'NOSE',       '100000157', '1989-05-23',  'M',    NULL,           NULL,                     163,    165,        1000162),
+('BARNEY',    NULL,       'BILLS',      '100000158', '1985-08-28',  'M',    NULL,           NULL,                     164,    166,        1000162);
+
 -- Salary
 INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
 (1000000, '$375', '$700,000'),
@@ -1063,51 +1111,66 @@ INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
 (1000105, '$18', '$10,000');
 
 INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
-(1000106, '$30', '$10,000'),
-(1000107, '$30', '$10,000'),
+(1000106, '$40', '$10,000'),
+(1000107, '$40', '$10,000'),
 (1000108, '$40', '$10,000'),
-(1000109, '$30', '$10,000'),
-(1000110, '$25', '$10,000'),
-(1000111, '$22', '$10,000'),
-(1000112, '$22', '$10,000'),
-(1000113, '$18', '$10,000'),
-(1000114, '$30', '$10,000'),
-(1000115, '$30', '$10,000'),
+(1000109, '$40', '$10,000'),
+(1000110, '$40', '$10,000'),
+(1000111, '$40', '$10,000'),
+(1000112, '$40', '$10,000'),
+(1000113, '$40', '$10,000'),
+(1000114, '$40', '$10,000'),
+(1000115, '$40', '$10,000'),
 (1000116, '$40', '$10,000'),
-(1000117, '$30', '$10,000'),
-(1000118, '$25', '$10,000'),
-(1000119, '$22', '$10,000'),
-(1000120, '$22', '$10,000'),
-(1000121, '$18', '$10,000'),
-(1000122, '$30', '$10,000'),
-(1000123, '$30', '$10,000'),
+(1000117, '$40', '$10,000'),
+(1000118, '$40', '$10,000'),
+(1000119, '$40', '$10,000'),
+(1000120, '$40', '$10,000'),
+(1000121, '$40', '$10,000'),
+(1000122, '$40', '$10,000'),
+(1000123, '$40', '$10,000'),
 (1000124, '$40', '$10,000'),
-(1000125, '$30', '$10,000'),
-(1000126, '$25', '$10,000'),
-(1000127, '$22', '$10,000'),
-(1000128, '$22', '$10,000'),
-(1000129, '$18', '$10,000'),
-(1000130, '$30', '$10,000'),
-(1000131, '$30', '$10,000'),
+(1000125, '$40', '$10,000'),
+(1000126, '$40', '$10,000'),
+(1000127, '$40', '$10,000'),
+(1000128, '$40', '$10,000'),
+(1000129, '$40', '$10,000'),
+(1000130, '$40', '$10,000'),
+(1000131, '$40', '$10,000'),
 (1000132, '$40', '$10,000'),
-(1000133, '$30', '$10,000'),
-(1000134, '$25', '$10,000'),
-(1000135, '$22', '$10,000'),
-(1000136, '$22', '$10,000'),
-(1000137, '$18', '$10,000'),
-(1000138, '$30', '$10,000'),
-(1000139, '$30', '$10,000'),
+(1000133, '$40', '$10,000'),
+(1000134, '$40', '$10,000'),
+(1000135, '$40', '$10,000'),
+(1000136, '$40', '$10,000'),
+(1000137, '$40', '$10,000'),
+(1000138, '$40', '$10,000'),
+(1000139, '$40', '$10,000'),
 (1000140, '$40', '$10,000'),
-(1000141, '$30', '$10,000'),
-(1000142, '$25', '$10,000'),
-(1000143, '$22', '$10,000'),
-(1000144, '$22', '$10,000'),
-(1000145, '$18', '$10,000'),
-(1000146, '$30', '$10,000'),
-(1000147, '$30', '$10,000'),
+(1000141, '$40', '$10,000'),
+(1000142, '$40', '$10,000'),
+(1000143, '$40', '$10,000'),
+(1000144, '$40', '$10,000'),
+(1000145, '$40', '$10,000'),
+(1000146, '$40', '$10,000'),
+(1000147, '$40', '$10,000'),
 (1000148, '$40', '$10,000'),
-(1000149, '$30', '$10,000'),
-(1000150, '$25', '$10,000'),
-(1000151, '$22', '$10,000'),
-(1000152, '$22', '$10,000'),
-(1000153, '$18', '$10,000');
+(1000149, '$40', '$10,000'),
+(1000150, '$40', '$10,000'),
+(1000151, '$40', '$10,000'),
+(1000152, '$40', '$10,000'),
+(1000153, '$40', '$10,000');
+
+INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
+(1000154, '$30', '$10,000'),
+(1000155, '$30', '$10,000'),
+(1000156, '$40', '$10,000'),
+(1000157, '$15', '$0'),
+(1000158, '$25', '$10,000'),
+(1000159, '$22', '$10,000'),
+(1000160, '$22', '$10,000'),
+(1000161, '$15', '$0'),
+(1000162, '$25', '$10,000'),
+(1000163, '$22', '$10,000'),
+(1000164, '$22', '$10,000'),
+(1000165, '$15', '$0');
+

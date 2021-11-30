@@ -66,7 +66,7 @@ router.get('/employee', async (req, res) => {
     switch(searchBy) {
       case 'title':
       case 'department':
-        filterString = format('WHERE %I LIKE \'%s%%\'\n', sortParams[searchBy], query);
+        filterString = format('WHERE %I LIKE \'%%%s%%\'\n', sortParams[searchBy], query);
         break;
 
       case 'id':
