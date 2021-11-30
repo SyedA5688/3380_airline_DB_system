@@ -30,6 +30,11 @@ import BenefitsSidePanel from './pages/BenefitsSidePanel';
 import CreateBenefitsForm from './pages/benefits/CreateNewBenefitsForm';
 import SearchBenefitsForm from './pages/benefits/SearchBenefitsPackagesForm';
 import UpdateBenefitsForm from './pages/benefits/UpdateBenefitsPackage';
+
+import PayrollSidePanel from './pages/PayrollSidePanel';
+import SearchPayrollForm from './pages/payroll/SearchAllPayrollForm';
+import CreatePayrollEntryForm from './pages/payroll/CreatePayrollEntryForm';
+import CreateAllPayrollForm from './pages/payroll/CreateAllPayrollForm';
 import './App.css'
 
 
@@ -73,6 +78,12 @@ class App extends Component {
                   <Route exact path="create" element={<CreateBenefitsForm />} />
                   <Route exact path="search" element={<SearchBenefitsForm />} />
                   <Route exact path="update" element={<UpdateBenefitsForm />} />
+                </Route>
+
+                <Route exact path="payroll" element={<PayrollSidePanel />} >
+                  <Route exact path="create" element={<CreatePayrollEntryForm />} />
+                  <Route exact path="search" element={<SearchPayrollForm />} />
+                  <Route exact path="createAll" element={<CreateAllPayrollForm />} />
                 </Route>
               </Route>
               
