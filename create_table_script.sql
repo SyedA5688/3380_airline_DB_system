@@ -22,10 +22,11 @@ CREATE TABLE employee_address (
 );
 
 CREATE TABLE job_location (
-  location_id INT GENERATED ALWAYS AS IDENTITY,
-  airport_id  INT,
-  address_id  INT NOT NULL,
-  flight_id   INT,
+  location_id   INT GENERATED ALWAYS AS IDENTITY,
+  airport_id    INT,
+  address_id    INT NOT NULL,
+  flight_id     INT,
+  location_name VARCHAR(50),
 
   PRIMARY KEY(location_id)
 );
@@ -144,20 +145,32 @@ INSERT INTO job OVERRIDING SYSTEM VALUE VALUES(0, 'UNASSIGNED', 0, 0, 0, 0);
 
 -- Departments (based on https://www.avjobs.com/history/structure-of-the-airline-industry.asp)
 INSERT INTO department (department_name, creation_date) VALUES 
-('BOARD OF DIRECTORS', '1980-01-01'),
-('ENGINEERING AND MAINTENANCE', '1980-01-01'),
-('FLIGHT OPERATIONS', '1980-01-01'),
-('SALES AND MARKETING', '1980-01-01'),
-('RESERVATIONS AND TICKETING', '1980-01-01'),
-('FINANCE AND PROPERTY', '1980-01-01'),
-('INFORMATION SERVICES', '1980-01-01'),
-('PERSONNEL', '1980-01-01'),
-('MEDICAL', '1980-01-01'),
-('LEGAL', '1980-01-01'),
-('PUBLIC RELATIONS AND PLANNING', '1980-01-01');
+('BOARD OF DIRECTORS',            '1980-01-01'),
+('ENGINEERING AND MAINTENANCE',   '1980-01-01'),
+('FLIGHT OPERATIONS',             '1980-01-01'),
+('SALES AND MARKETING',           '1980-01-01'),
+('RESERVATIONS AND TICKETING',    '1980-01-01'),
+('FINANCE AND PROPERTY',          '1980-01-01'),
+('INFORMATION SERVICES',          '1990-11-08'),
+('PERSONNEL',                     '1980-01-01'),
+('MEDICAL',                       '1980-04-05'),
+('LEGAL',                         '1981-03-11'),
+('PUBLIC RELATIONS AND PLANNING', '1985-07-20');
 
 -- Benefits
+INSERT INTO benefits (amount, stock_options, health_insurance_provider, retirement_plan) VALUES
+('1000',  NULL,             'INSURANCE PROVIDER A', 'RETIREMENT PLAN A'),
+('2500', 'STOCK OPTIONS A', 'INSURANCE PROVIDER A', 'RETIREMENT PLAN B'),
+('5000', 'STOCK OPTIONS A', 'INSURANCE PROVIDER B', 'RETIREMENT PLAN A'),
+('5000', 'STOCK OPTIONS B', 'INSURANCE PROVIDER C', 'RETIREMENT PLAN B'),
+('5000',  NULL,             'INSURANCE PROVIDER A', 'RETIREMENT PLAN C'),
+('6000',  NULL,             'INSURANCE PROVIDER A', 'RETIREMENT PLAN A'),
+('2500', 'STOCK OPTIONS C', 'INSURANCE PROVIDER C', 'RETIREMENT PLAN B'),
+('5000', 'STOCK OPTIONS B', 'INSURANCE PROVIDER A', 'RETIREMENT PLAN C');
 
 -- Job locations
+INSERT INTO job_location (airport_id, address_id, flight_id, location_name) VALUES
+(NULL, 1, NULL),
+(NULL, 2, NULL),
 
 -- Jobs
