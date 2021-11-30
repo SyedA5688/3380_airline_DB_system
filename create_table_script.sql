@@ -216,11 +216,11 @@ INSERT INTO job_location (airport_id, address_id, flight_id, location_name) VALU
 INSERT INTO job (job_title, department_id, location_id, weekly_hours, benefits_package_id) VALUES
 -- Board of Directors (1)
 ('CHIEF EXECUTIVE OFFICER', 1,  2,  50, 9),
-('CHAIRMAN',                1,  2,  10, 9),
-('VICE CHAIR',              1,  2,  10, 9),
-('BOARD SECRETARY',         1,  2,  10, 9),
-('TREASURER',               1,  2,  10, 9),
-('BOARD MEMBER',            1,  2,  5,  9),
+('CHAIRMAN',                1,  2,  40, 9),
+('VICE CHAIR',              1,  2,  40, 9),
+('BOARD SECRETARY',         1,  2,  40, 9),
+('TREASURER',               1,  2,  40, 9),
+('BOARD MEMBER',            1,  2,  40, 9),
 
 -- Maintenance and Engineering (2)
 ('AVIATION MAINTENANCE TECHNICIAN', 2,  4,  40, 2),
@@ -516,4 +516,196 @@ INSERT INTO job (job_title, department_id, location_id, weekly_hours, benefits_p
 ('PUBLIC RELATIONS GENERALIST', 12,  3,  40, 3),
 ('PUBLIC RELATIONS MANAGER',    12,  3,  40, 3),
 ('PUBLIC RELATIONS INTERN',     12,  3,  20, 3);
+
+-- Employee Address
+INSERT INTO employee_address (street_address, city, zip_code, state, country) VALUES
+('123 ROCKY RD',        'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('123 STONE ST',        'CITY B', '54321',  'STATE B', 'COUNTRY A'),
+('321 ROCKY RD',        'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('555 STONE ST',        'CITY B', '54321',  'STATE B', 'COUNTRY A'),
+('9029 MAIN ST',        'CITY B', '12345',  'STATE B', 'COUNTRY A');
+
+INSERT INTO employee_address (street_address, city, zip_code, state, country) VALUES
+('765 MAIN ST',         'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('767 MINOR ST',        'CITY B', '54321',  'STATE B', 'COUNTRY A'),
+('876 MINOR ST',        'CITY B', '54321',  'STATE B', 'COUNTRY A');
+
+INSERT INTO employee_address (street_address, city, zip_code, state, country) VALUES
+('8760 MAIN ST',        'CITY A', '98764',  'STATE A', 'COUNTRY A'),
+('920 SKY ST',          'CITY A', '98764',  'STATE A', 'COUNTRY A'),
+('808 SKY ST',          'CITY A', '98764',  'STATE A', 'COUNTRY A'),
+('8760 SUMMERSIDE LN',  'CITY A', '98764',  'STATE A', 'COUNTRY A'),
+('8755 SUMMERSIDE LN',  'CITY A', '98764',  'STATE A', 'COUNTRY A'),
+('423 ROCKDRIVE RD',    'CITY A', '98764',  'STATE A', 'COUNTRY A'),
+('202 ROCKDRIVE RD',    'CITY A', '98764',  'STATE A', 'COUNTRY A'),
+('101 ROCKDRIVE RD',    'CITY A', '98764',  'STATE A', 'COUNTRY A'),
+('896 ROCKDRIVE RD',    'CITY A', '98764',  'STATE A', 'COUNTRY A'),
+('909 ROCKDRIVE RD',    'CITY A', '98764',  'STATE A', 'COUNTRY A');
+
+INSERT INTO employee_address (street_address, city, zip_code, state, country) VALUES
+('8760 MAIN ST',        'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('920 SKY ST',          'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('808 SKY ST',          'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('8760 SUMMERSIDE LN',  'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('8755 SUMMERSIDE LN',  'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('423 ROCKDRIVE RD',    'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('202 ROCKDRIVE RD',    'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('101 ROCKDRIVE RD',    'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('896 ROCKDRIVE RD',    'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('909 ROCKDRIVE RD',    'CITY B', '12345',  'STATE B', 'COUNTRY A');
+
+INSERT INTO employee_address (street_address, city, zip_code, state, country) VALUES
+('8770 MAIN ST',        'CITY B', '54321',  'STATE B', 'COUNTRY A'),
+('920 SKY RD',          'CITY B', '54321',  'STATE B', 'COUNTRY A'),
+('808 SKY RD',          'CITY B', '54321',  'STATE B', 'COUNTRY A'),
+('8760 AUTUMNLAND LN',  'CITY B', '54321',  'STATE B', 'COUNTRY A'),
+('8755 AUTUMNLAND LN',  'CITY B', '54321',  'STATE B', 'COUNTRY A'),
+('423 STONEROCK RD',    'CITY B', '54321',  'STATE B', 'COUNTRY A'),
+('202 STONEROCK RD',    'CITY B', '54321',  'STATE B', 'COUNTRY A'),
+('101 STONEROCK RD',    'CITY B', '54321',  'STATE B', 'COUNTRY A'),
+('896 STONEROCK RD',    'CITY B', '54321',  'STATE B', 'COUNTRY A'),
+('909 STONEROCK RD',    'CITY B', '54321',  'STATE B', 'COUNTRY A');
+
+INSERT INTO employee_address (street_address, city, zip_code, state, country) VALUES
+('8760 MAIN ST',        'CITY C', '56565',  'STATE A', 'COUNTRY B'),
+('920 FLOOR ST',        'CITY C', '56565',  'STATE A', 'COUNTRY B'),
+('808 FLOOR ST',        'CITY C', '56565',  'STATE A', 'COUNTRY B'),
+('8760 SUMMERSIDE DR',  'CITY C', '56565',  'STATE A', 'COUNTRY B'),
+('8755 SUMMERSIDE DR',  'CITY C', '56565',  'STATE A', 'COUNTRY B'),
+('423 OCEANWATER LN',   'CITY C', '56565',  'STATE A', 'COUNTRY B'),
+('202 OCEANWATER LN',   'CITY C', '56565',  'STATE A', 'COUNTRY B'),
+('101 OCEANWATER LN',   'CITY C', '56565',  'STATE A', 'COUNTRY B'),
+('896 OCEANWATER LN',   'CITY C', '56565',  'STATE A', 'COUNTRY B'),
+('909 OCEANWATER LN',   'CITY C', '56565',  'STATE A', 'COUNTRY B');
+
+-- Employee
+INSERT INTO employee 
+(first_name,  m_initial,  last_name,    ssn,         dob,           gender, phone,          email,                    job_id, address_id, manager_id) VALUES
+('JOHN',      'H',        'SMITH',      '123456789', '1965-01-01',  'M',    '+15553219090', 'jsmith@company.org',     1,      1,          NULL);
+
+INSERT INTO employee 
+(first_name,  m_initial,  last_name,    ssn,         dob,           gender, phone,          email,                    job_id, address_id, manager_id) VALUES
+('MARY',      NULL,       'ORLEANS',    '987654321', '1970-04-09',  'F',    '+15559990001', 'morleans@company.org',   2,      2,          1000000),
+('HARRIS',    NULL,       'BEAUDRY',    '111223333', '1967-04-29',  'M',    '+15559990021', 'hbeaudry@company.org',   3,      3,          NULL),
+('ANABEL',    'A',        'NEALIOUS',   '112345678', '1980-01-09',  'F',    '+15559990011', 'anaulious@company.org',  4,      4,          NULL),
+('DON',       'E',        'SYLVER',     '112345688', '1969-11-24',  'M',    '+15559980011', 'dsylver@company.org',    5,      5,          NULL);
+
+INSERT INTO employee 
+(first_name,  m_initial,  last_name,    ssn,         dob,           gender, phone,          email,                    job_id, address_id, manager_id) VALUES
+('BRENDON',   NULL,       'LAMBINO',    '112346689', '1965-11-24',  'M',    '+15559680011', 'blambino@company.org',   6,      6,          1000001),
+('MYRTLE',    NULL,       'TRUOG',      '122345688', '1969-12-24',  'F',    '+16559980011', 'mtruog@company.org',     7,      7,          1000001),
+('LASZLO',    NULL,       'LUAIN',      '111345688', '1971-02-24',  'M',    '+15567980011', 'lluain@company.org',     8,      8,          1000001);
+
+INSERT INTO employee 
+(first_name,  m_initial,  last_name,    ssn,         dob,           gender, phone,          email,                    job_id, address_id, manager_id) VALUES
+('IOUBAL',    'T',        'TEMITOPE',   '117345689', '1984-06-23',  'M',    '+15567980111', NULL,                     9,      9,          NULL),
+('LATIFA',    NULL,       'BELTZ',      '117245689', '1984-02-24',  'F',    '+15569980011', NULL,                     10,     10,         NULL),
+('ELINA',     NULL,       'HAUTUM',     '117445689', '1983-06-24',  'F',    '+15567900811', NULL,                     11,     11,         NULL),
+('INGULF',    'H',        'LAAKKONEN',  '117545689', '1983-08-12',  'M',    '+15567980211', NULL,                     12,     12,         NULL),
+('SOLOMON',   'V',        'TERZI',      '117745689', '1984-09-23',  'M',    '+15567980311', NULL,                     13,     13,         NULL),
+('QUINCTUS',  NULL,       'HART',       '113345689', '1990-12-19',  'M',    '+15567980411', NULL,                     14,     14,         NULL),
+('TITILAYO',  NULL,       'DAALEN',     '118345689', '1987-06-04',  'F',    '+15567980511', NULL,                     15,     15,         NULL),
+('LAURENS',   NULL,       'RUSH',       '114345689', '1989-05-03',  'M',    '+15567980611', NULL,                     16,     16,         NULL),
+('SHANNA',    'M',        'PLANCK',     '111342689', '1990-04-02',  'F',    '+15567980711', NULL,                     17,     17,         NULL),
+('REINALDO',  'S',        'CLARK',      '117355689', '1988-03-01',  'M',    '+15567980811', NULL,                     18,     18,         NULL);
+
+INSERT INTO employee 
+(first_name,  m_initial,  last_name,    ssn,         dob,           gender, phone,          email,                    job_id, address_id, manager_id) VALUES
+('PRINCE',    'S',        'BERGFALK',   '100000001', '1984-06-23',  'M',    '+15567180111', NULL,                     19,     19,         NULL),
+('RICO',      NULL,       'MILFORD',    '100000002', '1984-02-24',  'M',    '+15569180011', NULL,                     20,     20,         NULL),
+('DEVARAJ',   NULL,       'MARQUES',    '100000003', '1983-06-24',  'M',    '+15567100811', NULL,                     21,     21,         NULL),
+('BENVENUTO', 'J',        'BRYAN',      '100000004', '1983-08-12',  'M',    '+15567180211', NULL,                     22,     22,         NULL),
+('SARA',      'S',        'COKES',      '100000005', '1984-09-23',  'F',    '+15567180311', NULL,                     23,     23,         NULL),
+('LALE',      NULL,       'ACCIAI',     '100000006', '1990-12-19',  'F',    '+15567180411', NULL,                     24,     24,         NULL),
+('PATTIE',    NULL,       'BECKETT',    '100000007', '1987-06-04',  'F',    '+15567180511', NULL,                     25,     25,         NULL),
+('ERICA',     NULL,       'KLASSEN'     '100000008', '1989-05-03',  'F',    '+15567180611', NULL,                     26,     26,         NULL),
+('KYLEE',     'M',        'DARROW',     '100000009', '1990-04-02',  'F',    '+15567180711', NULL,                     27,     27,         NULL),
+('SHIRO',     'G',        'DARZI',      '100000010', '1988-03-01',  'M',    '+15567180811', NULL,                     28,     28,         NULL);
+
+INSERT INTO employee 
+(first_name,  m_initial,  last_name,    ssn,         dob,           gender, phone,          email,                    job_id, address_id, manager_id) VALUES
+('ELI',       'H',        'ANKEREN',    '100000011', '1984-06-23',  'M',    '+15566180111', NULL,                     29,     29,         NULL),
+('RICO',      NULL,       'MILFORD',    '100000012', '1984-02-24',  'M',    '+15566180011', NULL,                     30,     30,         NULL),
+('DEVARAJ',   NULL,       'MARQUES',    '100000013', '1983-06-24',  'M',    '+15566100811', NULL,                     31,     31,         NULL),
+('BENVENUTO', 'J',        'BRYAN',      '100000014', '1983-08-12',  'M',    '+15566180211', NULL,                     32,     32,         NULL),
+('SARA',      'S',        'COKES',      '100000015', '1984-09-23',  'F',    '+15566180311', NULL,                     33,     33,         NULL),
+('LALE',      NULL,       'ACCIAI',     '100000016', '1990-12-19',  'F',    '+15566180411', NULL,                     34,     34,         NULL),
+('PATTIE',    NULL,       'BECKETT',    '100000017', '1987-06-04',  'F',    '+15566180511', NULL,                     35,     35,         NULL),
+('ERICA',     NULL,       'KLASSEN'     '100000018', '1989-05-03',  'F',    '+15566180611', NULL,                     36,     36,         NULL),
+('KYLEE',     'M',        'DARROW',     '100000019', '1990-04-02',  'F',    '+15566180711', NULL,                     37,     37,         NULL),
+('SHIRO',     'G',        'DARZI',      '100000020', '1988-03-01',  'M',    '+15566180811', NULL,                     38,     38,         NULL);
+
+INSERT INTO employee 
+(first_name,  m_initial,  last_name,    ssn,         dob,           gender, phone,          email,                    job_id, address_id, manager_id) VALUES
+('IOUBAL',    'T',        'TEMITOPE',   '100000031', '1985-06-13',  'M',    '+25567980221', NULL,                     39,     39,         NULL),
+('LATIFA',    NULL,       'BELTZ',      '100000032', '1985-02-14',  'F',    '+25569980221', NULL,                     40,     40,         NULL),
+('ELINA',     NULL,       'HAUTUM',     '100000033', '1985-06-14',  'F',    '+25567900221', NULL,                     41,     41,         NULL),
+('INGULF',    'H',        'LAAKKONEN',  '100000034', '1985-08-12',  'M',    '+25574980221', NULL,                     42,     42,         NULL),
+('SOLOMON',   'V',        'TERZI',      '100000035', '1985-09-13',  'M',    '+25574880221', NULL,                     43,     43,         NULL),
+('QUINCTUS',  NULL,       'HART',       '100000036', '1995-12-19',  'M',    '+25568980221', NULL,                     44,     44,         NULL),
+('TITILAYO',  NULL,       'DAALEN',     '100000037', '1985-06-14',  'F',    '+25577980221', NULL,                     45,     45,         NULL),
+('LAURENS',   NULL,       'RUSH',       '100000038', '1985-05-13',  'M',    '+25587980221', NULL,                     46,     46,         NULL),
+('SHANNA',    'M',        'PLANCK',     '100000039', '1995-04-12',  'F',    '+25569980221', NULL,                     47,     47,         NULL),
+('REINALDO',  'S',        'CLARK',      '100000040', '1985-03-11',  'M',    '+25560980221', NULL,                     48,     48,         NULL);
+
+-- Salary
+INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
+(1000000, '$375', '$700,000'),
+
+(1000001, '$100', '$250,000'),
+(1000002, '$90',  '$200,000'),
+(1000003, '$50',  '$120,000'),
+(1000004, '$100', '$200,000'),
+
+(1000005, '$35',  '$100,000'),
+(1000006, '$35',  '$100,000'),
+(1000007, '$35',  '$100,000');
+
+INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
+(1000008, '$30', '$10,000'),
+(1000009, '$30', '$10,000'),
+(1000010, '$40', '$10,000'),
+(1000011, '$30', '$10,000'),
+(1000012, '$25', '$10,000'),
+(1000013, '$22', '$10,000'),
+(1000014, '$22', '$10,000'),
+(1000015, '$18', '$10,000'),
+(1000016, '$20', '$10,000'),
+(1000017, '$40', '$10,000');
+
+INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
+(1000018, '$30', '$10,000'),
+(1000019, '$30', '$10,000'),
+(1000020, '$40', '$10,000'),
+(1000021, '$30', '$10,000'),
+(1000022, '$25', '$10,000'),
+(1000023, '$22', '$10,000'),
+(1000024, '$22', '$10,000'),
+(1000025, '$18', '$10,000'),
+(1000026, '$20', '$10,000'),
+(1000027, '$40', '$10,000');
+
+INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
+(1000028, '$30', '$10,000'),
+(1000029, '$30', '$10,000'),
+(1000030, '$40', '$10,000'),
+(1000031, '$30', '$10,000'),
+(1000032, '$25', '$10,000'),
+(1000033, '$22', '$10,000'),
+(1000034, '$22', '$10,000'),
+(1000035, '$18', '$10,000'),
+(1000036, '$20', '$10,000'),
+(1000037, '$40', '$10,000');
+
+INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
+(10000138, '$30', '$10,000'),
+(10000139, '$30', '$10,000'),
+(10000240, '$40', '$10,000'),
+(10000241, '$30', '$10,000'),
+(10000242, '$25', '$10,000'),
+(10000243, '$22', '$10,000'),
+(10000244, '$22', '$10,000'),
+(10000245, '$18', '$10,000'),
+(10000246, '$20', '$10,000'),
+(10000247, '$40', '$10,000');
 
