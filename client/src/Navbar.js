@@ -20,7 +20,7 @@ export default function Navbar() {
               <a className="nav-link" href="/jobs/search">Jobs</a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/department">Departments</a>
+              <a className="nav-link" href="/department/search">Departments</a>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="/leave/search">Leave</a>
@@ -29,7 +29,7 @@ export default function Navbar() {
               <a className="nav-link" href="/benefits/search">Benefits</a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/">Payroll</a>
+              <a className="nav-link" href="/payroll/search">Payroll</a>
             </li>
           </ul>
         </div>

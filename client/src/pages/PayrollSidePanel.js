@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 import './sidePanels.css'
 
 
-class JobsSidePanel extends Component {
+class PayrollSidePanel extends Component {
   render() {
     return (
       <div className="container-fluid" >
@@ -11,10 +11,9 @@ class JobsSidePanel extends Component {
           <div className="col-3" id="sidebar-wrapper" >
             <nav className="sidebar-nav" align="center" >
               <ul className="sidebar-ul" >
-                <li className="sidebar-li"><a href="/jobs/search" >Search All Jobs</a></li>
-                <li className="sidebar-li"><a href="/jobs/create" >Create New Job</a></li>
-                <li className="sidebar-li"><a href="/jobs/update" >Update Job Details</a></li>
-                <li className="sidebar-li"><a href="/jobs/delete" >Delete a Job</a></li>
+                <li className="sidebar-li"><a href="/payroll/search" >Search All Payroll Entries</a></li>
+                <li className="sidebar-li"><a href="/payroll/create" >Create a Payroll Entry</a></li>
+                <li className="sidebar-li"><a href="/payroll/createAll" >Calculate Payroll For All Employees</a></li>
               </ul>
             </nav>
           </div>
@@ -28,4 +27,4 @@ class JobsSidePanel extends Component {
 }
 
 
-export default JobsSidePanel
+export default PayrollSidePanel

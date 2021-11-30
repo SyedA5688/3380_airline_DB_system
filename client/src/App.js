@@ -9,11 +9,13 @@ import UpdateForm from './pages/employees/UpdateForm';
 import GetForm from './pages/employees/GetForm';
 import SearchManagersForm from './pages/employees/SearchManagersForm';
 import SearchEmployeesUnderManagerForm from './pages/employees/EmployeesUnderManagerForm';
+import DeleteEmployeeForm from './pages/employees/DeleteEmployeeForm';
 
 import JobsSidePanel from './pages/JobsSidePanel';
 import SearchAllJobsForm from './pages/jobs/SearchAllJobsForm';
 import CreateJobForm from './pages/jobs/CreateJobForm';
 import UpdateJobForm from './pages/jobs/UpdateJobForm';
+import DeleteJobForm from './pages/jobs/DeleteJobForm';
 
 import LeaveSidePanel from './pages/LeaveSidePanel';
 import SearchAllLeaveForm from './pages/leave/SearchAllLeaveForm';
@@ -25,11 +27,17 @@ import DepartmentsSidePanel from './pages/DepartmentSidePanel';
 import CreateDepartmentForm from './pages/departments/CreateDepartmentForm';
 import SearchDepartmentsForm from './pages/departments/SearchDepartments';
 import UpdateDepartmentForm from './pages/departments/UpdateDepartment';
+import DeleteDepartmentForm from './pages/departments/DeleteDepartment';
 
 import BenefitsSidePanel from './pages/BenefitsSidePanel';
 import CreateBenefitsForm from './pages/benefits/CreateNewBenefitsForm';
 import SearchBenefitsForm from './pages/benefits/SearchBenefitsPackagesForm';
 import UpdateBenefitsForm from './pages/benefits/UpdateBenefitsPackage';
+
+import PayrollSidePanel from './pages/PayrollSidePanel';
+import SearchPayrollForm from './pages/payroll/SearchAllPayrollForm';
+import CreatePayrollEntryForm from './pages/payroll/CreatePayrollEntryForm';
+import CreateAllPayrollForm from './pages/payroll/CreateAllPayrollForm';
 import './App.css'
 
 
@@ -46,6 +54,7 @@ class App extends Component {
                   <Route exact path="insert" element={<InsertForm />} />
                   <Route exact path="get" element={<GetForm />} />
                   <Route exact path="update" element={<UpdateForm />} />
+                  <Route exact path="delete" element={<DeleteEmployeeForm />} />
                   <Route exact path="managers" element={<SearchManagersForm />} />
                   <Route exact path="employeesUnderManagers" element={<SearchEmployeesUnderManagerForm />} />
                 </Route>
@@ -54,6 +63,7 @@ class App extends Component {
                   <Route exact path="search" element={<SearchAllJobsForm />} />
                   <Route exact path="create" element={<CreateJobForm />} />
                   <Route exact path="update" element={<UpdateJobForm />} />
+                  <Route exact path="delete" element={<DeleteJobForm />} />
                 </Route>
 
                 <Route exact path="leave" element={<LeaveSidePanel />} >
@@ -67,12 +77,19 @@ class App extends Component {
                   <Route exact path="create" element={<CreateDepartmentForm />} />
                   <Route exact path="search" element={<SearchDepartmentsForm />} />
                   <Route exact path="update" element={<UpdateDepartmentForm />} />
+                  <Route exact path="delete" element={<DeleteDepartmentForm />} />
                 </Route>
 
                 <Route exact path="benefits" element={<BenefitsSidePanel />} >
                   <Route exact path="create" element={<CreateBenefitsForm />} />
                   <Route exact path="search" element={<SearchBenefitsForm />} />
                   <Route exact path="update" element={<UpdateBenefitsForm />} />
+                </Route>
+
+                <Route exact path="payroll" element={<PayrollSidePanel />} >
+                  <Route exact path="create" element={<CreatePayrollEntryForm />} />
+                  <Route exact path="search" element={<SearchPayrollForm />} />
+                  <Route exact path="createAll" element={<CreateAllPayrollForm />} />
                 </Route>
               </Route>
               
