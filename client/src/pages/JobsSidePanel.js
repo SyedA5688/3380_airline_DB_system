@@ -15,6 +15,8 @@ class JobsSidePanel extends Component {
                 <li className="sidebar-li"><a href="/jobs/create" >Create New Job</a></li>
                 <li className="sidebar-li"><a href="/jobs/update" >Update Job Details</a></li>
                 <li className="sidebar-li"><a href="/jobs/delete" >Delete a Job</a></li>
+                <li className="sidebar-li"><a href="/jobs/searchLocations" >View All Job Locations</a></li>
+                <li className="sidebar-li"><a href="/jobs/createLocation" >Create a Job Location</a></li>
               </ul>
             </nav>
           </div>

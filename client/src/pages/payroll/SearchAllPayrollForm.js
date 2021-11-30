@@ -261,7 +261,7 @@ class SearchPayrollForm extends Component {
                 <th scope="col">{payrollObj.payroll_id}</th>
                 <th scope="col">{payrollObj.employee_id}</th>
                 <th scope="col">{payrollObj.hours_worked}</th>
-                <th scope="col">{payrollObj.pay_period}</th>
+                <th scope="col">{payrollObj.pay_period.split("T")[0]}</th>
                 <th scope="col">{payrollObj.tax_rate}</th>
                 <th scope="col">{payrollObj.gross_income}</th>
                 <th scope="col">{payrollObj.taxed_income}</th>

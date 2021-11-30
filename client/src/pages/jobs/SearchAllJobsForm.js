@@ -212,7 +212,7 @@ class SearchAllJobsForm extends Component {
           <div className="form-group mt-2" >
             <label className="sr-only" htmlFor="inputSortBy">Sort by:</label>
             <select name="sort" className="form-select" id="inputSortBy" defaultValue="id" onChange={this.handleChange}>
-              <option value="id">Employee ID</option>
+              <option value="id">Job ID</option>
               <option value="title">Job Title</option>
               <option value="department">Job Department</option>
               <option value="location">Job Location</option>

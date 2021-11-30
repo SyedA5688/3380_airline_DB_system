@@ -277,7 +277,7 @@ class SearchEmployeeLeaveForm extends Component {
                 <th scope="col">{index + 1}</th>
                 <th scope="col">{leaveObj.leave_id}</th>
                 <th scope="col">{leaveObj.employee_id}</th>
-                <th scope="col">{leaveObj.date}</th>
+                <th scope="col">{leaveObj.date.split("T")[0]}</th>
                 <th scope="col">{leaveObj.reason}</th>
                 <th scope="col">{leaveObj.status}</th>
               </tr>

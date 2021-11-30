@@ -247,7 +247,7 @@ class SearchDepartmentsForm extends Component {
                 <th scope="col">{deptObj.employee_count}</th>
                 <th scope="col">{deptObj.department_id}</th>
                 <th scope="col">{deptObj.department_name}</th>
-                <th scope="col">{deptObj.creation_date}</th>
+                <th scope="col">{deptObj.creation_date.split("T")[0]}</th>
                 <th scope="col">{deptObj.department_head_id}</th>
                 <th scope="col">{deptObj.first_name}</th>
                 <th scope="col">{deptObj.last_name}</th>
