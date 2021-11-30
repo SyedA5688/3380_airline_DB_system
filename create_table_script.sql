@@ -774,6 +774,23 @@ INSERT INTO employee_address (street_address, city, zip_code, state, country) VA
 ('8276 MAIN ST',        'CITY C', '54321',  'STATE C', 'COUNTRY B'),
 ('920 NEIN LN',         'CITY C', '54321',  'STATE C', 'COUNTRY B');
 
+INSERT INTO employee_address (street_address, city, zip_code, state, country) VALUES
+('8755 BUMPY HILLS',    'CITY A', '98764',  'STATE A', 'COUNTRY A'),
+('423 POOLWATER LN',    'CITY A', '98764',  'STATE A', 'COUNTRY A'),
+('8276 DIGGY LN',       'CITY A', '98764',  'STATE A', 'COUNTRY A'),
+('920 ZEBRA ST',        'CITY A', '98764',  'STATE A', 'COUNTRY A');
+
+INSERT INTO employee_address (street_address, city, zip_code, state, country) VALUES
+('8755 KERRINGTON AVE', 'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('423 MERRYWEATHER LN', 'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('8276 CHRONO ST',      'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('420 CLOUDY DR',       'CITY B', '12345',  'STATE B', 'COUNTRY A');
+
+INSERT INTO employee_address (street_address, city, zip_code, state, country) VALUES
+('8755 KERRINGTON AVE', 'CITY C', '54321',  'STATE C', 'COUNTRY B'),
+('423 MERRYWEATHER LN', 'CITY C', '54321',  'STATE C', 'COUNTRY B'),
+('8276 CHRONO ST',      'CITY C', '54321',  'STATE C', 'COUNTRY B'),
+('420 CLOUDY DR',       'CITY C', '54321',  'STATE C', 'COUNTRY B');
 
 -- Employee
 INSERT INTO employee 
@@ -1106,6 +1123,36 @@ UPDATE employee
 SET manager_id = 1000196
 WHERE employee_id IN (1000190, 1000191, 1000194, 1000195);
 
+INSERT INTO employee 
+(first_name,  m_initial,  last_name,    ssn,         dob,           gender, phone,          email,                    job_id, address_id, manager_id) VALUES
+('MAXINE',    'A',        'THAIDHG',    '100000191', '1975-04-23',  'F',    NULL,           NULL,                     197,    199,        NULL),
+('MARCEAU',   NULL,       'OTTEN',      '100000192', '2000-05-23',  'M',    NULL,           NULL,                     198,    200,        NULL),
+('HARLOW',    NULL,       'ARENDOK',    '100000193', '1970-08-28',  'M',    NULL,           NULL,                     199,    201,        NULL);
+
+UPDATE employee
+SET manager_id = 1000198
+WHERE employee_id = 1000199;
+
+INSERT INTO employee 
+(first_name,  m_initial,  last_name,    ssn,         dob,           gender, phone,          email,                    job_id, address_id, manager_id) VALUES
+('ANDRE',     'K',        'GILBERT',    '100000194', '1975-05-23',  'M',    NULL,           NULL,                     200,    202,        NULL),
+('EMIL',      NULL,       'TRAVERSO',   '100000195', '2000-08-23',  'M',    NULL,           NULL,                     201,    203,        NULL),
+('SEPHORA',   NULL,       'VILLENEUVE', '100000196', '1971-08-28',  'F',    NULL,           NULL,                     202,    204,        NULL);
+
+UPDATE employee
+SET manager_id = 1000201
+WHERE employee_id = 1000202;
+
+INSERT INTO employee 
+(first_name,  m_initial,  last_name,    ssn,         dob,           gender, phone,          email,                    job_id, address_id, manager_id) VALUES
+('AFAF',      'S',        'LOWE',       '100000197', '1975-04-23',  'M',    NULL,           NULL,                     203,    205,        NULL),
+('MAXIME',    NULL,       'LAMBERT',    '100000198', '2001-08-23',  'M',    NULL,           NULL,                     204,    206,        NULL),
+('TERZO',     NULL,       'HERZOG',     '100000199', '1970-08-28',  'F',    NULL,           NULL,                     205,    207,        NULL);
+
+UPDATE employee
+SET manager_id = 1000204
+WHERE employee_id = 1000205;
+
 -- Salary
 INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
 (1000000, '$375', '$700,000'),
@@ -1340,3 +1387,12 @@ INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
 (1000195, '$31', '$1,000'),
 (1000196, '$40', '$1,000'),
 (1000197, '$20', '$0');
+
+INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
+(1000198, '$35', '$2,250'),
+(1000199, '$16', '$0'),
+(1000200, '$28', '$1,000'),
+(1000201, '$15', '$0'),
+(1000202, '$29', '$1,000'),
+(1000203, '$15.50', '$0');
+
