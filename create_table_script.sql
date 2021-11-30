@@ -599,6 +599,45 @@ INSERT INTO employee_address (street_address, city, zip_code, state, country) VA
 ('8234 SUMMERTOP RD',   'CITY A', '98764',  'STATE A', 'COUNTRY A'),
 ('8754 SUMMERTOP RD',   'CITY A', '98764',  'STATE A', 'COUNTRY A');
 
+INSERT INTO employee_address (street_address, city, zip_code, state, country) VALUES
+('8977 MAIN ST',        'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('910 KEINE DR',        'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('809 KEINE DR',        'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('8760 SCHLAFEN RD',    'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('8755 SCHLAFEN RD',    'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('423 RAINWATER LN',    'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('8276 MAIN ST',        'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('920 NEIN LN',         'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('808 NEIN LN',         'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('8234 KORON RD',       'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('8754 KORON RD',       'CITY B', '12345',  'STATE B', 'COUNTRY A');
+
+INSERT INTO employee_address (street_address, city, zip_code, state, country) VALUES
+('8977 MAIN ST',        'CITY B', '54321',  'STATE B', 'COUNTRY A'),
+('910 KEINE DR',        'CITY B', '54321',  'STATE B', 'COUNTRY A'),
+('809 KEINE DR',        'CITY B', '54321',  'STATE B', 'COUNTRY A'),
+('8760 SCHLAFEN RD',    'CITY B', '54321',  'STATE B', 'COUNTRY A'),
+('8755 SCHLAFEN RD',    'CITY B', '54321',  'STATE B', 'COUNTRY A'),
+('423 RAINWATER LN',    'CITY B', '54321',  'STATE B', 'COUNTRY A'),
+('8276 MAIN ST',        'CITY B', '54321',  'STATE B', 'COUNTRY A'),
+('920 NEIN LN',         'CITY B', '54321',  'STATE B', 'COUNTRY A'),
+('808 NEIN LN',         'CITY B', '54321',  'STATE B', 'COUNTRY A'),
+('8234 KORON RD',       'CITY B', '54321',  'STATE B', 'COUNTRY A'),
+('8754 KORON RD',       'CITY B', '54321',  'STATE B', 'COUNTRY A');
+
+INSERT INTO employee_address (street_address, city, zip_code, state, country) VALUES
+('8977 MAIN ST',        'CITY C', '54321',  'STATE C', 'COUNTRY B'),
+('910 KEINE DR',        'CITY C', '54321',  'STATE C', 'COUNTRY B'),
+('809 KEINE DR',        'CITY C', '54321',  'STATE C', 'COUNTRY B'),
+('8760 SCHLAFEN RD',    'CITY C', '54321',  'STATE C', 'COUNTRY B'),
+('8755 SCHLAFEN RD',    'CITY C', '54321',  'STATE C', 'COUNTRY B'),
+('423 RAINWATER LN',    'CITY C', '54321',  'STATE C', 'COUNTRY B'),
+('8276 MAIN ST',        'CITY C', '54321',  'STATE C', 'COUNTRY B'),
+('920 NEIN LN',         'CITY C', '54321',  'STATE C', 'COUNTRY B'),
+('808 NEIN LN',         'CITY C', '54321',  'STATE C', 'COUNTRY B'),
+('8234 KORON RD',       'CITY C', '54321',  'STATE C', 'COUNTRY B'),
+('8754 KORON RD',       'CITY C', '54321',  'STATE C', 'COUNTRY B');
+
 -- Employee
 INSERT INTO employee 
 (first_name,  m_initial,  last_name,    ssn,         dob,           gender, phone,          email,                    job_id, address_id, manager_id) VALUES
@@ -716,6 +755,60 @@ UPDATE employee
 SET manager_id = 1000063
 WHERE employee_id < 1000065 AND employee_id > 1000053 AND NOT employee_id = 1000063;
 
+INSERT INTO employee 
+(first_name,  m_initial,  last_name,    ssn,         dob,           gender, phone,          email,                    job_id, address_id, manager_id) VALUES
+('AMAHLE',    'A',        'DUPUY',      '100000058', '1982-04-23',  'M',    '+15867910221', NULL,                     64,     66,         NULL),
+('KATSUO',    NULL,       'PAGE',       '100000059', '1992-12-24',  'M',    '+15869910221', NULL,                     65,     67,         NULL),
+('EUFEMIA',   NULL,       'REIS',       '100000060', '1982-04-24',  'F',    '+15867510221', NULL,                     66,     68,         NULL),
+('LOLA',      'A',        'PATTERSON',  '100000061', '1982-06-22',  'F',    '+15874910221', NULL,                     67,     69,         NULL),
+('DEIRDRE',   'A',        'STRANGE',    '100000062', '1982-07-23',  'F',    '+15874810221', NULL,                     68,     70,         NULL),
+('ESER',      NULL,       'IORDANOU',   '100000063', '1962-12-29',  'M',    '+15868910221', NULL,                     69,     71,         NULL),
+('AYODELE',   NULL,       'ASIYA',      '100000064', '1982-04-24',  'F',    '+15877910221', NULL,                     70,     72,         NULL),
+('FREDERIK',  NULL,       'SHINKAWA',   '100000065', '1962-03-23',  'M',    '+15887910221', NULL,                     71,     73,         NULL),
+('VALERIAN',  'A',        'DABNEY',     '100000066', '1992-02-22',  'F',    '+15869510221', NULL,                     72,     74,         NULL),
+('BRIGITTA',  'A',        'MATHEWSON',  '100000067', '1992-02-22',  'F',    '+15869310221', NULL,                     73,     75,         NULL),
+('TAAVI',     'A',        'HOUBEN',     '100000068', '1982-01-21',  'M',    '+15860910221', NULL,                     74,     76,         NULL);
+
+UPDATE employee
+SET manager_id = 1000074
+WHERE employee_id < 1000076 AND employee_id > 1000064 AND NOT employee_id = 1000074;
+
+INSERT INTO employee 
+(first_name,  m_initial,  last_name,    ssn,         dob,           gender, phone,          email,                    job_id, address_id, manager_id) VALUES
+('HIDEKI',    'G',        'CORNELL',    '100000069', '1988-04-23',  'M',    '+15867910361', NULL,                     75,     77,         NULL),
+('KRISTIN',   NULL,       'SCRIVEN',    '100000070', '1998-12-24',  'F',    '+15869910361', NULL,                     76,     78,         NULL),
+('MONIKA',    NULL,       'INGESSON',   '100000071', '1988-04-24',  'F',    '+15867510361', NULL,                     77,     79,         NULL),
+('VASIA',     'K',        'MIYAZAKI',   '100000072', '1988-06-22',  'F',    '+15874910361', NULL,                     78,     80,         NULL),
+('FAIRUZ',    'H',        'BYRD',       '100000073', '1988-07-23',  'M',    '+15874810361', NULL,                     79,     81,         NULL),
+('SULEYMAN',  NULL,       'KURZMANN',   '100000074', '1968-12-29',  'M',    '+15868910361', NULL,                     80,     82,         NULL),
+('FELIX',     NULL,       'LINDQVIST',  '100000075', '1988-04-24',  'M',    '+15877910361', NULL,                     81,     83,         NULL),
+('TSHEPO',    NULL,       'BEST',       '100000076', '1968-03-23',  'M',    '+15887910361', NULL,                     82,     84,         NULL),
+('SUNE',      'P',        'FOSSE',      '100000077', '1998-02-22',  'F',    '+15869510361', NULL,                     83,     85,         NULL),
+('GEORGETA',  'L',        'ALLARD',     '100000078', '1998-02-22',  'F',    '+15869310361', NULL,                     84,     86,         NULL),
+('SANDRA',    'S',        'CASTILLA',   '100000079', '1988-01-21',  'F',    '+15860910361', NULL,                     85,     87,         NULL);
+
+UPDATE employee
+SET manager_id = 1000085
+WHERE employee_id < 1000087 AND employee_id > 1000075 AND NOT employee_id = 1000085;
+
+INSERT INTO employee 
+(first_name,  m_initial,  last_name,    ssn,         dob,           gender, phone,          email,                    job_id, address_id, manager_id) VALUES
+('HIDEKI',    'G',        'CORNELL',    '100000080', '1988-04-23',  'M',    '+15867910361', NULL,                     86,     88,         NULL),
+('KRISTIN',   NULL,       'SCRIVEN',    '100000081', '1998-12-24',  'F',    '+15869910361', NULL,                     87,     89,         NULL),
+('MONIKA',    NULL,       'INGESSON',   '100000082', '1988-04-24',  'F',    '+15867510361', NULL,                     88,     90,         NULL),
+('VASIA',     'K',        'MIYAZAKI',   '100000083', '1988-06-22',  'F',    '+15874910361', NULL,                     89,     91,         NULL),
+('FAIRUZ',    'H',        'BYRD',       '100000084', '1988-07-23',  'M',    '+15874810361', NULL,                     90,     92,         NULL),
+('SULEYMAN',  NULL,       'KURZMANN',   '100000085', '1968-12-29',  'M',    '+15868910361', NULL,                     91,     93,         NULL),
+('FELIX',     NULL,       'LINDQVIST',  '100000086', '1988-04-24',  'M',    '+15877910361', NULL,                     92,     94,         NULL),
+('TSHEPO',    NULL,       'BEST',       '100000087', '1968-03-23',  'M',    '+15887910361', NULL,                     93,     95,         NULL),
+('SUNE',      'P',        'FOSSE',      '100000088', '1998-02-22',  'F',    '+15869510361', NULL,                     94,     96,         NULL),
+('SANDRA',    'M',        'ALLARD',     '100000089', '1998-02-22',  'F',    '+15869310361', NULL,                     95,     97,         NULL),
+('SANDRA',    'S',        'CASTILLA',   '100000090', '1988-01-21',  'F',    '+15860910361', NULL,                     96,     98,         NULL);
+
+UPDATE employee
+SET manager_id = 1000096
+WHERE employee_id < 1000098 AND employee_id > 1000086 AND NOT employee_id = 1000096;
+
 -- Salary
 INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
 (1000000, '$375', '$700,000'),
@@ -795,5 +888,44 @@ INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
 (1000060, '$22', '$1,000'),
 (1000061, '$18', '$1,000'),
 (1000062, '$20', '$1,000'),
-(1000063, '$20', '$1,000'),
+(1000063, '$35', '$1,000'),
 (1000064, '$40', '$1,000');
+
+INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
+(1000065, '$30', '$1,000'),
+(1000066, '$30', '$1,000'),
+(1000067, '$40', '$1,000'),
+(1000068, '$30', '$1,000'),
+(1000069, '$25', '$1,000'),
+(1000070, '$22', '$1,000'),
+(1000071, '$22', '$1,000'),
+(1000072, '$18', '$1,000'),
+(1000073, '$20', '$1,000'),
+(1000074, '$35', '$1,000'),
+(1000075, '$40', '$1,000');
+
+INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
+(1000076, '$30', '$1,000'),
+(1000077, '$30', '$1,000'),
+(1000078, '$40', '$1,000'),
+(1000079, '$30', '$1,000'),
+(1000080, '$25', '$1,000'),
+(1000081, '$22', '$1,000'),
+(1000082, '$22', '$1,000'),
+(1000083, '$18', '$1,000'),
+(1000084, '$20', '$1,000'),
+(1000085, '$35', '$1,000'),
+(1000086, '$40', '$1,000');
+
+INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
+(1000087, '$30', '$1,000'),
+(1000088, '$30', '$1,000'),
+(1000089, '$40', '$1,000'),
+(1000090, '$30', '$1,000'),
+(1000091, '$25', '$1,000'),
+(1000092, '$22', '$1,000'),
+(1000093, '$22', '$1,000'),
+(1000094, '$18', '$1,000'),
+(1000095, '$20', '$1,000'),
+(1000096, '$35', '$1,000'),
+(1000097, '$40', '$1,000');
