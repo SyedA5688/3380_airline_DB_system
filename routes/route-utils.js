@@ -47,8 +47,8 @@ module.exports = {
     return Object.keys(object).length === 0;
   },
   // Utility function to push query to array and query the database
-  transacQuery: async (queries, client, query) => {
+  transacQuery: async (queries, client, query, comment) => {
     queries.push(query);
-    return await client.query(query);
+    return await client.query(query, comment);
   }
 };

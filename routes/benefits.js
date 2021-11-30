@@ -75,7 +75,7 @@ router.get('/benefits', async (req, res) => {
   const queryString = `SELECT *\nFROM %I\n${filterString}ORDER BY %I %s\nOFFSET %s\nLIMIT %s;`;
   const dbQuery = format(queryString, 'benefits',...orderArgs);
   try {
-    const result = await db.query(dbQuery); 
+    const result = await db.query(dbQuery, '-- Get benefits packages'); 
     res.json({
       rows: result.rows, 
       queries: [dbQuery],
@@ -92,7 +92,7 @@ router.get('/benefits', async (req, res) => {
 });
 
 /**
- * @api {post} /benefits Create new benefits package
+ * @api {post} /benefits Create a new benefits package
  * @apiName AddNewBenefits
  * @apiGroup Benefits
  * @apiDescription Attempts to insert a new benefits package into the database. Returns the inserted benefits package.
@@ -148,7 +148,7 @@ router.post('/benefits', async (req, res) => {
     if(client) {
       let queries = [];
       try {
-        await utils.transacQuery(queries, client, 'BEGIN TRANSACTION;');
+        await utils.transacQuery(queries, client, 'BEGIN TRANSACTION;', '-- Create new benefits package');
         await utils.transacQuery(queries, client, 'SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;');
 
         const params = utils.getParameters(requiredFields, ['amount', 'stock_options', 'retirement_plan'], body);
