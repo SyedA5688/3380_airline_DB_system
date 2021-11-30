@@ -2,6 +2,7 @@
  * Utility functions used often in routes
  */
 const dbInfo = require('../db/table-info.json');
+const format = require('pg-format');
 
 module.exports = {
   // Checks that required fields exist
@@ -61,12 +62,21 @@ module.exports = {
       transaction: false
     });
   },
-
+  // Default ordering for GET requests
   orderingParams: (params, sortParams, defaultSort) => {
     const page = params.page ? params.page : 1;
     const sortBy = sortParams[params.sort] ? sortParams[params.sort] : sortParams[defaultSort];
     const order = params.order && params.order.trim().toUpperCase() === 'DESC' ? params.order.trim().toUpperCase() : 'ASC';
     const limit = params.limit ? Math.min(Math.max(params.limit, 1), 100) : 10;
-    return {page, sortBy, order, limit};
-  }
+
+    const orderArgs = [  
+      sortBy, 
+      order, 
+      limit * (page - 1), 
+      limit 
+    ];
+    const orderString = format('ORDER BY %I %s\nOFFSET %s\nLIMIT %s', ...orderArgs);
+    return orderString;
+  },
+
 };

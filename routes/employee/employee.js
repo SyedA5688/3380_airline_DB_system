@@ -57,7 +57,6 @@ router.get('/employee', async (req, res) => {
     department: 'department_name',
     minitial: 'm_initial'
   };
-  const {page, sortBy, order, limit} = utils.orderingParams(params, sortParams, 'id');
 
   // Filtering logic
   const query = params.q && params.q.toString().trim() !== '' ? params.q.toString().trim().toUpperCase() : '';
@@ -127,14 +126,10 @@ router.get('/employee', async (req, res) => {
     'department',
     'department_id'
   ];
-  const orderArgs = [  
-    sortBy, 
-    order, 
-    limit * (page - 1), 
-    limit 
-  ];
-  const queryString = `SELECT %I\nFROM %I e\n\tJOIN %I j\n\tON e.%4$s = j.%4$s\n\tJOIN %I d\n\tON j.%6$s = d.%6$s\n${filterString}ORDER BY %I %s\nOFFSET %s\nLIMIT %s;`;
-  const dbQuery = format(queryString, columnArgs, ...joinArgs,...orderArgs);
+
+  const orderString = utils.orderingParams(params, sortParams, 'id');
+  const queryString = `SELECT %I\nFROM %I e\n\tJOIN %I j\n\tON e.%4$s = j.%4$s\n\tJOIN %I d\n\tON j.%6$s = d.%6$s\n${filterString}${orderString};`;
+  const dbQuery = format(queryString, columnArgs, ...joinArgs);
 
   try {
     const result = await db.query(dbQuery, '-- Get employee summary\n');

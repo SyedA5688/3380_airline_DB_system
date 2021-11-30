@@ -57,7 +57,6 @@ router.get('/job', async (req, res) => {
     department: 'department_name',
     location: 'location_id'
   };
-  const {page, sortBy, order, limit} = utils.orderingParams(params, sortParams, 'title');
 
   // Filtering logic
   const query = params.q && params.q.toString().trim() !== '' ? params.q.toString().trim().toUpperCase() : '';
@@ -81,15 +80,11 @@ router.get('/job', async (req, res) => {
     'job',
     'department'
   ];
-  const orderArgs = [  
-    sortBy, 
-    order, 
-    limit * (page - 1), 
-    limit 
-  ];
-  const queryString = `SELECT %I\nFROM %I\nNATURAL JOIN %I\n${filterString}ORDER BY %I %s\nOFFSET %s\nLIMIT %s;`;
-  const dbQuery = format(queryString, columnArgs, ...joinArgs,...orderArgs);
-  try {
+
+  const orderString = utils.orderingParams(params, sortParams, 'title');
+  const queryString = `SELECT %I\nFROM %I\nNATURAL JOIN %I\n${filterString}${orderString};`;
+  const dbQuery = format(queryString, columnArgs, ...joinArgs);
+  try { 
     const result = await db.query(dbQuery, '-- Get jobs\n');
     res.json({
       rows: result.rows, 

@@ -59,7 +59,6 @@ router.get('/payroll', async (req, res) => {
     gross: 'gross_income',
     net: 'net_income'
   };
-  const {page, sortBy, order, limit} = utils.orderingParams(params, sortParams, 'period');
   
   // Filtering logic
   const query = params.q && params.q.toString().trim() !== '' ? params.q.toString().trim().toUpperCase() : '';
@@ -70,14 +69,9 @@ router.get('/payroll', async (req, res) => {
     else filterString = format('WHERE %I = %L\n', sortParams.period, query);
   }
 
-  const orderArgs = [  
-    sortBy, 
-    order, 
-    limit * (page - 1), 
-    limit 
-  ];
-  const queryString = `SELECT *\nFROM %I\n${filterString}ORDER BY %I %s\nOFFSET %s\nLIMIT %s;`;
-  const dbQuery = format(queryString, 'payroll',...orderArgs);
+  const orderString = utils.orderingParams(params, sortParams, 'period');
+  const queryString = `SELECT *\nFROM %I\n${filterString}${orderString};`;
+  const dbQuery = format(queryString, 'payroll');
   try {
     const result = await db.query(dbQuery, '-- Get payroll entries\n'); 
     res.json({

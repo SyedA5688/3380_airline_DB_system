@@ -56,7 +56,6 @@ module.exports = router;
       reason: 'reason',
       status: 'status'
     };
-    const {page, sortBy, order, limit} = utils.orderingParams(params, sortParams, 'date');
 
     // Filtering logic
     const query = params.q && params.q.toString().trim() !== '' ? params.q.toString().trim().toUpperCase() : '';
@@ -67,14 +66,10 @@ module.exports = router;
       else if(searchBy !== 'text') filterString += format('\tAND %I LIKE \'%s%%\'\n', searchBy, query);
       else filterString += format('\tAND (%1$I LIKE \'%3$s%%\' OR %2$I LIKE \'%3$s%%\')\n', sortParams.reason, sortParams.status, query);
     }
-    const orderArgs = [  
-      sortBy, 
-      order, 
-      limit * (page - 1), 
-      limit 
-    ];
-    const queryString = `SELECT *\nFROM %I\n${filterString}ORDER BY %I %s\nOFFSET %s\nLIMIT %s;`;
-    const dbQuery = format(queryString, 'leave',...orderArgs);
+
+    const orderString = utils.orderingParams(params, sortParams, 'date');
+    const queryString = `SELECT *\nFROM %I\n${filterString}${orderString};`;
+    const dbQuery = format(queryString, 'leave');
     try {
       const result = await db.query(dbQuery, '-- Get employee leave entries\n'); 
       res.json({
@@ -239,7 +234,6 @@ router.get('/leave', async (req, res) => {
     reason: 'reason',
     status: 'status'
   };
-  const {page, sortBy, order, limit} = utils.orderingParams(params, sortParams, 'date');
 
   // Filtering logic
   const query = params.q && params.q.toString().trim() !== '' ? params.q.toString().trim().toUpperCase() : '';
@@ -250,14 +244,10 @@ router.get('/leave', async (req, res) => {
     else if(searchBy !== 'text') filterString = format('WHERE %I LIKE \'%s%%\'\n', searchBy, query);
     else filterString = format('WHERE %1$I LIKE \'%3$s%%\' OR %2$I LIKE \'%3$s%%\'\n', sortParams.reason, sortParams.status, query);
   }
-  const orderArgs = [  
-    sortBy, 
-    order, 
-    limit * (page - 1), 
-    limit 
-  ];
-  const queryString = `SELECT *\nFROM %I\n${filterString}ORDER BY %I %s\nOFFSET %s\nLIMIT %s;`;
-  const dbQuery = format(queryString, 'leave',...orderArgs);
+  
+  const orderString = utils.orderingParams(params, sortParams, 'date');
+  const queryString = `SELECT *\nFROM %I\n${filterString}${orderString};`;
+  const dbQuery = format(queryString, 'leave');
   try {
     const result = await db.query(dbQuery, '-- Get all leave entries\n'); 
     res.json({
