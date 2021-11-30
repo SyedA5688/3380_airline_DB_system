@@ -744,6 +744,37 @@ INSERT INTO employee_address (street_address, city, zip_code, state, country) VA
 ('8276 MAIN ST',        'CITY C', '54321',  'STATE C', 'COUNTRY B'),
 ('920 NEIN LN',         'CITY C', '54321',  'STATE C', 'COUNTRY B');
 
+INSERT INTO employee_address (street_address, city, zip_code, state, country) VALUES
+('8977 MAIN ST',        'CITY A', '98764',  'STATE A', 'COUNTRY A'),
+('910 KLEINE DR',       'CITY A', '98764',  'STATE A', 'COUNTRY A'),
+('809 EINE DR',         'CITY A', '98764',  'STATE A', 'COUNTRY A'),
+('8760 ROADY RD',       'CITY A', '98764',  'STATE A', 'COUNTRY A'),
+('8755 ROCKY RD',       'CITY A', '98764',  'STATE A', 'COUNTRY A'),
+('423 RAINWATER LN',    'CITY A', '98764',  'STATE A', 'COUNTRY A'),
+('8276 MAIN ST',        'CITY A', '98764',  'STATE A', 'COUNTRY A'),
+('920 NEIN LN',         'CITY A', '98764',  'STATE A', 'COUNTRY A');
+
+INSERT INTO employee_address (street_address, city, zip_code, state, country) VALUES
+('8977 MAIN ST',        'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('910 KLEINE DR',       'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('809 EINE DR',         'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('8760 ROADY RD',       'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('8755 ROCKY RD',       'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('423 RAINWATER LN',    'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('8276 MAIN ST',        'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('920 NEIN LN',         'CITY B', '12345',  'STATE B', 'COUNTRY A');
+
+INSERT INTO employee_address (street_address, city, zip_code, state, country) VALUES
+('8977 MAIN ST',        'CITY C', '54321',  'STATE C', 'COUNTRY B'),
+('910 KLEINE DR',       'CITY C', '54321',  'STATE C', 'COUNTRY B'),
+('809 EINE DR',         'CITY C', '54321',  'STATE C', 'COUNTRY B'),
+('8760 ROADY RD',       'CITY C', '54321',  'STATE C', 'COUNTRY B'),
+('8755 ROCKY RD',       'CITY C', '54321',  'STATE C', 'COUNTRY B'),
+('423 RAINWATER LN',    'CITY C', '54321',  'STATE C', 'COUNTRY B'),
+('8276 MAIN ST',        'CITY C', '54321',  'STATE C', 'COUNTRY B'),
+('920 NEIN LN',         'CITY C', '54321',  'STATE C', 'COUNTRY B');
+
+
 -- Employee
 INSERT INTO employee 
 (first_name,  m_initial,  last_name,    ssn,         dob,           gender, phone,          email,                    job_id, address_id, manager_id) VALUES
@@ -1018,6 +1049,63 @@ INSERT INTO employee
 ('JIMMOTHY',  'S',        'JENSON',     '100000165', '1989-04-23',  'M',    NULL,           NULL,                     171,    173,        1000096),
 ('LARRY',     NULL,       'NOSE',       '100000166', '1989-05-23',  'M',    NULL,           NULL,                     172,    174,        1000096);
 
+INSERT INTO employee 
+(first_name,  m_initial,  last_name,    ssn,         dob,           gender, phone,          email,                    job_id, address_id, manager_id) VALUES
+('ANNE',      'S',        'PERROT',     '100000167', '1975-04-23',  'F',    NULL,           NULL,                     173,    175,        NULL),
+('SAWDA',     NULL,       'PAPOUTSIS',  '100000168', '1975-05-23',  'F',    NULL,           NULL,                     174,    176,        NULL),
+('BARNEY',    NULL,       'DINO',       '100000169', '1974-08-28',  'M',    NULL,           NULL,                     175,    177,        NULL),
+('JACOBA',    'A',        'PENA',       '100000170', '1974-04-23',  'M',    NULL,           NULL,                     176,    178,        NULL),
+('SEONG',     NULL,       'KOOLS',      '100000171', '1974-05-23',  'F',    NULL,           NULL,                     177,    179,        NULL),
+('IKENNA',    NULL,       'ROMILLY',    '100000172', '1974-08-28',  'F',    NULL,           NULL,                     178,    180,        NULL),
+('FERNANDO',  'V',        'BRICE',      '100000173', '1974-04-23',  'M',    NULL,           NULL,                     179,    181,        NULL),
+('HORACIO',   NULL,       'KURZ',       '100000174', '1974-05-23',  'M',    NULL,           NULL,                     180,    182,        NULL);
+
+UPDATE employee
+SET manager_id = 1000179
+WHERE employee_id IN (1000176, 1000177, 1000181);
+
+UPDATE employee
+SET manager_id = 1000180
+WHERE employee_id IN (1000174, 1000175, 1000178, 1000179);
+
+INSERT INTO employee 
+(first_name,  m_initial,  last_name,    ssn,         dob,           gender, phone,          email,                    job_id, address_id, manager_id) VALUES
+('DEIDRA',    'A',        'WILDGRUBE',  '100000175', '1975-04-23',  'F',    NULL,           NULL,                     181,    183,        NULL),
+('STARR',     NULL,       'GARNETT',    '100000176', '1975-05-23',  'F',    NULL,           NULL,                     182,    184,        NULL),
+('PING',      NULL,       'DINO',       '100000177', '1974-08-28',  'M',    NULL,           NULL,                     183,    185,        NULL),
+('JEF',       'C',        'COMO',       '100000178', '1974-04-23',  'M',    NULL,           NULL,                     184,    186,        NULL),
+('SEVERINE',  NULL,       'BJARNESEN',  '100000179', '1974-05-23',  'F',    NULL,           NULL,                     185,    187,        NULL),
+('HUAN',      NULL,       'LEIFSSON',   '100000180', '1974-08-28',  'M',    NULL,           NULL,                     186,    188,        NULL),
+('LINWOOD',   'O',        'COOKE',      '100000181', '1974-04-23',  'M',    NULL,           NULL,                     187,    189,        NULL),
+('PEPE',      NULL,       'GARDINER',   '100000182', '1974-05-23',  'M',    NULL,           NULL,                     188,    190,        NULL);
+
+UPDATE employee
+SET manager_id = 1000187
+WHERE employee_id IN (1000184, 1000185, 1000189);
+
+UPDATE employee
+SET manager_id = 1000188
+WHERE employee_id IN (1000182, 1000183, 1000186, 1000187);
+
+INSERT INTO employee 
+(first_name,  m_initial,  last_name,    ssn,         dob,           gender, phone,          email,                    job_id, address_id, manager_id) VALUES
+('TAISIA',    'S',        'ROSE',       '100000183', '1975-04-23',  'F',    NULL,           NULL,                     189,    191,        NULL),
+('OLGA',      NULL,       'SCHULTHEISS','100000184', '1975-05-23',  'F',    NULL,           NULL,                     190,    192,        NULL),
+('KYOU',      NULL,       'SUZUKI',     '100000185', '1970-08-28',  'F',    NULL,           NULL,                     191,    193,        NULL),
+('ROLLO',     'D',        'SHORT',      '100000186', '1970-04-23',  'M',    NULL,           NULL,                     192,    194,        NULL),
+('LEONARDO',  NULL,       'BJARNESEN',  '100000187', '1970-05-23',  'M',    NULL,           NULL,                     193,    195,        NULL),
+('HUAN',      NULL,       'ROSE',       '100000188', '1970-08-28',  'M',    NULL,           NULL,                     194,    196,        NULL),
+('FLAVIA',    'O',        'MOROZOV',    '100000189', '1970-04-23',  'M',    NULL,           NULL,                     195,    197,        NULL),
+('CORINNA',   NULL,       'WERNHER',    '100000190', '1970-05-23',  'M',    NULL,           NULL,                     196,    198,        NULL);
+
+UPDATE employee
+SET manager_id = 1000195
+WHERE employee_id IN (1000192, 1000193, 1000197);
+
+UPDATE employee
+SET manager_id = 1000196
+WHERE employee_id IN (1000190, 1000191, 1000194, 1000195);
+
 -- Salary
 INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
 (1000000, '$375', '$700,000'),
@@ -1223,3 +1311,32 @@ INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
 (1000172, '$22', '$1,000'),
 (1000173, '$18', '$1,000');
 
+INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
+(1000174, '$35', '$2,250'),
+(1000175, '$35', '$2,500'),
+(1000176, '$28', '$1,000'),
+(1000177, '$24', '$1,000'),
+(1000178, '$29', '$1,000'),
+(1000179, '$31', '$1,000'),
+(1000180, '$40', '$1,000'),
+(1000181, '$20', '$0');
+
+INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
+(1000182, '$35', '$2,250'),
+(1000183, '$35', '$2,500'),
+(1000184, '$28', '$1,000'),
+(1000185, '$24', '$1,000'),
+(1000186, '$29', '$1,000'),
+(1000187, '$31', '$1,000'),
+(1000188, '$40', '$1,000'),
+(1000189, '$20', '$0');
+
+INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
+(1000190, '$35', '$2,250'),
+(1000191, '$35', '$2,500'),
+(1000192, '$28', '$1,000'),
+(1000193, '$24', '$1,000'),
+(1000194, '$29', '$1,000'),
+(1000195, '$31', '$1,000'),
+(1000196, '$40', '$1,000'),
+(1000197, '$20', '$0');
