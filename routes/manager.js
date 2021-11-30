@@ -1,6 +1,7 @@
 const Router = require('express-promise-router');
 const format = require('pg-format');
 const db = require('../db');
+const utils = require('./route-utils');
 
 const router = new Router();
 module.exports = router;
@@ -49,7 +50,6 @@ module.exports = router;
  router.get('/manager', async (req, res) => {
   // TODO: Input validation
   const params = req.query;
-  const page = params.page ? params.page : 1;
   const sortParams = {
     id: 'employee_id',
     fname: 'first_name',
@@ -58,9 +58,7 @@ module.exports = router;
     department: 'department_name',
     minitial: 'm_initial'
   };
-  const sortBy = sortParams[params.sort] ? sortParams[params.sort] : sortParams.id;
-  const order = params.order ? params.order.toUpperCase() : 'ASC';
-  const limit = params.limit ? Math.min(Math.max(params.limit, 1), 100) : 10;
+
   // Filtering logic
   const query = params.q && params.q.toString().trim() !== '' ? params.q.toString().trim().toUpperCase() : '';
   let filterString = '';
@@ -131,16 +129,12 @@ module.exports = router;
     'department',
     'department_id'
   ];
-  const orderArgs = [  
-    sortBy, 
-    order, 
-    limit * (page - 1), 
-    limit 
-  ];
+
   const columnString = format('m.%I,m.%I,m.%I,m.%I,%I,%I', ...columnArgs);
   const joinString = format('FROM %I e\n\tJOIN %1$I m\n\tON e.%I = m.%I\n\tJOIN %I j\n\tON m.%I = j.%5$I\n\tJOIN %I d\n\tON j.%I = d.%7$I', ...joinArgs);
-  const queryString = `SELECT COUNT(*),${columnString}\n${joinString}\n${filterString}GROUP BY ${columnString}\nORDER BY %I %s\nOFFSET %s\nLIMIT %s;`;
-  const dbQuery = format(queryString,...orderArgs);
+
+  const orderString = utils.orderingParams(params, sortParams, 'id');
+  const dbQuery = `SELECT COUNT(*),${columnString}\n${joinString}\n${filterString}GROUP BY ${columnString}\n${orderString};`;
   try {
     const result = await db.query(dbQuery, '-- Get managers and the number of employees working under them\n');
     res.json({
@@ -205,7 +199,6 @@ router.get('/manager/:id', async (req, res) => {
   if(id && /^\d+$/.test(id)) {
     // TODO: Input validation
     const params = req.query;
-    const page = params.page ? params.page : 1;
     const sortParams = {
       id: 'employee_id',
       fname: 'first_name',
@@ -214,9 +207,6 @@ router.get('/manager/:id', async (req, res) => {
       department: 'department_name',
       minitial: 'm_initial'
     };
-    const sortBy = sortParams[params.sort] ? sortParams[params.sort] : sortParams.id;
-    const order = params.order ? params.order.toUpperCase() : 'ASC';
-    const limit = params.limit ? Math.min(Math.max(params.limit, 1), 100) : 10;
 
     // Filtering logic
     const query = params.q && params.q.toString().trim() !== '' ? params.q.toString().trim().toUpperCase() : '';
@@ -290,8 +280,10 @@ router.get('/manager/:id', async (req, res) => {
       limit * (page - 1), 
       limit 
     ];
-    const queryString = `SELECT %I\nFROM %I e\n\tJOIN %I j\n\tON e.%4$s = j.%4$s\n\tJOIN %I d\n\tON j.%6$s = d.%6$s\n${filterString}ORDER BY %I %s\nOFFSET %s\nLIMIT %s;`;
-    const dbQuery = format(queryString, columnArgs, ...joinArgs,...orderArgs);
+
+    const orderString = utils.orderingParams(params, sortParams, 'id');
+    const queryString = `SELECT %I\nFROM %I e\n\tJOIN %I j\n\tON e.%4$s = j.%4$s\n\tJOIN %I d\n\tON j.%6$s = d.%6$s\n${filterString}${orderString};`;
+    const dbQuery = format(queryString, columnArgs, ...joinArgs);
     try {
       const result = await db.query(dbQuery, '-- Get employees working for a manager\n');
       res.json({

@@ -53,7 +53,6 @@ module.exports = router;
  */
 router.get('/department', async (req, res) => {
   const params = req.query;
-  const page = params.page ? params.page : 1;
   const sortParams = {
     id: 'department_id',
     name: 'department_name',
@@ -61,9 +60,6 @@ router.get('/department', async (req, res) => {
     jobs: 'job_count',
     employees: 'employee_count'
   };
-  const sortBy = sortParams[params.sort] ? sortParams[params.sort] : sortParams.name;
-  const order = params.order ? params.order.toUpperCase() : 'ASC';
-  const limit = params.limit ? Math.min(Math.max(params.limit, 1), 100) : 10;
 
   // Filtering logic
   const query = params.q && params.q.toString().trim() !== '' ? params.q.toString().trim().toUpperCase() : '';
@@ -93,16 +89,12 @@ router.get('/department', async (req, res) => {
     'employee_id',
     'department_head_id'
   ];
-  const orderArgs = [  
-    sortBy, 
-    order, 
-    limit * (page - 1), 
-    limit 
-  ];
+  const orderString = utils.orderingParams(params, sortParams, 'name');
   const columnString = format('d.%I,%I,%I,%I,h.%I,h.%I,h.%I', ...columnArgs);
   const joinString = format('FROM %I d\n\tLEFT JOIN %I j\n\tON j.%3$I = d.%3$I\n\tLEFT JOIN %I e\n\tON e.%5$I = j.%5$I\n\tLEFT JOIN %4$I h\n\tON h.%6$I = d.%I', ...joinArgs);
-  const queryString = `SELECT COUNT(DISTINCT j.%I) AS job_count,COUNT(DISTINCT e.%I) AS employee_count,${columnString}\n${joinString}\n${filterString}GROUP BY ${columnString}\nORDER BY %I %s\nOFFSET %s\nLIMIT %s;`;
-  const dbQuery = format(queryString, 'job_id', 'employee_id', ...orderArgs);
+  
+  const queryString = `SELECT COUNT(DISTINCT j.%I) AS job_count,COUNT(DISTINCT e.%I) AS employee_count,${columnString}\n${joinString}\n${filterString}GROUP BY ${columnString}\n${orderString};`;
+  const dbQuery = format(queryString, 'job_id', 'employee_id');
   try {
     const result = await db.query(dbQuery, '-- Get departments\n');
     res.json({
@@ -169,14 +161,7 @@ router.post('/department', async (req, res) => {
       body[key] = body[key].toString().trim().toUpperCase();
     });
 
-    const client = await db.connect().catch((err) => {
-      console.log(err.stack);
-      res.status(422).json({
-        error: 'Error connecting to database',
-        queries: [],
-        transaction: false
-      });
-    });
+    const client = await db.connect().catch((err) => utils.connectionError(err, res));
     if(client) {
       let queries = [];
       try {

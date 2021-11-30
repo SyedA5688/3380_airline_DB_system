@@ -51,16 +51,12 @@ module.exports = router;
 router.get('/job', async (req, res) => {
   // TODO: Input validation
   const params = req.query;
-  const page = params.page ? params.page : 1;
   const sortParams = {
     id: 'job_id',
     title: 'job_title',
     department: 'department_name',
     location: 'location_id'
   };
-  const sortBy = sortParams[params.sort] ? sortParams[params.sort] : sortParams.title;
-  const order = params.order ? params.order.toUpperCase() : 'ASC';
-  const limit = params.limit ? Math.min(Math.max(params.limit, 1), 100) : 10;
 
   // Filtering logic
   const query = params.q && params.q.toString().trim() !== '' ? params.q.toString().trim().toUpperCase() : '';
@@ -84,15 +80,11 @@ router.get('/job', async (req, res) => {
     'job',
     'department'
   ];
-  const orderArgs = [  
-    sortBy, 
-    order, 
-    limit * (page - 1), 
-    limit 
-  ];
-  const queryString = `SELECT %I\nFROM %I\nNATURAL JOIN %I\n${filterString}ORDER BY %I %s\nOFFSET %s\nLIMIT %s;`;
-  const dbQuery = format(queryString, columnArgs, ...joinArgs,...orderArgs);
-  try {
+
+  const orderString = utils.orderingParams(params, sortParams, 'title');
+  const queryString = `SELECT %I\nFROM %I\nNATURAL JOIN %I\n${filterString}${orderString};`;
+  const dbQuery = format(queryString, columnArgs, ...joinArgs);
+  try { 
     const result = await db.query(dbQuery, '-- Get jobs\n');
     res.json({
       rows: result.rows, 
@@ -162,15 +154,7 @@ router.post('/job', async (req, res) => {
       body[key] = body[key].toString().trim().toUpperCase();
     });
 
-    const client = await db.connect().catch((err) => {
-      console.log(err.stack);
-      res.status(422).json({
-        error: 'Error connecting to database',
-        queries: [],
-        transaction: false
-      });
-    });
-
+    const client = await db.connect().catch((err) => utils.connectionError(err, res));
     if(client) {
       let queries = [];
       try {

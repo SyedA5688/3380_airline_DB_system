@@ -50,16 +50,12 @@ module.exports = router;
   const id = req.params.id;
   if(id && /^\d+$/.test(id)) {
     const params = req.query;
-    const page = params.page ? params.page : 1;
     const sortParams = {
       id: 'leave_id',
       date: 'date',
       reason: 'reason',
       status: 'status'
     };
-    const sortBy = sortParams[params.sort] ? sortParams[params.sort] : sortParams.date;
-    const order = params.order ? params.order.toUpperCase() : 'ASC';
-    const limit = params.limit ? Math.min(Math.max(params.limit, 1), 100) : 10;
 
     // Filtering logic
     const query = params.q && params.q.toString().trim() !== '' ? params.q.toString().trim().toUpperCase() : '';
@@ -70,14 +66,10 @@ module.exports = router;
       else if(searchBy !== 'text') filterString += format('\tAND %I LIKE \'%s%%\'\n', searchBy, query);
       else filterString += format('\tAND (%1$I LIKE \'%3$s%%\' OR %2$I LIKE \'%3$s%%\')\n', sortParams.reason, sortParams.status, query);
     }
-    const orderArgs = [  
-      sortBy, 
-      order, 
-      limit * (page - 1), 
-      limit 
-    ];
-    const queryString = `SELECT *\nFROM %I\n${filterString}ORDER BY %I %s\nOFFSET %s\nLIMIT %s;`;
-    const dbQuery = format(queryString, 'leave',...orderArgs);
+
+    const orderString = utils.orderingParams(params, sortParams, 'date');
+    const queryString = `SELECT *\nFROM %I\n${filterString}${orderString};`;
+    const dbQuery = format(queryString, 'leave');
     try {
       const result = await db.query(dbQuery, '-- Get employee leave entries\n'); 
       res.json({
@@ -148,15 +140,7 @@ module.exports = router;
         if(key !== 'date') body[key] = body[key].toString().trim().toUpperCase();
       });
 
-      const client = await db.connect().catch((err) => {
-        console.log(err.stack);
-        res.status(422).json({
-          error: 'Error connecting to database',
-          queries: [],
-          transaction: false
-        });
-      });
-
+      const client = await db.connect().catch((err) => utils.connectionError(err, res));
       if(client) {
         let queries = [];
         try {
@@ -244,16 +228,12 @@ module.exports = router;
  */
 router.get('/leave', async (req, res) => {
   const params = req.query;
-  const page = params.page ? params.page : 1;
   const sortParams = {
     id: 'leave_id',
     date: 'date',
     reason: 'reason',
     status: 'status'
   };
-  const sortBy = sortParams[params.sort] ? sortParams[params.sort] : sortParams.date;
-  const order = params.order ? params.order.toUpperCase() : 'ASC';
-  const limit = params.limit ? Math.min(Math.max(params.limit, 1), 100) : 10;
 
   // Filtering logic
   const query = params.q && params.q.toString().trim() !== '' ? params.q.toString().trim().toUpperCase() : '';
@@ -264,14 +244,10 @@ router.get('/leave', async (req, res) => {
     else if(searchBy !== 'text') filterString = format('WHERE %I LIKE \'%s%%\'\n', searchBy, query);
     else filterString = format('WHERE %1$I LIKE \'%3$s%%\' OR %2$I LIKE \'%3$s%%\'\n', sortParams.reason, sortParams.status, query);
   }
-  const orderArgs = [  
-    sortBy, 
-    order, 
-    limit * (page - 1), 
-    limit 
-  ];
-  const queryString = `SELECT *\nFROM %I\n${filterString}ORDER BY %I %s\nOFFSET %s\nLIMIT %s;`;
-  const dbQuery = format(queryString, 'leave',...orderArgs);
+  
+  const orderString = utils.orderingParams(params, sortParams, 'date');
+  const queryString = `SELECT *\nFROM %I\n${filterString}${orderString};`;
+  const dbQuery = format(queryString, 'leave');
   try {
     const result = await db.query(dbQuery, '-- Get all leave entries\n'); 
     res.json({
@@ -332,14 +308,7 @@ router.put('/leave/:leave_id', async (req,res) => {
     } else {
       const params = utils.separateFields(['leave'], body);
       if(!utils.isEmpty(params['leave']) ) {
-        const client = await db.connect().catch((err) => {
-          console.log(err.stack);
-          res.status(422).json({
-            error: 'Error connecting to database',
-            queries: [],
-            transaction: false
-          });
-        });
+        const client = await db.connect().catch((err) => utils.connectionError(err, res));
         if(client) {
           let queries = [];
           try {
