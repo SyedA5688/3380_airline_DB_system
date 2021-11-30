@@ -436,6 +436,24 @@ INSERT INTO job (job_title, department_id, location_id, weekly_hours, benefits_p
 ('PAYROLL MANAGER',           7,  1,  40, 5),
 ('FINANCE INTERN',            7,  1,  20, 5),
 
+('ACCOUNTANT',                7,  2,  40, 5),
+('AUDITOR',                   7,  2,  40, 5),
+('FINANCE ASSITANT',          7,  2,  40, 5),
+('JUNIOR FINANCIAL ANALYST',  7,  2,  40, 5),
+('PAYROLL CLERK',             7,  2,  40, 5),
+('FINANCIAL ANALYST',         7,  2,  40, 5),
+('PAYROLL MANAGER',           7,  2,  40, 5),
+('FINANCE INTERN',            7,  2,  20, 5),
+
+('ACCOUNTANT',                7,  3,  40, 5),
+('AUDITOR',                   7,  3,  40, 5),
+('FINANCE ASSITANT',          7,  3,  40, 5),
+('JUNIOR FINANCIAL ANALYST',  7,  3,  40, 5),
+('PAYROLL CLERK',             7,  3,  40, 5),
+('FINANCIAL ANALYST',         7,  3,  40, 5),
+('PAYROLL MANAGER',           7,  3,  40, 5),
+('FINANCE INTERN',            7,  3,  20, 5),
+
 -- Information services (8)
 ('IT SPECIALIST',     8,  1,  40, 3),
 ('IT INTERN',         8,  1,  20, 3),
@@ -716,6 +734,16 @@ INSERT INTO employee_address (street_address, city, zip_code, state, country) VA
 ('8777 MAIN ST',        'CITY C', '90987',  'STATE C', 'COUNTRY B'),
 ('920 LONG LN',         'CITY C', '90987',  'STATE C', 'COUNTRY B');
 
+INSERT INTO employee_address (street_address, city, zip_code, state, country) VALUES
+('8977 MAIN ST',        'CITY A', '54321',  'STATE A', 'COUNTRY A'),
+('910 KEINE DR',        'CITY A', '54321',  'STATE A', 'COUNTRY A'),
+('809 KEINE DR',        'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('8760 SCHLAFEN RD',    'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('8755 SCHLAFEN RD',    'CITY B', '54321',  'STATE B', 'COUNTRY A'),
+('423 RAINWATER LN',    'CITY B', '54321',  'STATE B', 'COUNTRY A'),
+('8276 MAIN ST',        'CITY C', '54321',  'STATE C', 'COUNTRY B'),
+('920 NEIN LN',         'CITY C', '54321',  'STATE C', 'COUNTRY B');
+
 -- Employee
 INSERT INTO employee 
 (first_name,  m_initial,  last_name,    ssn,         dob,           gender, phone,          email,                    job_id, address_id, manager_id) VALUES
@@ -979,6 +1007,17 @@ INSERT INTO employee
 ('HARRY',     NULL,       'NOSE',       '100000157', '1989-05-23',  'M',    NULL,           NULL,                     163,    165,        1000162),
 ('BARNEY',    NULL,       'BILLS',      '100000158', '1985-08-28',  'M',    NULL,           NULL,                     164,    166,        1000162);
 
+INSERT INTO employee 
+(first_name,  m_initial,  last_name,    ssn,         dob,           gender, phone,          email,                    job_id, address_id, manager_id) VALUES
+('JIMMY',     'J',        'JEANS',      '100000159', '1989-04-23',  'M',    NULL,           NULL,                     165,    167,        1000063),
+('HARRY',     NULL,       'NOSEN',      '100000160', '1989-05-23',  'M',    NULL,           NULL,                     166,    168,        1000063),
+('BARNEY',    NULL,       'BILLS',      '100000161', '1985-08-28',  'M',    NULL,           NULL,                     167,    169,        1000074),
+('JIMMY',     'P',        'JEANS',      '100000162', '1989-04-23',  'M',    NULL,           NULL,                     168,    170,        1000074),
+('BARRY',     NULL,       'NOSE',       '100000163', '1989-05-23',  'M',    NULL,           NULL,                     169,    171,        1000085),
+('BARNEY',    NULL,       'BILLS',      '100000164', '1985-08-28',  'M',    NULL,           NULL,                     170,    172,        1000085),
+('JIMMOTHY',  'S',        'JENSON',     '100000165', '1989-04-23',  'M',    NULL,           NULL,                     171,    173,        1000096),
+('LARRY',     NULL,       'NOSE',       '100000166', '1989-05-23',  'M',    NULL,           NULL,                     172,    174,        1000096);
+
 -- Salary
 INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
 (1000000, '$375', '$700,000'),
@@ -1173,4 +1212,14 @@ INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
 (1000163, '$22', '$10,000'),
 (1000164, '$22', '$10,000'),
 (1000165, '$15', '$0');
+
+INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
+(1000166, '$30', '$1,000'),
+(1000167, '$30', '$1,000'),
+(1000168, '$20', '$1,000'),
+(1000169, '$30', '$1,000'),
+(1000170, '$25', '$1,000'),
+(1000171, '$22', '$1,000'),
+(1000172, '$22', '$1,000'),
+(1000173, '$18', '$1,000');
 
