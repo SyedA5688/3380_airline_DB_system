@@ -324,14 +324,14 @@ INSERT INTO job (job_title, department_id, location_id, weekly_hours, benefits_p
 ('TRANSPORTATION SECURITY AGENT', 3,  19, 40, 7),
 
 -- Flight Operations (4)
-('FLIGHT DISPATCHER',       3,  4,  40, 6),
-('AVIATION METEOROLOGIST',  3,  4,  40, 6),
-('FLIGHT DISPATCHER',       3,  9,  40, 6),
-('AVIATION METEOROLOGIST',  3,  9,  40, 6),
-('FLIGHT DISPATCHER',       3,  14, 40, 6),
-('AVIATION METEOROLOGIST',  3,  14, 40, 6),
-('FLIGHT DISPATCHER',       3,  19, 40, 6),
-('AVIATION METEOROLOGIST',  3,  19, 40, 6),
+('FLIGHT DISPATCHER',       4,  4,  40, 6),
+('AVIATION METEOROLOGIST',  4,  4,  40, 6),
+('FLIGHT DISPATCHER',       4,  9,  40, 6),
+('AVIATION METEOROLOGIST',  4,  9,  40, 6),
+('FLIGHT DISPATCHER',       4,  14, 40, 6),
+('AVIATION METEOROLOGIST',  4,  14, 40, 6),
+('FLIGHT DISPATCHER',       4,  19, 40, 6),
+('AVIATION METEOROLOGIST',  4,  19, 40, 6),
 
 ('CARGO CARRIER PILOT', 4,  5,  60, 6),
 ('COPORATE PILOT',      4,  5,  30, 6),
@@ -520,20 +520,22 @@ INSERT INTO job (job_title, department_id, location_id, weekly_hours, benefits_p
 ('AVIATION ATTORNEY',  11,  3,  40, 7),
 
 -- Public Relations and Planning (12)
-('PUBLIC RELATIONS SPECIALIST', 12,  1,  40, 3),
-('PUBLIC RELATIONS GENERALIST', 12,  1,  40, 3),
-('PUBLIC RELATIONS MANAGER',    12,  1,  40, 3),
-('PUBLIC RELATIONS INTERN',     12,  1,  20, 3),
-
 ('PUBLIC RELATIONS SPECIALIST', 12,  2,  40, 3),
 ('PUBLIC RELATIONS GENERALIST', 12,  2,  40, 3),
 ('PUBLIC RELATIONS MANAGER',    12,  2,  40, 3),
 ('PUBLIC RELATIONS INTERN',     12,  2,  20, 3),
 
-('PUBLIC RELATIONS SPECIALIST', 12,  3,  40, 3),
-('PUBLIC RELATIONS GENERALIST', 12,  3,  40, 3),
-('PUBLIC RELATIONS MANAGER',    12,  3,  40, 3),
-('PUBLIC RELATIONS INTERN',     12,  3,  20, 3);
+('HEAD OF ENGINEERING',           2,  2,  40, 9),
+('HEAD OF GROUND OPERATIONS',     3,  2,  40, 9),
+('HEAD OF FLIGHT OPERATIONS',     4,  2,  40, 9),
+('HEAD OF SALES',                 5,  2,  40, 9),
+('HEAD OF RESERVATIONS',          6,  2,  40, 9),
+('HEAD OF FINANCE',               7,  2,  40, 9),
+('HEAD OF INFORMATION SERVICES',  8,  2,  40, 9),
+('HEAD OF PERSONNEL MANAGEMENT',  9,  2,  40, 9),
+('HEAD OF EMERGENCY SERVICES',    10, 2,  40, 9),
+('HEAD OF LEGAL',                 11, 2,  40, 9),
+('HEAD OF PUBLIC RELATIONS',      12, 2,  40, 9);
 
 -- Employee Address
 INSERT INTO employee_address (street_address, city, zip_code, state, country) VALUES
@@ -784,7 +786,25 @@ INSERT INTO employee_address (street_address, city, zip_code, state, country) VA
 ('8755 MAYCLOUD AVE',   'CITY C', '98764',  'STATE C', 'COUNTRY B'),
 ('423 RUSTY LN',        'CITY C', '98764',  'STATE C', 'COUNTRY B'),
 ('8276 CLIMBING ST',    'CITY C', '98764',  'STATE C', 'COUNTRY B'),
-('7852 SLOPE RD',       'CITY C', '98764',  'STATE C', 'COUNTRY B');
+('7852 SLOPE RD',       'CITY C', '98764',  'STATE C', 'COUNTRY B'),
+('423 STEEL LN',        'CITY A', '98764',  'STATE A', 'COUNTRY A'),
+('8276 IRON ST',        'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('7852 BRASS RD',       'CITY C', '54321',  'STATE C', 'COUNTRY B'),
+('7852 PEWTER RD',      'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('423 ZINC LN',         'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('8276 BRONZE ST',      'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('7852 CHROMIUM RD',    'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('8755 MAYCLOUD AVE',   'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('423 RUSTY LN',        'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('8276 CLIMBING ST',    'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('7852 SLOPE RD',       'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('423 STEEL LN',        'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('8276 IRON ST',        'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('7852 BRASS RD',       'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('7852 PEWTER RD',      'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('423 ZINC LN',         'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('8276 BRONZE ST',      'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('7852 CHROMIUM RD',    'CITY B', '12345',  'STATE B', 'COUNTRY A');
 
 -- Employee
 INSERT INTO employee 
@@ -1206,11 +1226,91 @@ INSERT INTO employee
 ('KENTIGERN', NULL,       'BAGGI',      '100000231', '1999-01-05',  'M',    NULL,           NULL,                     237,    239,        NULL),
 ('RIEN',      NULL,       'NOYER',      '100000232', '1978-05-06',  'M',    NULL,           NULL,                     238,    240,        NULL),
 
-('SIMONE',    NULL,       'PORCHER',    '100000233', '1999-04-02',  'M',    NULL,           NULL,                     239,    241,        NULL),
+('SIMONE',    NULL,       'PORCHER',    '100000233', '1999-04-02',  'F',    NULL,           NULL,                     239,    241,        NULL),
 ('JOLINE',    NULL,       'BAUMGARTEN', '100000234', '1978-03-03',  'M',    NULL,           NULL,                     240,    242,        NULL),
 ('YULIA',     'L',        'MIKHAILOV',  '100000235', '1978-02-04',  'M',    NULL,           NULL,                     241,    243,        NULL),
 ('CY',        NULL,       'BAGGI',      '100000236', '1999-01-05',  'M',    NULL,           NULL,                     242,    244,        NULL),
 ('ANDREA',    NULL,       'NOYER',      '100000237', '1978-05-06',  'M',    NULL,           NULL,                     243,    245,        NULL);
+
+INSERT INTO employee 
+(first_name,  m_initial,  last_name,    ssn,         dob,           gender, phone,          email,                    job_id, address_id, manager_id) VALUES
+('LAWYER',    'D',        'SAWYER',     '100000238', '1978-12-01',  'M',    NULL,           NULL,                     244,    246,        NULL),
+('SIMONE',    NULL,       'LAW',        '100000239', '1999-04-02',  'F',    NULL,           NULL,                     245,    247,        NULL),
+('JOE',       NULL,       'TURNEY',     '100000240', '1978-03-03',  'M',    NULL,           NULL,                     246,    248,        NULL);
+
+INSERT INTO employee 
+(first_name,  m_initial,  last_name,    ssn,         dob,           gender, phone,          email,                    job_id, address_id, manager_id) VALUES
+('JOEL',      'D',        'SAWYER',     '100000241', '1978-12-01',  'M',    NULL,           NULL,                     247,    249,        NULL),
+('NATHAN',    NULL,       'TURNER',     '100000242', '1999-04-02',  'M',    NULL,           NULL,                     248,    250,        NULL),
+('ELISE',     NULL,       'STEEL',      '100000243', '1978-03-03',  'F',    NULL,           NULL,                     249,    251,        NULL),
+('MARY',      NULL,       'SUE',        '100000244', '1978-03-03',  'F',    NULL,           NULL,                     250,    252,        NULL);
+
+UPDATE employee
+SET manager_id = 1000250
+WHERE employee_id > 1000247 AND NOT employee_id = 1000250;
+
+INSERT INTO employee 
+(first_name,  m_initial,  last_name,    ssn,         dob,           gender, phone,          email,                    job_id, address_id, manager_id) VALUES
+('JOEL',      'D',        'GOLD',       '100000245', '1965-12-01',  'M',    NULL,           'jgold@company.org',      251,    253,        NULL),
+('NATHAN',    NULL,       'SILVER',     '100000246', '1966-04-02',  'M',    NULL,           'nsilver@company.org',    252,    254,        NULL),
+('ELISE',     NULL,       'BRONZE',     '100000247', '1967-03-14',  'F',    NULL,           'ebronze@company.org',    253,    255,        NULL),
+('MARY',      NULL,       'COPPER',     '100000248', '1968-03-04',  'F',    NULL,           'mcopper@company.org',    254,    256,        NULL),
+('JOHN',      'K',        'BRASS',      '100000249', '1969-12-11',  'M',    NULL,           'jbrass@company.org',     255,    257,        NULL),
+('NEIL',      NULL,       'ZINC',       '100000250', '1965-07-02',  'M',    NULL,           'nzinc@company.org',      256,    258,        NULL),
+('ELLEN',     NULL,       'TIN',        '100000251', '1966-03-03',  'F',    NULL,           'etin@company.org',       257,    259,        NULL),
+('MYRTLE',    NULL,       'PEWTER',     '100000252', '1967-04-03',  'F',    NULL,           'mpewter@company.org',    258,    260,        NULL),
+('JERKYLL',   'G',        'LEAD',       '100000253', '1968-12-06',  'M',    NULL,           'jlead@company.org',      259,    261,        NULL),
+('NERRY',     NULL,       'CHROMIUM',   '100000254', '1969-04-02',  'M',    NULL,           'nchromium@company.org',  260,    262,        NULL),
+('PENELOPE',  NULL,       'IRON',       '100000255', '1970-03-03',  'F',    NULL,           'eiron@company.org',      261,    263,        NULL);
+
+-- Create department heads
+UPDATE department
+SET department_head_id = 1000000
+WHERE department_id = 1;
+
+UPDATE department
+SET department_head_id = 1000252
+WHERE department_id = 2;
+
+UPDATE department
+SET department_head_id = 1000253
+WHERE department_id = 3;
+
+UPDATE department
+SET department_head_id = 1000254
+WHERE department_id = 4;
+
+UPDATE department
+SET department_head_id = 1000255
+WHERE department_id = 5;
+
+UPDATE department
+SET department_head_id = 1000256
+WHERE department_id = 6;
+
+UPDATE department
+SET department_head_id = 1000257
+WHERE department_id = 7;
+
+UPDATE department
+SET department_head_id = 1000258
+WHERE department_id = 8;
+
+UPDATE department
+SET department_head_id = 1000259
+WHERE department_id = 9;
+
+UPDATE department
+SET department_head_id = 1000260
+WHERE department_id = 10;
+
+UPDATE department
+SET department_head_id = 1000261
+WHERE department_id = 11;
+
+UPDATE department
+SET department_head_id = 1000262
+WHERE department_id = 12;
 
 -- Salary
 INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
@@ -1458,4 +1558,22 @@ INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
 (1000241, '$40', '$10,000'),
 (1000242, '$40', '$10,000'),
 (1000243, '$40', '$10,000'),
-(1000244, '$40', '$10,000');
+(1000244, '$40', '$10,000'),
+(1000245, '$40', '$10,000'),
+(1000246, '$40', '$10,000'),
+(1000247, '$40', '$10,000'),
+(1000248, '$35', '$10,000'),
+(1000249, '$30', '$10,000'),
+(1000250, '$40', '$10,000'),
+(1000251, '$16', '$0'),
+(1000252, '$50', '$90,000'),
+(1000253, '$50', '$90,000'),
+(1000254, '$50', '$90,000'),
+(1000255, '$50', '$90,000'),
+(1000256, '$50', '$90,000'),
+(1000257, '$50', '$90,000'),
+(1000258, '$50', '$90,000'),
+(1000259, '$50', '$90,000'),
+(1000260, '$50', '$90,000'),
+(1000261, '$50', '$90,000'),
+(1000261, '$50', '$90,000');
