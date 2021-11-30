@@ -15,6 +15,7 @@ import JobsSidePanel from './pages/JobsSidePanel';
 import SearchAllJobsForm from './pages/jobs/SearchAllJobsForm';
 import CreateJobForm from './pages/jobs/CreateJobForm';
 import UpdateJobForm from './pages/jobs/UpdateJobForm';
+import DeleteJobForm from './pages/jobs/DeleteJobForm';
 
 import LeaveSidePanel from './pages/LeaveSidePanel';
 import SearchAllLeaveForm from './pages/leave/SearchAllLeaveForm';
@@ -61,6 +62,7 @@ class App extends Component {
                   <Route exact path="search" element={<SearchAllJobsForm />} />
                   <Route exact path="create" element={<CreateJobForm />} />
                   <Route exact path="update" element={<UpdateJobForm />} />
+                  <Route exact path="delete" element={<DeleteJobForm />} />
                 </Route>
 
                 <Route exact path="leave" element={<LeaveSidePanel />} >
