@@ -128,8 +128,8 @@ router.get('/employee', async (req, res) => {
   ];
 
   const orderString = utils.orderingParams(params, sortParams, 'id');
-  const queryString = `SELECT %I\nFROM %I e\n\tJOIN %I j\n\tON e.%4$s = j.%4$s\n\tJOIN %I d\n\tON j.%6$s = d.%6$s\n${filterString}${orderString};`;
-  const dbQuery = format(queryString, columnArgs, ...joinArgs);
+  const queryString = `SELECT %I\nFROM %I e\n\tJOIN %I j\n\tON e.%4$I = j.%4$I\n\tJOIN %I d\n\tON j.%6$I = d.%6$I\n`;
+  const dbQuery = format(queryString, columnArgs, ...joinArgs) + `${filterString}${orderString};`;
 
   try {
     const result = await db.query(dbQuery, '-- Get employee summary\n');

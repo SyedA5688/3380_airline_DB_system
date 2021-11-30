@@ -82,8 +82,8 @@ router.get('/job', async (req, res) => {
   ];
 
   const orderString = utils.orderingParams(params, sortParams, 'title');
-  const queryString = `SELECT %I\nFROM %I\nNATURAL JOIN %I\n${filterString}${orderString};`;
-  const dbQuery = format(queryString, columnArgs, ...joinArgs);
+  const queryString = `SELECT %I\nFROM %I\nNATURAL JOIN %I\n`;
+  const dbQuery = format(queryString, columnArgs, ...joinArgs) + `${filterString}${orderString};`;
   try { 
     const result = await db.query(dbQuery, '-- Get jobs\n');
     res.json({

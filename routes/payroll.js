@@ -70,8 +70,8 @@ router.get('/payroll', async (req, res) => {
   }
 
   const orderString = utils.orderingParams(params, sortParams, 'period');
-  const queryString = `SELECT *\nFROM %I\n${filterString}${orderString};`;
-  const dbQuery = format(queryString, 'payroll');
+  const queryString = `SELECT *\nFROM %I\n`;
+  const dbQuery = format(queryString, 'payroll') + `${filterString}${orderString};`;
   try {
     const result = await db.query(dbQuery, '-- Get payroll entries\n'); 
     res.json({

@@ -541,14 +541,10 @@ INSERT INTO employee_address (street_address, city, zip_code, state, country) VA
 ('123 STONE ST',        'CITY B', '54321',  'STATE B', 'COUNTRY A'),
 ('321 ROCKY RD',        'CITY B', '12345',  'STATE B', 'COUNTRY A'),
 ('555 STONE ST',        'CITY B', '54321',  'STATE B', 'COUNTRY A'),
-('9029 MAIN ST',        'CITY B', '12345',  'STATE B', 'COUNTRY A');
-
-INSERT INTO employee_address (street_address, city, zip_code, state, country) VALUES
+('9029 MAIN ST',        'CITY B', '12345',  'STATE B', 'COUNTRY A'),
 ('765 MAIN ST',         'CITY B', '12345',  'STATE B', 'COUNTRY A'),
 ('767 MINOR ST',        'CITY B', '54321',  'STATE B', 'COUNTRY A'),
-('876 MINOR ST',        'CITY B', '54321',  'STATE B', 'COUNTRY A');
-
-INSERT INTO employee_address (street_address, city, zip_code, state, country) VALUES
+('876 MINOR ST',        'CITY B', '54321',  'STATE B', 'COUNTRY A'),
 ('8760 MAIN ST',        'CITY A', '98764',  'STATE A', 'COUNTRY A'),
 ('920 SKY ST',          'CITY A', '98764',  'STATE A', 'COUNTRY A'),
 ('808 SKY ST',          'CITY A', '98764',  'STATE A', 'COUNTRY A'),
@@ -558,9 +554,7 @@ INSERT INTO employee_address (street_address, city, zip_code, state, country) VA
 ('202 ROCKDRIVE RD',    'CITY A', '98764',  'STATE A', 'COUNTRY A'),
 ('101 ROCKDRIVE RD',    'CITY A', '98764',  'STATE A', 'COUNTRY A'),
 ('896 ROCKDRIVE RD',    'CITY A', '98764',  'STATE A', 'COUNTRY A'),
-('909 ROCKDRIVE RD',    'CITY A', '98764',  'STATE A', 'COUNTRY A');
-
-INSERT INTO employee_address (street_address, city, zip_code, state, country) VALUES
+('909 ROCKDRIVE RD',    'CITY A', '98764',  'STATE A', 'COUNTRY A'),
 ('8760 MAIN ST',        'CITY B', '12345',  'STATE B', 'COUNTRY A'),
 ('920 SKY ST',          'CITY B', '12345',  'STATE B', 'COUNTRY A'),
 ('808 SKY ST',          'CITY B', '12345',  'STATE B', 'COUNTRY A'),
@@ -570,9 +564,7 @@ INSERT INTO employee_address (street_address, city, zip_code, state, country) VA
 ('202 ROCKDRIVE RD',    'CITY B', '12345',  'STATE B', 'COUNTRY A'),
 ('101 ROCKDRIVE RD',    'CITY B', '12345',  'STATE B', 'COUNTRY A'),
 ('896 ROCKDRIVE RD',    'CITY B', '12345',  'STATE B', 'COUNTRY A'),
-('909 ROCKDRIVE RD',    'CITY B', '12345',  'STATE B', 'COUNTRY A');
-
-INSERT INTO employee_address (street_address, city, zip_code, state, country) VALUES
+('909 ROCKDRIVE RD',    'CITY B', '12345',  'STATE B', 'COUNTRY A'),
 ('8770 MAIN ST',        'CITY B', '54321',  'STATE B', 'COUNTRY A'),
 ('920 SKY RD',          'CITY B', '54321',  'STATE B', 'COUNTRY A'),
 ('808 SKY RD',          'CITY B', '54321',  'STATE B', 'COUNTRY A'),
@@ -582,9 +574,7 @@ INSERT INTO employee_address (street_address, city, zip_code, state, country) VA
 ('202 STONEROCK RD',    'CITY B', '54321',  'STATE B', 'COUNTRY A'),
 ('101 STONEROCK RD',    'CITY B', '54321',  'STATE B', 'COUNTRY A'),
 ('896 STONEROCK RD',    'CITY B', '54321',  'STATE B', 'COUNTRY A'),
-('909 STONEROCK RD',    'CITY B', '54321',  'STATE B', 'COUNTRY A');
-
-INSERT INTO employee_address (street_address, city, zip_code, state, country) VALUES
+('909 STONEROCK RD',    'CITY B', '54321',  'STATE B', 'COUNTRY A'),
 ('8760 MAIN ST',        'CITY C', '56565',  'STATE C', 'COUNTRY B'),
 ('920 FLOOR ST',        'CITY C', '56565',  'STATE C', 'COUNTRY B'),
 ('808 FLOOR ST',        'CITY C', '56565',  'STATE C', 'COUNTRY B'),
@@ -594,17 +584,13 @@ INSERT INTO employee_address (street_address, city, zip_code, state, country) VA
 ('202 OCEANWATER LN',   'CITY C', '56565',  'STATE C', 'COUNTRY B'),
 ('101 OCEANWATER LN',   'CITY C', '56565',  'STATE C', 'COUNTRY B'),
 ('896 OCEANWATER LN',   'CITY C', '56565',  'STATE C', 'COUNTRY B'),
-('909 OCEANWATER LN',   'CITY C', '56565',  'STATE C', 'COUNTRY B');
-
-INSERT INTO employee_address (street_address, city, zip_code, state, country) VALUES
+('909 OCEANWATER LN',   'CITY C', '56565',  'STATE C', 'COUNTRY B'),
 ('8960 MAIN ST',        'CITY A', '98764',  'STATE A', 'COUNTRY A'),
 ('920 DOORE DR',        'CITY A', '98764',  'STATE A', 'COUNTRY A'),
 ('808 DOORE DR',        'CITY A', '98764',  'STATE A', 'COUNTRY A'),
 ('8760 SUMMERTOP RD',   'CITY A', '98764',  'STATE A', 'COUNTRY A'),
 ('8755 SUMMERTOP RD',   'CITY A', '98764',  'STATE A', 'COUNTRY A'),
-('423 SEAWATER LN',     'CITY A', '98764',  'STATE A', 'COUNTRY A');
-
-INSERT INTO employee_address (street_address, city, zip_code, state, country) VALUES
+('423 SEAWATER LN',     'CITY A', '98764',  'STATE A', 'COUNTRY A'),
 ('8960 MAIN ST',        'CITY A', '98764',  'STATE A', 'COUNTRY A'),
 ('910 DOORE DR',        'CITY A', '98764',  'STATE A', 'COUNTRY A'),
 ('809 DOORE DR',        'CITY A', '98764',  'STATE A', 'COUNTRY A'),
@@ -615,9 +601,7 @@ INSERT INTO employee_address (street_address, city, zip_code, state, country) VA
 ('920 CORAL LN',        'CITY A', '98764',  'STATE A', 'COUNTRY A'),
 ('808 CORAL LN',        'CITY A', '98764',  'STATE A', 'COUNTRY A'),
 ('8234 SUMMERTOP RD',   'CITY A', '98764',  'STATE A', 'COUNTRY A'),
-('8754 SUMMERTOP RD',   'CITY A', '98764',  'STATE A', 'COUNTRY A');
-
-INSERT INTO employee_address (street_address, city, zip_code, state, country) VALUES
+('8754 SUMMERTOP RD',   'CITY A', '98764',  'STATE A', 'COUNTRY A'),
 ('8977 MAIN ST',        'CITY B', '12345',  'STATE B', 'COUNTRY A'),
 ('910 KEINE DR',        'CITY B', '12345',  'STATE B', 'COUNTRY A'),
 ('809 KEINE DR',        'CITY B', '12345',  'STATE B', 'COUNTRY A'),
@@ -628,9 +612,7 @@ INSERT INTO employee_address (street_address, city, zip_code, state, country) VA
 ('920 NEIN LN',         'CITY B', '12345',  'STATE B', 'COUNTRY A'),
 ('808 NEIN LN',         'CITY B', '12345',  'STATE B', 'COUNTRY A'),
 ('8234 KORON RD',       'CITY B', '12345',  'STATE B', 'COUNTRY A'),
-('8754 KORON RD',       'CITY B', '12345',  'STATE B', 'COUNTRY A');
-
-INSERT INTO employee_address (street_address, city, zip_code, state, country) VALUES
+('8754 KORON RD',       'CITY B', '12345',  'STATE B', 'COUNTRY A'),
 ('8977 MAIN ST',        'CITY B', '54321',  'STATE B', 'COUNTRY A'),
 ('910 KEINE DR',        'CITY B', '54321',  'STATE B', 'COUNTRY A'),
 ('809 KEINE DR',        'CITY B', '54321',  'STATE B', 'COUNTRY A'),
@@ -641,9 +623,7 @@ INSERT INTO employee_address (street_address, city, zip_code, state, country) VA
 ('920 NEIN LN',         'CITY B', '54321',  'STATE B', 'COUNTRY A'),
 ('808 NEIN LN',         'CITY B', '54321',  'STATE B', 'COUNTRY A'),
 ('8234 KORON RD',       'CITY B', '54321',  'STATE B', 'COUNTRY A'),
-('8754 KORON RD',       'CITY B', '54321',  'STATE B', 'COUNTRY A');
-
-INSERT INTO employee_address (street_address, city, zip_code, state, country) VALUES
+('8754 KORON RD',       'CITY B', '54321',  'STATE B', 'COUNTRY A'),
 ('8977 MAIN ST',        'CITY C', '54321',  'STATE C', 'COUNTRY B'),
 ('910 KEINE DR',        'CITY C', '54321',  'STATE C', 'COUNTRY B'),
 ('809 KEINE DR',        'CITY C', '54321',  'STATE C', 'COUNTRY B'),
@@ -654,19 +634,7 @@ INSERT INTO employee_address (street_address, city, zip_code, state, country) VA
 ('920 NEIN LN',         'CITY C', '54321',  'STATE C', 'COUNTRY B'),
 ('808 NEIN LN',         'CITY C', '54321',  'STATE C', 'COUNTRY B'),
 ('8234 KORON RD',       'CITY C', '54321',  'STATE C', 'COUNTRY B'),
-('8754 KORON RD',       'CITY C', '54321',  'STATE C', 'COUNTRY B');
-
-INSERT INTO employee_address (street_address, city, zip_code, state, country) VALUES
-('8977 MAIN ST',        'CITY A', '54321',  'STATE A', 'COUNTRY A'),
-('910 KEINE DR',        'CITY A', '54321',  'STATE A', 'COUNTRY A'),
-('809 KEINE DR',        'CITY B', '54321',  'STATE B', 'COUNTRY A'),
-('8760 SCHLAFEN RD',    'CITY B', '54321',  'STATE B', 'COUNTRY A'),
-('8755 SCHLAFEN RD',    'CITY B', '54321',  'STATE B', 'COUNTRY A'),
-('423 RAINWATER LN',    'CITY B', '54321',  'STATE B', 'COUNTRY A'),
-('8276 MAIN ST',        'CITY C', '54321',  'STATE C', 'COUNTRY B'),
-('920 NEIN LN',         'CITY C', '54321',  'STATE C', 'COUNTRY B');
-
-INSERT INTO employee_address (street_address, city, zip_code, state, country) VALUES
+('8754 KORON RD',       'CITY C', '54321',  'STATE C', 'COUNTRY B'),
 ('8977 MAIN ST',        'CITY A', '54321',  'STATE A', 'COUNTRY A'),
 ('910 KEINE DR',        'CITY A', '54321',  'STATE A', 'COUNTRY A'),
 ('809 KEINE DR',        'CITY B', '54321',  'STATE B', 'COUNTRY A'),
@@ -714,27 +682,27 @@ INSERT INTO employee_address (street_address, city, zip_code, state, country) VA
 ('8755 SCHLAFEN RD',    'CITY B', '54321',  'STATE B', 'COUNTRY A'),
 ('423 RAINWATER LN',    'CITY B', '54321',  'STATE B', 'COUNTRY A'),
 ('8276 MAIN ST',        'CITY C', '54321',  'STATE C', 'COUNTRY B'),
-('920 NEIN LN',         'CITY C', '54321',  'STATE C', 'COUNTRY B');
-
-INSERT INTO employee_address (street_address, city, zip_code, state, country) VALUES
+('920 NEIN LN',         'CITY C', '54321',  'STATE C', 'COUNTRY B'),
+('8977 MAIN ST',        'CITY A', '54321',  'STATE A', 'COUNTRY A'),
+('910 KEINE DR',        'CITY A', '54321',  'STATE A', 'COUNTRY A'),
+('809 KEINE DR',        'CITY B', '54321',  'STATE B', 'COUNTRY A'),
+('8760 SCHLAFEN RD',    'CITY B', '54321',  'STATE B', 'COUNTRY A'),
+('8755 SCHLAFEN RD',    'CITY B', '54321',  'STATE B', 'COUNTRY A'),
+('423 RAINWATER LN',    'CITY B', '54321',  'STATE B', 'COUNTRY A'),
+('8276 MAIN ST',        'CITY C', '54321',  'STATE C', 'COUNTRY B'),
+('920 NEIN LN',         'CITY C', '54321',  'STATE C', 'COUNTRY B'),
 ('8755 SLEEPY HILLS',   'CITY A', '98764',  'STATE A', 'COUNTRY A'),
 ('423 FISHWATER LN',    'CITY A', '98764',  'STATE A', 'COUNTRY A'),
 ('8276 MINOR ST',       'CITY A', '98764',  'STATE A', 'COUNTRY A'),
-('920 LION LN',         'CITY A', '98764',  'STATE A', 'COUNTRY A');
-
-INSERT INTO employee_address (street_address, city, zip_code, state, country) VALUES
+('920 LION LN',         'CITY A', '98764',  'STATE A', 'COUNTRY A'),
 ('8755 JUMPY HILLS',    'CITY B', '12345',  'STATE B', 'COUNTRY A'),
 ('423 FISHWATER ST',    'CITY B', '12345',  'STATE B', 'COUNTRY A'),
 ('8276 MINOR RD',       'CITY B', '12345',  'STATE B', 'COUNTRY A'),
-('920 LION RD',         'CITY B', '12345',  'STATE B', 'COUNTRY A');
-
-INSERT INTO employee_address (street_address, city, zip_code, state, country) VALUES
+('920 LION RD',         'CITY B', '12345',  'STATE B', 'COUNTRY A'),
 ('8755 SLEEPY SLOPES',  'CITY C', '90987',  'STATE C', 'COUNTRY B'),
 ('423 FISHWATER RD',    'CITY C', '90987',  'STATE C', 'COUNTRY B'),
 ('8777 MAIN ST',        'CITY C', '90987',  'STATE C', 'COUNTRY B'),
-('920 LONG LN',         'CITY C', '90987',  'STATE C', 'COUNTRY B');
-
-INSERT INTO employee_address (street_address, city, zip_code, state, country) VALUES
+('920 LONG LN',         'CITY C', '90987',  'STATE C', 'COUNTRY B'),
 ('8977 MAIN ST',        'CITY A', '54321',  'STATE A', 'COUNTRY A'),
 ('910 KEINE DR',        'CITY A', '54321',  'STATE A', 'COUNTRY A'),
 ('809 KEINE DR',        'CITY B', '12345',  'STATE B', 'COUNTRY A'),
@@ -742,9 +710,7 @@ INSERT INTO employee_address (street_address, city, zip_code, state, country) VA
 ('8755 SCHLAFEN RD',    'CITY B', '54321',  'STATE B', 'COUNTRY A'),
 ('423 RAINWATER LN',    'CITY B', '54321',  'STATE B', 'COUNTRY A'),
 ('8276 MAIN ST',        'CITY C', '54321',  'STATE C', 'COUNTRY B'),
-('920 NEIN LN',         'CITY C', '54321',  'STATE C', 'COUNTRY B');
-
-INSERT INTO employee_address (street_address, city, zip_code, state, country) VALUES
+('920 NEIN LN',         'CITY C', '54321',  'STATE C', 'COUNTRY B'),
 ('8977 MAIN ST',        'CITY A', '98764',  'STATE A', 'COUNTRY A'),
 ('910 KLEINE DR',       'CITY A', '98764',  'STATE A', 'COUNTRY A'),
 ('809 EINE DR',         'CITY A', '98764',  'STATE A', 'COUNTRY A'),
@@ -752,9 +718,7 @@ INSERT INTO employee_address (street_address, city, zip_code, state, country) VA
 ('8755 ROCKY RD',       'CITY A', '98764',  'STATE A', 'COUNTRY A'),
 ('423 RAINWATER LN',    'CITY A', '98764',  'STATE A', 'COUNTRY A'),
 ('8276 MAIN ST',        'CITY A', '98764',  'STATE A', 'COUNTRY A'),
-('920 NEIN LN',         'CITY A', '98764',  'STATE A', 'COUNTRY A');
-
-INSERT INTO employee_address (street_address, city, zip_code, state, country) VALUES
+('920 NEIN LN',         'CITY A', '98764',  'STATE A', 'COUNTRY A'),
 ('8977 MAIN ST',        'CITY B', '12345',  'STATE B', 'COUNTRY A'),
 ('910 KLEINE DR',       'CITY B', '12345',  'STATE B', 'COUNTRY A'),
 ('809 EINE DR',         'CITY B', '12345',  'STATE B', 'COUNTRY A'),
@@ -762,9 +726,7 @@ INSERT INTO employee_address (street_address, city, zip_code, state, country) VA
 ('8755 ROCKY RD',       'CITY B', '12345',  'STATE B', 'COUNTRY A'),
 ('423 RAINWATER LN',    'CITY B', '12345',  'STATE B', 'COUNTRY A'),
 ('8276 MAIN ST',        'CITY B', '12345',  'STATE B', 'COUNTRY A'),
-('920 NEIN LN',         'CITY B', '12345',  'STATE B', 'COUNTRY A');
-
-INSERT INTO employee_address (street_address, city, zip_code, state, country) VALUES
+('920 NEIN LN',         'CITY B', '12345',  'STATE B', 'COUNTRY A'),
 ('8977 MAIN ST',        'CITY C', '54321',  'STATE C', 'COUNTRY B'),
 ('910 KLEINE DR',       'CITY C', '54321',  'STATE C', 'COUNTRY B'),
 ('809 EINE DR',         'CITY C', '54321',  'STATE C', 'COUNTRY B'),
@@ -772,25 +734,57 @@ INSERT INTO employee_address (street_address, city, zip_code, state, country) VA
 ('8755 ROCKY RD',       'CITY C', '54321',  'STATE C', 'COUNTRY B'),
 ('423 RAINWATER LN',    'CITY C', '54321',  'STATE C', 'COUNTRY B'),
 ('8276 MAIN ST',        'CITY C', '54321',  'STATE C', 'COUNTRY B'),
-('920 NEIN LN',         'CITY C', '54321',  'STATE C', 'COUNTRY B');
-
-INSERT INTO employee_address (street_address, city, zip_code, state, country) VALUES
+('920 NEIN LN',         'CITY C', '54321',  'STATE C', 'COUNTRY B'),
 ('8755 BUMPY HILLS',    'CITY A', '98764',  'STATE A', 'COUNTRY A'),
 ('423 POOLWATER LN',    'CITY A', '98764',  'STATE A', 'COUNTRY A'),
 ('8276 DIGGY LN',       'CITY A', '98764',  'STATE A', 'COUNTRY A'),
-('920 ZEBRA ST',        'CITY A', '98764',  'STATE A', 'COUNTRY A');
-
-INSERT INTO employee_address (street_address, city, zip_code, state, country) VALUES
+('920 ZEBRA ST',        'CITY A', '98764',  'STATE A', 'COUNTRY A'),
 ('8755 KERRINGTON AVE', 'CITY B', '12345',  'STATE B', 'COUNTRY A'),
 ('423 MERRYWEATHER LN', 'CITY B', '12345',  'STATE B', 'COUNTRY A'),
 ('8276 CHRONO ST',      'CITY B', '12345',  'STATE B', 'COUNTRY A'),
-('420 CLOUDY DR',       'CITY B', '12345',  'STATE B', 'COUNTRY A');
-
-INSERT INTO employee_address (street_address, city, zip_code, state, country) VALUES
+('420 CLOUDY DR',       'CITY B', '12345',  'STATE B', 'COUNTRY A'),
 ('8755 KERRINGTON AVE', 'CITY C', '54321',  'STATE C', 'COUNTRY B'),
 ('423 MERRYWEATHER LN', 'CITY C', '54321',  'STATE C', 'COUNTRY B'),
 ('8276 CHRONO ST',      'CITY C', '54321',  'STATE C', 'COUNTRY B'),
-('420 CLOUDY DR',       'CITY C', '54321',  'STATE C', 'COUNTRY B');
+('420 CLOUDY DR',       'CITY C', '54321',  'STATE C', 'COUNTRY B'),
+('8276 TIME ST',        'CITY A', '98764',  'STATE A', 'COUNTRY A'),
+('402 SIMMONS RD',      'CITY A', '98764',  'STATE A', 'COUNTRY A'),
+('8755 MAYCLOUD AVE',   'CITY A', '98764',  'STATE A', 'COUNTRY A'),
+('423 RUSTY LN',        'CITY A', '98764',  'STATE A', 'COUNTRY A'),
+('8276 CLIMBING ST',    'CITY A', '98764',  'STATE A', 'COUNTRY A'),
+('7852 SLOPE RD',       'CITY A', '98764',  'STATE A', 'COUNTRY A'),
+('8276 TIME ST',        'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('402 SIMMONS RD',      'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('8755 MAYCLOUD AVE',   'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('423 RUSTY LN',        'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('8276 CLIMBING ST',    'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('7852 SLOPE RD',       'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('8276 TIME ST',        'CITY C', '98764',  'STATE C', 'COUNTRY B'),
+('402 SIMMONS RD',      'CITY C', '98764',  'STATE C', 'COUNTRY B'),
+('8755 MAYCLOUD AVE',   'CITY C', '98764',  'STATE C', 'COUNTRY B'),
+('423 RUSTY LN',        'CITY C', '98764',  'STATE C', 'COUNTRY B'),
+('8276 CLIMBING ST',    'CITY C', '98764',  'STATE C', 'COUNTRY B'),
+('7852 SLOPE RD',       'CITY C', '98764',  'STATE C', 'COUNTRY B'),
+('402 SIMMONS RD',      'CITY A', '98764',  'STATE A', 'COUNTRY A'),
+('8755 MAYCLOUD AVE',   'CITY A', '98764',  'STATE A', 'COUNTRY A'),
+('423 RUSTY LN',        'CITY A', '98764',  'STATE A', 'COUNTRY A'),
+('8276 CLIMBING ST',    'CITY A', '98764',  'STATE A', 'COUNTRY A'),
+('7852 SLOPE RD',       'CITY A', '98764',  'STATE A', 'COUNTRY A'),
+('402 SIMMONS RD',      'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('8755 MAYCLOUD AVE',   'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('423 RUSTY LN',        'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('8276 CLIMBING ST',    'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('7852 SLOPE RD',       'CITY B', '12345',  'STATE B', 'COUNTRY A'),
+('402 SIMMONS RD',      'CITY B', '54321',  'STATE B', 'COUNTRY A'),
+('8755 MAYCLOUD AVE',   'CITY B', '54321',  'STATE B', 'COUNTRY A'),
+('423 RUSTY LN',        'CITY B', '54321',  'STATE B', 'COUNTRY A'),
+('8276 CLIMBING ST',    'CITY B', '54321',  'STATE B', 'COUNTRY A'),
+('7852 SLOPE RD',       'CITY B', '54321',  'STATE B', 'COUNTRY A'),
+('402 SIMMONS RD',      'CITY C', '98764',  'STATE C', 'COUNTRY B'),
+('8755 MAYCLOUD AVE',   'CITY C', '98764',  'STATE C', 'COUNTRY B'),
+('423 RUSTY LN',        'CITY C', '98764',  'STATE C', 'COUNTRY B'),
+('8276 CLIMBING ST',    'CITY C', '98764',  'STATE C', 'COUNTRY B'),
+('7852 SLOPE RD',       'CITY C', '98764',  'STATE C', 'COUNTRY B');
 
 -- Employee
 INSERT INTO employee 
@@ -1153,20 +1147,81 @@ UPDATE employee
 SET manager_id = 1000204
 WHERE employee_id = 1000205;
 
+INSERT INTO employee 
+(first_name,  m_initial,  last_name,    ssn,         dob,           gender, phone,          email,                    job_id, address_id, manager_id) VALUES
+('DEIDRA',    'A',        'LOWE',       '100000200', '1975-04-23',  'F',    NULL,           NULL,                     206,    208,        NULL),
+('STARR',     NULL,       'LAMBERT',    '100000201', '2001-08-23',  'F',    NULL,           NULL,                     207,    209,        NULL),
+('PING',      NULL,       'HERZOG',     '100000202', '1970-08-28',  'M',    NULL,           NULL,                     208,    210,        NULL),
+('JEF',       'H',        'LOWE',       '100000203', '1975-04-23',  'M',    NULL,           NULL,                     209,    211,        NULL),
+('SEVERINE',  NULL,       'LAMBERT',    '100000204', '2001-08-23',  'F',    NULL,           NULL,                     210,    212,        NULL),
+('HUAN',      NULL,       'HERZOG',     '100000205', '1970-08-28',  'F',    NULL,           NULL,                     211,    213,        NULL);
+
+UPDATE employee
+SET manager_id = 1000210
+WHERE employee_id = 1000209;
+
+INSERT INTO employee 
+(first_name,  m_initial,  last_name,    ssn,         dob,           gender, phone,          email,                    job_id, address_id, manager_id) VALUES
+('ELI',       'P',        'LOWE',       '100000206', '1978-12-01',  'M',    NULL,           NULL,                     212,    214,        NULL),
+('RICO',      NULL,       'LAMBERT',    '100000207', '1999-04-02',  'M',    NULL,           NULL,                     213,    215,        NULL),
+('DEVARAJ',   NULL,       'HERZOG',     '100000208', '1978-03-03',  'M',    NULL,           NULL,                     214,    216,        NULL),
+('BENVENUTO', 'L',        'LOWE',       '100000209', '1978-02-04',  'M',    NULL,           NULL,                     215,    217,        NULL),
+('SARA',      NULL,       'LAMBERT',    '100000210', '1999-01-05',  'F',    NULL,           NULL,                     216,    218,        NULL),
+('LALE',      NULL,       'HERZOG',     '100000211', '1978-05-06',  'M',    NULL,           NULL,                     217,    219,        NULL);
+
+UPDATE employee
+SET manager_id = 1000216
+WHERE employee_id = 1000215;
+
+INSERT INTO employee 
+(first_name,  m_initial,  last_name,    ssn,         dob,           gender, phone,          email,                    job_id, address_id, manager_id) VALUES
+('RAJ',       'D',        'OSBOURNE',   '100000212', '1978-12-01',  'M',    NULL,           NULL,                     218,    220,        NULL),
+('SIMONE',    NULL,       'ASIS',       '100000213', '1999-04-02',  'F',    NULL,           NULL,                     219,    221,        NULL),
+('JOLINE',    NULL,       'LEEUWENHOEK','100000214', '1978-03-03',  'F',    NULL,           NULL,                     220,    222,        NULL),
+('YULIA',     'L',        'THAIDHG',    '100000215', '1978-02-04',  'F',    NULL,           NULL,                     221,    223,        NULL),
+('CY',        NULL,       'NEAL',       '100000216', '1999-01-05',  'M',    NULL,           NULL,                     222,    224,        NULL),
+('ANDREA',    NULL,       'MCCREERY',   '100000217', '1978-05-06',  'F',    NULL,           NULL,                     223,    225,        NULL);
+
+UPDATE employee
+SET manager_id = 1000222
+WHERE employee_id = 1000221;
+
+INSERT INTO employee 
+(first_name,  m_initial,  last_name,    ssn,         dob,           gender, phone,          email,                    job_id, address_id, manager_id) VALUES
+('SIMONE',    NULL,       'MCCREERY',   '100000218', '1999-04-02',  'F',    NULL,           NULL,                     224,    226,        NULL),
+('JOLINE',    NULL,       'NEAL',       '100000219', '1978-03-03',  'F',    NULL,           NULL,                     225,    227,        NULL),
+('YULIA',     'L',        'SMITH',      '100000220', '1978-02-04',  'F',    NULL,           NULL,                     226,    228,        NULL),
+('CY',        NULL,       'ASIS',       '100000221', '1999-01-05',  'M',    NULL,           NULL,                     227,    229,        NULL),
+('ANDREA',    NULL,       'OSBOURNE',   '100000222', '1978-05-06',  'F',    NULL,           NULL,                     228,    230,        NULL),
+
+('SUHAIL',    NULL,       'ROSE',       '100000223', '1999-04-02',  'M',    NULL,           NULL,                     229,    231,        NULL),
+('NUAN',      NULL,       'SCHULTHEISS','100000224', '1978-03-03',  'M',    NULL,           NULL,                     230,    232,        NULL),
+('INNOKENTI', 'L',        'SUZUKI',     '100000225', '1978-02-04',  'M',    NULL,           NULL,                     231,    233,        NULL),
+('KENTIGERN', NULL,       'SHORT',      '100000226', '1999-01-05',  'M',    NULL,           NULL,                     232,    234,        NULL),
+('RIEN',      NULL,       'BJARNESEN',  '100000227', '1978-05-06',  'M',    NULL,           NULL,                     233,    235,        NULL),
+
+('SUHAIL',    NULL,       'PORCHER',    '100000228', '1999-04-02',  'M',    NULL,           NULL,                     234,    236,        NULL),
+('NUAN',      NULL,       'BAUMGARTEN', '100000229', '1978-03-03',  'M',    NULL,           NULL,                     235,    237,        NULL),
+('INNOKENTI', 'L',        'MIKHAILOV',  '100000230', '1978-02-04',  'M',    NULL,           NULL,                     236,    238,        NULL),
+('KENTIGERN', NULL,       'BAGGI',      '100000231', '1999-01-05',  'M',    NULL,           NULL,                     237,    239,        NULL),
+('RIEN',      NULL,       'NOYER',      '100000232', '1978-05-06',  'M',    NULL,           NULL,                     238,    240,        NULL),
+
+('SIMONE',    NULL,       'PORCHER',    '100000233', '1999-04-02',  'M',    NULL,           NULL,                     239,    241,        NULL),
+('JOLINE',    NULL,       'BAUMGARTEN', '100000234', '1978-03-03',  'M',    NULL,           NULL,                     240,    242,        NULL),
+('YULIA',     'L',        'MIKHAILOV',  '100000235', '1978-02-04',  'M',    NULL,           NULL,                     241,    243,        NULL),
+('CY',        NULL,       'BAGGI',      '100000236', '1999-01-05',  'M',    NULL,           NULL,                     242,    244,        NULL),
+('ANDREA',    NULL,       'NOYER',      '100000237', '1978-05-06',  'M',    NULL,           NULL,                     243,    245,        NULL);
+
 -- Salary
 INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
 (1000000, '$375', '$700,000'),
-
 (1000001, '$100', '$250,000'),
 (1000002, '$90',  '$200,000'),
 (1000003, '$50',  '$120,000'),
 (1000004, '$100', '$200,000'),
-
 (1000005, '$35',  '$100,000'),
 (1000006, '$35',  '$100,000'),
-(1000007, '$35',  '$100,000');
-
-INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
+(1000007, '$35',  '$100,000'),
 (1000008, '$30', '$1,000'),
 (1000009, '$30', '$1,000'),
 (1000010, '$40', '$1,000'),
@@ -1176,9 +1231,7 @@ INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
 (1000014, '$22', '$1,000'),
 (1000015, '$18', '$1,000'),
 (1000016, '$20', '$1,000'),
-(1000017, '$40', '$1,000');
-
-INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
+(1000017, '$40', '$1,000'),
 (1000018, '$30', '$1,000'),
 (1000019, '$30', '$1,000'),
 (1000020, '$40', '$1,000'),
@@ -1188,9 +1241,7 @@ INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
 (1000024, '$22', '$1,000'),
 (1000025, '$18', '$1,000'),
 (1000026, '$20', '$1,000'),
-(1000027, '$40', '$1,000');
-
-INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
+(1000027, '$40', '$1,000'),
 (1000028, '$30', '$1,000'),
 (1000029, '$30', '$1,000'),
 (1000030, '$40', '$1,000'),
@@ -1200,9 +1251,7 @@ INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
 (1000034, '$22', '$1,000'),
 (1000035, '$18', '$1,000'),
 (1000036, '$20', '$1,000'),
-(1000037, '$40', '$1,000');
-
-INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
+(1000037, '$40', '$1,000'),
 (1000038, '$30', '$1,000'),
 (1000039, '$30', '$1,000'),
 (1000040, '$40', '$1,000'),
@@ -1212,17 +1261,13 @@ INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
 (1000044, '$22', '$1,000'),
 (1000045, '$18', '$1,000'),
 (1000046, '$20', '$1,000'),
-(1000047, '$40', '$1,000');
-
-INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
+(1000047, '$40', '$1,000'),
 (1000048, '$40', '$5,000'),
 (1000049, '$34', '$3,000'),
 (1000050, '$42', '$5,000'),
 (1000051, '$34', '$3,000'),
 (1000052, '$40', '$5,000'),
-(1000053, '$34', '$3,000');
-
-INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
+(1000053, '$34', '$3,000'),
 (1000054, '$30', '$1,000'),
 (1000055, '$30', '$1,000'),
 (1000056, '$40', '$1,000'),
@@ -1233,9 +1278,7 @@ INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
 (1000061, '$18', '$1,000'),
 (1000062, '$20', '$1,000'),
 (1000063, '$35', '$1,000'),
-(1000064, '$40', '$1,000');
-
-INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
+(1000064, '$40', '$1,000'),
 (1000065, '$30', '$1,000'),
 (1000066, '$30', '$1,000'),
 (1000067, '$40', '$1,000'),
@@ -1246,9 +1289,7 @@ INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
 (1000072, '$18', '$1,000'),
 (1000073, '$20', '$1,000'),
 (1000074, '$35', '$1,000'),
-(1000075, '$40', '$1,000');
-
-INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
+(1000075, '$40', '$1,000'),
 (1000076, '$30', '$1,000'),
 (1000077, '$30', '$1,000'),
 (1000078, '$40', '$1,000'),
@@ -1259,9 +1300,7 @@ INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
 (1000083, '$18', '$1,000'),
 (1000084, '$20', '$1,000'),
 (1000085, '$35', '$1,000'),
-(1000086, '$40', '$1,000');
-
-INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
+(1000086, '$40', '$1,000'),
 (1000087, '$30', '$1,000'),
 (1000088, '$30', '$1,000'),
 (1000089, '$40', '$1,000'),
@@ -1272,9 +1311,7 @@ INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
 (1000094, '$18', '$1,000'),
 (1000095, '$20', '$1,000'),
 (1000096, '$35', '$1,000'),
-(1000097, '$40', '$1,000');
-
-INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
+(1000097, '$40', '$1,000'),
 (1000098, '$30', '$10,000'),
 (1000099, '$30', '$10,000'),
 (1000100, '$40', '$10,000'),
@@ -1282,9 +1319,7 @@ INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
 (1000102, '$25', '$10,000'),
 (1000103, '$22', '$10,000'),
 (1000104, '$22', '$10,000'),
-(1000105, '$18', '$10,000');
-
-INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
+(1000105, '$18', '$10,000'),
 (1000106, '$40', '$10,000'),
 (1000107, '$40', '$10,000'),
 (1000108, '$40', '$10,000'),
@@ -1332,9 +1367,7 @@ INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
 (1000150, '$40', '$10,000'),
 (1000151, '$40', '$10,000'),
 (1000152, '$40', '$10,000'),
-(1000153, '$40', '$10,000');
-
-INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
+(1000153, '$40', '$10,000'),
 (1000154, '$30', '$10,000'),
 (1000155, '$30', '$10,000'),
 (1000156, '$40', '$10,000'),
@@ -1346,9 +1379,7 @@ INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
 (1000162, '$25', '$10,000'),
 (1000163, '$22', '$10,000'),
 (1000164, '$22', '$10,000'),
-(1000165, '$15', '$0');
-
-INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
+(1000165, '$15', '$0'),
 (1000166, '$30', '$1,000'),
 (1000167, '$30', '$1,000'),
 (1000168, '$20', '$1,000'),
@@ -1356,9 +1387,7 @@ INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
 (1000170, '$25', '$1,000'),
 (1000171, '$22', '$1,000'),
 (1000172, '$22', '$1,000'),
-(1000173, '$18', '$1,000');
-
-INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
+(1000173, '$18', '$1,000'),
 (1000174, '$35', '$2,250'),
 (1000175, '$35', '$2,500'),
 (1000176, '$28', '$1,000'),
@@ -1366,9 +1395,7 @@ INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
 (1000178, '$29', '$1,000'),
 (1000179, '$31', '$1,000'),
 (1000180, '$40', '$1,000'),
-(1000181, '$20', '$0');
-
-INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
+(1000181, '$20', '$0'),
 (1000182, '$35', '$2,250'),
 (1000183, '$35', '$2,500'),
 (1000184, '$28', '$1,000'),
@@ -1376,9 +1403,7 @@ INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
 (1000186, '$29', '$1,000'),
 (1000187, '$31', '$1,000'),
 (1000188, '$40', '$1,000'),
-(1000189, '$20', '$0');
-
-INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
+(1000189, '$20', '$0'),
 (1000190, '$35', '$2,250'),
 (1000191, '$35', '$2,500'),
 (1000192, '$28', '$1,000'),
@@ -1386,13 +1411,51 @@ INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
 (1000194, '$29', '$1,000'),
 (1000195, '$31', '$1,000'),
 (1000196, '$40', '$1,000'),
-(1000197, '$20', '$0');
-
-INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
+(1000197, '$20', '$0'),
 (1000198, '$35', '$2,250'),
 (1000199, '$16', '$0'),
-(1000200, '$28', '$1,000'),
-(1000201, '$15', '$0'),
-(1000202, '$29', '$1,000'),
-(1000203, '$15.50', '$0');
-
+(1000200, '$20', '$1,000'),
+(1000201, '$28', '$1,000'),
+(1000202, '$20', '$1,000'),
+(1000203, '$15', '$0'),
+(1000204, '$29', '$1,000'),
+(1000205, '$20', '$1,000'),
+(1000206, '$15.50', '$0'),
+(1000207, '$20', '$2,250'),
+(1000208, '$20', '$2,250'),
+(1000209, '$30', '$2,250'),
+(1000210, '$40', '$2,250'),
+(1000211, '$20', '$2,250'),
+(1000212, '$40', '$2,250'),
+(1000213, '$20', '$2,250'),
+(1000214, '$20', '$2,250'),
+(1000215, '$30', '$2,250'),
+(1000216, '$40', '$2,250'),
+(1000217, '$20', '$2,250'),
+(1000218, '$40', '$2,250'),
+(1000219, '$20', '$2,250'),
+(1000220, '$20', '$2,250'),
+(1000221, '$30', '$2,250'),
+(1000222, '$40', '$2,250'),
+(1000223, '$20', '$2,250'),
+(1000224, '$40', '$2,250'),
+(1000225, '$40', '$10,000'),
+(1000226, '$40', '$10,000'),
+(1000227, '$40', '$10,000'),
+(1000228, '$40', '$10,000'),
+(1000229, '$40', '$10,000'),
+(1000230, '$40', '$10,000'),
+(1000231, '$40', '$10,000'),
+(1000232, '$40', '$10,000'),
+(1000233, '$40', '$10,000'),
+(1000234, '$40', '$10,000'),
+(1000235, '$40', '$10,000'),
+(1000236, '$40', '$10,000'),
+(1000237, '$40', '$10,000'),
+(1000238, '$40', '$10,000'),
+(1000239, '$40', '$10,000'),
+(1000240, '$40', '$10,000'),
+(1000241, '$40', '$10,000'),
+(1000242, '$40', '$10,000'),
+(1000243, '$40', '$10,000'),
+(1000244, '$40', '$10,000');
