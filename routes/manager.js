@@ -49,7 +49,6 @@ module.exports = router;
  router.get('/manager', async (req, res) => {
   // TODO: Input validation
   const params = req.query;
-  const page = params.page ? params.page : 1;
   const sortParams = {
     id: 'employee_id',
     fname: 'first_name',
@@ -58,9 +57,8 @@ module.exports = router;
     department: 'department_name',
     minitial: 'm_initial'
   };
-  const sortBy = sortParams[params.sort] ? sortParams[params.sort] : sortParams.id;
-  const order = params.order ? params.order.toUpperCase() : 'ASC';
-  const limit = params.limit ? Math.min(Math.max(params.limit, 1), 100) : 10;
+  const {page, sortBy, order, limit} = utils.orderingParams(params, sortParams, 'id');
+
   // Filtering logic
   const query = params.q && params.q.toString().trim() !== '' ? params.q.toString().trim().toUpperCase() : '';
   let filterString = '';
@@ -205,7 +203,6 @@ router.get('/manager/:id', async (req, res) => {
   if(id && /^\d+$/.test(id)) {
     // TODO: Input validation
     const params = req.query;
-    const page = params.page ? params.page : 1;
     const sortParams = {
       id: 'employee_id',
       fname: 'first_name',
@@ -214,9 +211,7 @@ router.get('/manager/:id', async (req, res) => {
       department: 'department_name',
       minitial: 'm_initial'
     };
-    const sortBy = sortParams[params.sort] ? sortParams[params.sort] : sortParams.id;
-    const order = params.order ? params.order.toUpperCase() : 'ASC';
-    const limit = params.limit ? Math.min(Math.max(params.limit, 1), 100) : 10;
+    const {page, sortBy, order, limit} = utils.orderingParams(params, sortParams, 'id');
 
     // Filtering logic
     const query = params.q && params.q.toString().trim() !== '' ? params.q.toString().trim().toUpperCase() : '';

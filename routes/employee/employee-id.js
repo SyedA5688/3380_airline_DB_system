@@ -133,14 +133,7 @@ router.put('/employee/:id', async (req, res) => {
       const params = utils.separateFields(['employee', 'employee_address', 'salary'], body);
       // Check params isn't empty
       if(!utils.isEmpty(params['employee']) || !utils.isEmpty(params['employee_address']) || !utils.isEmpty(params['salary'])) {
-        const client = await db.connect().catch((err) => {
-          console.log(err.stack);
-          res.status(422).json({
-            error: 'Error connecting to database',
-            queries: [],
-            transaction: false
-          });
-        });
+        const client = await db.connect().catch((err) => utils.connectionError(err, res));
         if(client) {
           let queries = [];
           try {

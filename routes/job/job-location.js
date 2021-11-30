@@ -98,15 +98,7 @@ router.post('/job/location', async (req, res) => {
       body[key] = body[key].toString().trim().toUpperCase();
     });
 
-    const client = await db.connect().catch((err) => {
-      console.log(err.stack);
-      res.status(422).json({
-        error: 'Error connecting to database',
-        queries: [],
-        transaction: false
-      });
-    });
-
+    const client = await db.connect().catch((err) => utils.connectionError(err, res));
     if(client) {
       let queries = [];
       try {

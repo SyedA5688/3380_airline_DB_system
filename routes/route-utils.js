@@ -43,6 +43,7 @@ module.exports = {
     });
     return fields;
   },
+
   isEmpty: (object) => {
     return Object.keys(object).length === 0;
   },
@@ -50,5 +51,22 @@ module.exports = {
   transacQuery: async (queries, client, query, comment) => {
     queries.push(query);
     return await client.query(query, comment);
+  },
+
+  connectionError: (err, res) => {
+    console.log(err.stack);
+    res.status(500).json({
+      error: 'Error connecting client to database',
+      queries: [],
+      transaction: false
+    });
+  },
+
+  orderingParams: (params, sortParams, defaultSort) => {
+    const page = params.page ? params.page : 1;
+    const sortBy = sortParams[params.sort] ? sortParams[params.sort] : sortParams[defaultSort];
+    const order = params.order && params.order.trim().toUpperCase() === 'DESC' ? params.order.trim().toUpperCase() : 'ASC';
+    const limit = params.limit ? Math.min(Math.max(params.limit, 1), 100) : 10;
+    return {page, sortBy, order, limit};
   }
 };

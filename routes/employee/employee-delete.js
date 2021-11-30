@@ -29,14 +29,7 @@ module.exports = router;
 router.delete('/employee/:id', async (req, res) => {
   const id = req.params.id;
   if(id && /^\d+$/.test(id)) {
-    const client = await db.connect().catch((err) => {
-      console.log(err.stack);
-      res.status(422).json({
-        error: 'Error connecting to database',
-        queries: [],
-        transaction: false
-      });
-    });
+    const client = await db.connect().catch((err) => utils.connectionError(err, res));
     if(client) {
       let queries = [];
       try {

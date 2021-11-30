@@ -49,7 +49,6 @@ module.exports = router;
 router.get('/employee', async (req, res) => {
   // TODO: Input validation
   const params = req.query;
-  const page = params.page ? params.page : 1;
   const sortParams = {
     id: 'employee_id',
     fname: 'first_name',
@@ -58,9 +57,7 @@ router.get('/employee', async (req, res) => {
     department: 'department_name',
     minitial: 'm_initial'
   };
-  const sortBy = sortParams[params.sort] ? sortParams[params.sort] : sortParams.id;
-  const order = params.order ? params.order.toUpperCase() : 'ASC';
-  const limit = params.limit ? Math.min(Math.max(params.limit, 1), 100) : 10;
+  const {page, sortBy, order, limit} = utils.orderingParams(params, sortParams, 'id');
 
   // Filtering logic
   const query = params.q && params.q.toString().trim() !== '' ? params.q.toString().trim().toUpperCase() : '';
@@ -218,15 +215,7 @@ router.post('/employee', async (req, res) => {
     });
     if(body.phone && body.phone.charAt(0) !== '+') body.phone = '+1' + body.phone; // Just for demo purposes
 
-    const client = await db.connect().catch((err) => {
-      console.log(err.stack);
-      res.status(422).json({
-        error: 'Error connecting to database',
-        queries: [],
-        transaction: false
-      });
-    });
-
+    const client = await db.connect().catch((err) => utils.connectionError(err, res));
     if(client) {
       let queries = [];
       try {

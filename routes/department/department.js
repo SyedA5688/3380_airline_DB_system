@@ -53,7 +53,6 @@ module.exports = router;
  */
 router.get('/department', async (req, res) => {
   const params = req.query;
-  const page = params.page ? params.page : 1;
   const sortParams = {
     id: 'department_id',
     name: 'department_name',
@@ -61,9 +60,7 @@ router.get('/department', async (req, res) => {
     jobs: 'job_count',
     employees: 'employee_count'
   };
-  const sortBy = sortParams[params.sort] ? sortParams[params.sort] : sortParams.name;
-  const order = params.order ? params.order.toUpperCase() : 'ASC';
-  const limit = params.limit ? Math.min(Math.max(params.limit, 1), 100) : 10;
+  const {page, sortBy, order, limit} = utils.orderingParams(params, sortParams, 'name');
 
   // Filtering logic
   const query = params.q && params.q.toString().trim() !== '' ? params.q.toString().trim().toUpperCase() : '';
@@ -169,14 +166,7 @@ router.post('/department', async (req, res) => {
       body[key] = body[key].toString().trim().toUpperCase();
     });
 
-    const client = await db.connect().catch((err) => {
-      console.log(err.stack);
-      res.status(422).json({
-        error: 'Error connecting to database',
-        queries: [],
-        transaction: false
-      });
-    });
+    const client = await db.connect().catch((err) => utils.connectionError(err, res));
     if(client) {
       let queries = [];
       try {
