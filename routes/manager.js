@@ -1,7 +1,6 @@
 const Router = require('express-promise-router');
 const format = require('pg-format');
 const db = require('../db');
-const utils = require('./route-utils');
 
 const router = new Router();
 module.exports = router;
@@ -143,7 +142,7 @@ module.exports = router;
   const queryString = `SELECT COUNT(*),${columnString}\n${joinString}\n${filterString}GROUP BY ${columnString}\nORDER BY %I %s\nOFFSET %s\nLIMIT %s;`;
   const dbQuery = format(queryString,...orderArgs);
   try {
-    const result = await db.query(dbQuery);
+    const result = await db.query(dbQuery, '-- Get managers and the number of employees working under them\n');
     res.json({
       rows: result.rows, 
       queries: [dbQuery],
@@ -294,7 +293,7 @@ router.get('/manager/:id', async (req, res) => {
     const queryString = `SELECT %I\nFROM %I e\n\tJOIN %I j\n\tON e.%4$s = j.%4$s\n\tJOIN %I d\n\tON j.%6$s = d.%6$s\n${filterString}ORDER BY %I %s\nOFFSET %s\nLIMIT %s;`;
     const dbQuery = format(queryString, columnArgs, ...joinArgs,...orderArgs);
     try {
-      const result = await db.query(dbQuery);
+      const result = await db.query(dbQuery, '-- Get employees working for a manager\n');
       res.json({
         rows: result.rows, 
         queries: [dbQuery],

@@ -58,7 +58,7 @@ module.exports = router;
         if(client) {
           let queries = [];
           try {
-            await utils.transacQuery(queries, client, 'BEGIN TRANSACTION;');
+            await utils.transacQuery(queries, client, 'BEGIN TRANSACTION;', '-- Update department details\n');
             await utils.transacQuery(queries, client, 'SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;');
 
             // Check department exists first
@@ -152,7 +152,7 @@ module.exports = router;
     if(client) {
       let queries = [];
       try {
-        await utils.transacQuery(queries, client, 'BEGIN TRANSACTION;');
+        await utils.transacQuery(queries, client, 'BEGIN TRANSACTION;', '-- Delete department\n');
         await utils.transacQuery(queries, client, 'SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;');
 
         const dbQuery = format('DELETE FROM %I\nWHERE %I = %L', 'department', 'department_id', id);

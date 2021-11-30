@@ -50,7 +50,7 @@ router.get('/employee/:id', async (req, res) => {
     ];
     const dbQuery = format('SELECT *\nFROM %I e\n\t%s\n\t%s\n\t%s\n\t%s\n\t%s\nWHERE %I = %L;', ...joinArgs, 'employee_id', id);
     try {
-      const result = await db.query(dbQuery); 
+      const result = await db.query(dbQuery, '-- Get employee details\n'); 
       res.json({
         rows: result.rows, 
         queries: [dbQuery],
@@ -144,11 +144,11 @@ router.put('/employee/:id', async (req, res) => {
         if(client) {
           let queries = [];
           try {
-            await utils.transacQuery(queries, client, 'BEGIN TRANSACTION;');
+            await utils.transacQuery(queries, client, 'BEGIN TRANSACTION;', '-- Update employee details\n');
             await utils.transacQuery(queries, client, 'SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;');
             // Check employee exists first
             const query = format('SELECT %1$I\nFROM %I\nWHERE %1$I = %3$L;', 'employee_id', 'employee', id);
-            if(!(await utils.transacQuery(queries, client, query)).rows.length) throw new Error('Employee not found!');
+            if(!(await utils.transacQuery(queries, client, query, '-- Check employee exists\n')).rows.length) throw new Error('Employee not found!');
             // Modifying employee
             if(!utils.isEmpty(params['employee'])) {
               let updateString = '';

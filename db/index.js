@@ -26,10 +26,11 @@ module.exports = {
     const query = client.query; // Original query method
     const release = client.release; // Original release method
 
-    client.query = async (text, params) => {
+    client.query = async (text, comment) => {
       console.log('client executed query:', {text});
-      await fs.writeFile('./db/transaction.sql', text+'\n' ,{ flag: 'a' }, logError); 
-      return query.apply(client, [text, params]);
+      const time = '/* ' + new Date().toLocaleString() +' */\n';
+      await fs.writeFile('./db/transaction.sql', (text.includes('BEGIN') ? time : '') + (comment ? comment : '') + text +'\n' ,{ flag: 'a' }, logError); 
+      return query.apply(client, [text]);
     };
 
     client.release = () => {
@@ -42,9 +43,10 @@ module.exports = {
     return client;
   },
 
-  query: async (text, params) => {
-    await fs.writeFile('./db/query.sql', text+'\n\n' ,{ flag: 'a' }, logError);
-    const res = await pool.query(text, params);
+  query: async (text, comment) => {
+    const time = '/* ' + new Date().toLocaleString() +' */\n';
+    await fs.writeFile('./db/query.sql', time + (comment ? comment : '')+text+'\n\n' ,{ flag: 'a' }, logError);
+    const res = await pool.query(text);
     console.log('pool executed query:', { text, rows: res.rowCount });
     return res;
   }

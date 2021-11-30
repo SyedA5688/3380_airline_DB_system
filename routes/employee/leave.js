@@ -79,7 +79,7 @@ module.exports = router;
     const queryString = `SELECT *\nFROM %I\n${filterString}ORDER BY %I %s\nOFFSET %s\nLIMIT %s;`;
     const dbQuery = format(queryString, 'leave',...orderArgs);
     try {
-      const result = await db.query(dbQuery); 
+      const result = await db.query(dbQuery, '-- Get employee leave entries\n'); 
       res.json({
         rows: result.rows, 
         queries: [dbQuery],
@@ -160,7 +160,7 @@ module.exports = router;
       if(client) {
         let queries = [];
         try {
-          await utils.transacQuery(queries, client, 'BEGIN TRANSACTION;');
+          await utils.transacQuery(queries, client, 'BEGIN TRANSACTION;', '-- Create new leave entry for employee\n');
           await utils.transacQuery(queries, client, 'SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;');
 
           const params = utils.getParameters(requiredFields, [], body);
@@ -273,7 +273,7 @@ router.get('/leave', async (req, res) => {
   const queryString = `SELECT *\nFROM %I\n${filterString}ORDER BY %I %s\nOFFSET %s\nLIMIT %s;`;
   const dbQuery = format(queryString, 'leave',...orderArgs);
   try {
-    const result = await db.query(dbQuery); 
+    const result = await db.query(dbQuery, '-- Get all leave entries\n'); 
     res.json({
       rows: result.rows, 
       queries: [dbQuery],
@@ -343,7 +343,7 @@ router.put('/leave/:leave_id', async (req,res) => {
         if(client) {
           let queries = [];
           try {
-            await utils.transacQuery(queries, client, 'BEGIN TRANSACTION;');
+            await utils.transacQuery(queries, client, 'BEGIN TRANSACTION;', '-- Update leave entry\n');
             await utils.transacQuery(queries, client, 'SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;');
 
             // Check leave exists first

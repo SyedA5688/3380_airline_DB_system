@@ -93,7 +93,7 @@ router.get('/job', async (req, res) => {
   const queryString = `SELECT %I\nFROM %I\nNATURAL JOIN %I\n${filterString}ORDER BY %I %s\nOFFSET %s\nLIMIT %s;`;
   const dbQuery = format(queryString, columnArgs, ...joinArgs,...orderArgs);
   try {
-    const result = await db.query(dbQuery);
+    const result = await db.query(dbQuery, '-- Get jobs\n');
     res.json({
       rows: result.rows, 
       queries: [dbQuery],
@@ -174,7 +174,7 @@ router.post('/job', async (req, res) => {
     if(client) {
       let queries = [];
       try {
-        await utils.transacQuery(queries, client, 'BEGIN TRANSACTION;');
+        await utils.transacQuery(queries, client, 'BEGIN TRANSACTION;', '-- Add new job\n');
         await utils.transacQuery(queries, client, 'SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;');
 
         const params = utils.getParameters(requiredFields, ['weekly_hours'], body);

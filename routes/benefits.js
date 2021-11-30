@@ -75,7 +75,7 @@ router.get('/benefits', async (req, res) => {
   const queryString = `SELECT *\nFROM %I\n${filterString}ORDER BY %I %s\nOFFSET %s\nLIMIT %s;`;
   const dbQuery = format(queryString, 'benefits',...orderArgs);
   try {
-    const result = await db.query(dbQuery); 
+    const result = await db.query(dbQuery, '-- Get benefits packages\n'); 
     res.json({
       rows: result.rows, 
       queries: [dbQuery],
@@ -92,7 +92,7 @@ router.get('/benefits', async (req, res) => {
 });
 
 /**
- * @api {post} /benefits Create new benefits package
+ * @api {post} /benefits Create a new benefits package
  * @apiName AddNewBenefits
  * @apiGroup Benefits
  * @apiDescription Attempts to insert a new benefits package into the database. Returns the inserted benefits package.
@@ -148,7 +148,7 @@ router.post('/benefits', async (req, res) => {
     if(client) {
       let queries = [];
       try {
-        await utils.transacQuery(queries, client, 'BEGIN TRANSACTION;');
+        await utils.transacQuery(queries, client, 'BEGIN TRANSACTION;', '-- Create new benefits package\n');
         await utils.transacQuery(queries, client, 'SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;');
 
         const params = utils.getParameters(requiredFields, ['amount', 'stock_options', 'retirement_plan'], body);
@@ -237,12 +237,12 @@ router.put('/benefits/:id', async (req, res) => {
         if(client) {
           let queries = [];
           try {
-            await utils.transacQuery(queries, client, 'BEGIN TRANSACTION;');
+            await utils.transacQuery(queries, client, 'BEGIN TRANSACTION;', '-- Update benefits package details\n');
             await utils.transacQuery(queries, client, 'SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;');
 
             // Check benefits package exists first
             let query = format('SELECT %1$I\nFROM %I\nWHERE %1$I = %3$L;', 'benefits_package_id', 'benefits', id);
-            if(!(await utils.transacQuery(queries, client, query)).rows.length) throw new Error('Benefits package not found!');
+            if(!(await utils.transacQuery(queries, client, query, '-- Check benefits package exists\n')).rows.length) throw new Error('Benefits package not found!');
 
             let updateString = '';
             Object.keys(params['benefits']).forEach((key) => {
@@ -259,7 +259,7 @@ router.put('/benefits/:id', async (req, res) => {
               id
             ];
             const dbQuery = format('UPDATE %I\nSET\n%s\nWHERE %I = %L\nRETURNING %3$I;', ...args);
-            const result = await utils.transacQuery(queries, client, dbQuery);
+            const result = await utils.transacQuery(queries, client, dbQuery, '\n');
 
             await utils.transacQuery(queries, client, 'COMMIT;');
             await utils.transacQuery(queries, client, 'END TRANSACTION;\n');

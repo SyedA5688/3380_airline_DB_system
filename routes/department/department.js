@@ -104,7 +104,7 @@ router.get('/department', async (req, res) => {
   const queryString = `SELECT COUNT(DISTINCT j.%I) AS job_count,COUNT(DISTINCT e.%I) AS employee_count,${columnString}\n${joinString}\n${filterString}GROUP BY ${columnString}\nORDER BY %I %s\nOFFSET %s\nLIMIT %s;`;
   const dbQuery = format(queryString, 'job_id', 'employee_id', ...orderArgs);
   try {
-    const result = await db.query(dbQuery);
+    const result = await db.query(dbQuery, '-- Get departments\n');
     res.json({
       rows: result.rows, 
       queries: [dbQuery],
@@ -180,7 +180,7 @@ router.post('/department', async (req, res) => {
     if(client) {
       let queries = [];
       try {
-        await utils.transacQuery(queries, client, 'BEGIN TRANSACTION;');
+        await utils.transacQuery(queries, client, 'BEGIN TRANSACTION;', '-- Create new department\n');
         await utils.transacQuery(queries, client, 'SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;');
 
         const params = utils.getParameters(requiredFields, [], body);

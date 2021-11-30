@@ -140,7 +140,7 @@ router.get('/employee', async (req, res) => {
   const dbQuery = format(queryString, columnArgs, ...joinArgs,...orderArgs);
 
   try {
-    const result = await db.query(dbQuery);
+    const result = await db.query(dbQuery, '-- Get employee summary\n');
     res.json({
       rows: result.rows, 
       queries: [dbQuery],
@@ -230,7 +230,7 @@ router.post('/employee', async (req, res) => {
     if(client) {
       let queries = [];
       try {
-        await utils.transacQuery(queries, client, 'BEGIN TRANSACTION;');
+        await utils.transacQuery(queries, client, 'BEGIN TRANSACTION;', '-- Create new employee\n');
         await utils.transacQuery(queries, client, 'SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;');
 
         const addressParams = utils.getParameters(['street_address', 'city', 'country'], ['zip_code', 'state'], body);

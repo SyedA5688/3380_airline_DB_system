@@ -38,7 +38,7 @@ module.exports = router;
 router.get('/job/location', async (req, res) => {
   const dbQuery = format('SELECT *\nFROM %I;', 'job_location');
   try {
-    const result = await db.query(dbQuery);
+    const result = await db.query(dbQuery, '-- Get all job locations\n');
     res.json({
       rows: result.rows, 
       queries: [dbQuery],
@@ -110,7 +110,7 @@ router.post('/job/location', async (req, res) => {
     if(client) {
       let queries = [];
       try {
-        await utils.transacQuery(queries, client, 'BEGIN TRANSACTION;');
+        await utils.transacQuery(queries, client, 'BEGIN TRANSACTION;', '-- Create new job location\n');
         await utils.transacQuery(queries, client, 'SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;');
 
         const params = utils.getParameters(requiredFields, ['airport_id', 'flight_id'], body);
