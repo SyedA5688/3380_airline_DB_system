@@ -82,7 +82,7 @@ router.get('/payroll', async (req, res) => {
   const queryString = `SELECT *\nFROM %I\n${filterString}ORDER BY %I %s\nOFFSET %s\nLIMIT %s;`;
   const dbQuery = format(queryString, 'payroll',...orderArgs);
   try {
-    const result = await db.query(dbQuery, '-- Get payroll entries'); 
+    const result = await db.query(dbQuery, '-- Get payroll entries\n'); 
     res.json({
       rows: result.rows, 
       queries: [dbQuery],
@@ -157,7 +157,7 @@ router.post('/payroll', async (req, res) => {
     if(client) {
       let queries = [];
       try {
-        await utils.transacQuery(queries, client, 'BEGIN TRANSACTION;', '-- Create a new payroll entry');
+        await utils.transacQuery(queries, client, 'BEGIN TRANSACTION;', '-- Create a new payroll entry\n');
         await utils.transacQuery(queries, client, 'SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;');
 
         let args = [
@@ -289,7 +289,7 @@ router.post('/payroll/all', async(req, res) => {
     if(client) {
       let queries = [];
       try {
-        await utils.transacQuery(queries, client, 'BEGIN TRANSACTION;', '-- Create a new payroll entry for every assigned employee');
+        await utils.transacQuery(queries, client, 'BEGIN TRANSACTION;', '-- Create a new payroll entry for every assigned employee\n');
         await utils.transacQuery(queries, client, 'SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;');
 
         let args = [

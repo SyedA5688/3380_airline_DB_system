@@ -61,12 +61,12 @@ module.exports = router;
         if(client) {
           let queries = [];
           try {
-            await utils.transacQuery(queries, client, 'BEGIN TRANSACTION;');
+            await utils.transacQuery(queries, client, 'BEGIN TRANSACTION;', '-- Update job details\n');
             await utils.transacQuery(queries, client, 'SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;');
 
             // Check job exists first
             let query = format('SELECT %1$I\nFROM %I\nWHERE %1$I = %3$L;', 'job_id', 'job', job_id);
-            if(!(await utils.transacQuery(queries, client, query)).rows.length) throw new Error('Job not found!');
+            if(!(await utils.transacQuery(queries, client, query, '-- Check job exists first')).rows.length) throw new Error('Job not found!');
 
             let updateString = '';
             Object.keys(params['job']).forEach((key) => {
@@ -82,7 +82,7 @@ module.exports = router;
               job_id
             ];
             const dbQuery = format('UPDATE %I\nSET\n%s\nWHERE %I = %L\nRETURNING %3$I;', ...args);
-            const result = await utils.transacQuery(queries, client, dbQuery);
+            const result = await utils.transacQuery(queries, client, dbQuery, '\n');
 
             await utils.transacQuery(queries, client, 'COMMIT;');
             await utils.transacQuery(queries, client, 'END TRANSACTION;\n');
@@ -154,7 +154,7 @@ router.delete('/job/:id', async (req, res) => {
     if(client) {
       let queries = [];
       try {
-        await utils.transacQuery(queries, client, 'BEGIN TRANSACTION;');
+        await utils.transacQuery(queries, client, 'BEGIN TRANSACTION;', '-- Delete job\n');
         await utils.transacQuery(queries, client, 'SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;');
 
         const dbQuery = format('DELETE FROM %I\nWHERE %I = %L', 'job', 'job_id', id);

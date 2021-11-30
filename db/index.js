@@ -29,7 +29,7 @@ module.exports = {
     client.query = async (text, comment) => {
       console.log('client executed query:', {text});
       const time = '/* ' + new Date().toLocaleString() +' */\n';
-      await fs.writeFile('./db/transaction.sql', (text.includes('BEGIN') ? time : '') + (comment ? comment+'\n' : '') + text +'\n' ,{ flag: 'a' }, logError); 
+      await fs.writeFile('./db/transaction.sql', (text.includes('BEGIN') ? time : '') + (comment ? comment : '') + text +'\n' ,{ flag: 'a' }, logError); 
       return query.apply(client, [text]);
     };
 
@@ -45,7 +45,7 @@ module.exports = {
 
   query: async (text, comment) => {
     const time = '/* ' + new Date().toLocaleString() +' */\n';
-    await fs.writeFile('./db/query.sql', time + (comment ? comment+'\n' : '')+text+'\n\n' ,{ flag: 'a' }, logError);
+    await fs.writeFile('./db/query.sql', time + (comment ? comment : '')+text+'\n\n' ,{ flag: 'a' }, logError);
     const res = await pool.query(text);
     console.log('pool executed query:', { text, rows: res.rowCount });
     return res;
