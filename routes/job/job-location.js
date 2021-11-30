@@ -15,6 +15,7 @@ module.exports = router;
  * @apiSuccess {Object[]} rows                Results from the database
  * @apiSuccess {Number}   rows.location_id    Location ID
  * @apiSuccess {Number}   rows.address_id     Address ID
+ * @apiSuccess {String}   rows.location_name  Location name
  * @apiSuccess {String}   [rows.airport_id]   Airport ID
  * @apiSuccess {String}   [rows.flight_id ]   Flight ID
  * 
@@ -27,6 +28,7 @@ module.exports = router;
  *      "rows": [{
  *                "location_id": 123,
  *                "address_id": 321,
+ *                "location_name": "AIPORT A AT CITY B",
  *                "airport_id": 111,
  *                "flight_id": 222
  *               }],
@@ -61,13 +63,15 @@ router.get('/job/location', async (req, res) => {
  * @apiGroup Jobs
  * @apiDescription Attempts to insert a new job location into the database. Returns the inserted location on success.
  * 
- * @apiBody {Number}   rows.address_id     Address ID
- * @apiBody {String}   [rows.airport_id]   Airport ID
- * @apiBody {String}   [rows.flight_id ]   Flight ID
+ * @apiBody {Number}  rows.address_id     Address ID
+ * @apiBody {String}  rows.location_name  Location name
+ * @apiBody {String}  [rows.airport_id]   Airport ID
+ * @apiBody {String}  [rows.flight_id ]   Flight ID
  * 
  * @apiSuccess {Object[]} rows                Results from the database
  * @apiSuccess {Number}   rows.location_id    Location ID
  * @apiSuccess {Number}   rows.address_id     Address ID
+ * @apiSuccess {Number}   rows.location_name  Location name
  * @apiSuccess {String}   [rows.airport_id]   Airport ID
  * @apiSuccess {String}   [rows.flight_id ]   Flight ID
  * 
@@ -80,6 +84,7 @@ router.get('/job/location', async (req, res) => {
  *      "rows": [{
  *                "location_id": 123,
  *                "address_id": 321,
+ *                "location_name": "AIRPORT A AT CITY B",
  *                "airport_id": 111,
  *                "flight_id": 222
  *               }],
@@ -92,7 +97,7 @@ router.post('/job/location', async (req, res) => {
   // TODO: input validation
   const body = req.body;
   // Check required fields exist
-  const requiredFields = ['address_id'];
+  const requiredFields = ['address_id', 'location_name'];
   if(utils.checkRequiredFields(requiredFields, body)) {
     Object.keys(body).forEach((key) => {
       body[key] = body[key].toString().trim().toUpperCase();
