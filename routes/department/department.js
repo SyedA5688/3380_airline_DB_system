@@ -66,7 +66,7 @@ router.get('/department', async (req, res) => {
   let filterString = '';
   if(query){
     const searchBy = params.searchBy && sortParams[params.searchBy] ? sortParams[params.searchBy] : sortParams.name;
-    if(searchBy === sortParams.name) filterString = format('WHERE %I LIKE \'%s%%\'\n', searchBy, query);
+    if(searchBy === sortParams.name) filterString = format('WHERE %I LIKE \'%%%s%%\'\n', searchBy, query);
     else if(searchBy !== sortParams.jobs || searchBy !== sortParams.employees) filterString = format('WHERE d.%I = %L\n', searchBy, query);
     else filterString = format('WHERE %I = %L\n', searchBy, query);
   }
@@ -93,8 +93,8 @@ router.get('/department', async (req, res) => {
   const columnString = format('d.%I,%I,%I,%I,h.%I,h.%I,h.%I', ...columnArgs);
   const joinString = format('FROM %I d\n\tLEFT JOIN %I j\n\tON j.%3$I = d.%3$I\n\tLEFT JOIN %I e\n\tON e.%5$I = j.%5$I\n\tLEFT JOIN %4$I h\n\tON h.%6$I = d.%I', ...joinArgs);
   
-  const queryString = `SELECT COUNT(DISTINCT j.%I) AS job_count,COUNT(DISTINCT e.%I) AS employee_count,${columnString}\n${joinString}\n${filterString}GROUP BY ${columnString}\n${orderString};`;
-  const dbQuery = format(queryString, 'job_id', 'employee_id');
+  const queryString = `SELECT COUNT(DISTINCT j.%I) AS job_count,COUNT(DISTINCT e.%I) AS employee_count,${columnString}\n${joinString}\n`;
+  const dbQuery = format(queryString, 'job_id', 'employee_id') + `${filterString}GROUP BY ${columnString}\n${orderString};`;
   try {
     const result = await db.query(dbQuery, '-- Get departments\n');
     res.json({

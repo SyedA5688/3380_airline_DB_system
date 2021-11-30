@@ -64,7 +64,7 @@ router.get('/job', async (req, res) => {
   if(query){
     const searchBy = params.searchBy && sortParams[params.searchBy] ? sortParams[params.searchBy] : sortParams.title;
     if(searchBy === 'job_id' || searchBy === 'location_id') filterString = format('WHERE %I = %L\n', searchBy, query);
-    else filterString = format('WHERE %I LIKE \'%s%%\'\n', searchBy, query);
+    else filterString = format('WHERE %I LIKE \'%%%s%%\'\n', searchBy, query);
   }
   // Arguments used to create sql query
   const columnArgs = [ 
@@ -82,8 +82,8 @@ router.get('/job', async (req, res) => {
   ];
 
   const orderString = utils.orderingParams(params, sortParams, 'title');
-  const queryString = `SELECT %I\nFROM %I\nNATURAL JOIN %I\n${filterString}${orderString};`;
-  const dbQuery = format(queryString, columnArgs, ...joinArgs);
+  const queryString = `SELECT %I\nFROM %I\nNATURAL JOIN %I\n`;
+  const dbQuery = format(queryString, columnArgs, ...joinArgs) + `${filterString}${orderString};`;
   try { 
     const result = await db.query(dbQuery, '-- Get jobs\n');
     res.json({
