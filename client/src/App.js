@@ -9,6 +9,7 @@ import UpdateForm from './pages/employees/UpdateForm';
 import GetForm from './pages/employees/GetForm';
 import SearchManagersForm from './pages/employees/SearchManagersForm';
 import SearchEmployeesUnderManagerForm from './pages/employees/EmployeesUnderManagerForm';
+import DeleteEmployeeForm from './pages/employees/DeleteEmployeeForm';
 
 import JobsSidePanel from './pages/JobsSidePanel';
 import SearchAllJobsForm from './pages/jobs/SearchAllJobsForm';
@@ -51,6 +52,7 @@ class App extends Component {
                   <Route exact path="insert" element={<InsertForm />} />
                   <Route exact path="get" element={<GetForm />} />
                   <Route exact path="update" element={<UpdateForm />} />
+                  <Route exact path="delete" element={<DeleteEmployeeForm />} />
                   <Route exact path="managers" element={<SearchManagersForm />} />
                   <Route exact path="employeesUnderManagers" element={<SearchEmployeesUnderManagerForm />} />
                 </Route>
