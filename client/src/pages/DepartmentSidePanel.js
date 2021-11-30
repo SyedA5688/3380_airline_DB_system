@@ -14,6 +14,7 @@ class DepartmentsSidePanel extends Component {
                 <li className="sidebar-li"><a href="/department/search" >Search Departments</a></li>
                 <li className="sidebar-li"><a href="/department/create" >Create New Department</a></li>
                 <li className="sidebar-li"><a href="/department/update" >Update Department Details</a></li>
+                <li className="sidebar-li"><a href="/department/delete" >Delete a Department</a></li>
               </ul>
             </nav>
           </div>

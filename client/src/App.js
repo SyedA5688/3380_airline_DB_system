@@ -27,6 +27,7 @@ import DepartmentsSidePanel from './pages/DepartmentSidePanel';
 import CreateDepartmentForm from './pages/departments/CreateDepartmentForm';
 import SearchDepartmentsForm from './pages/departments/SearchDepartments';
 import UpdateDepartmentForm from './pages/departments/UpdateDepartment';
+import DeleteDepartmentForm from './pages/departments/DeleteDepartment';
 
 import BenefitsSidePanel from './pages/BenefitsSidePanel';
 import CreateBenefitsForm from './pages/benefits/CreateNewBenefitsForm';
@@ -76,6 +77,7 @@ class App extends Component {
                   <Route exact path="create" element={<CreateDepartmentForm />} />
                   <Route exact path="search" element={<SearchDepartmentsForm />} />
                   <Route exact path="update" element={<UpdateDepartmentForm />} />
+                  <Route exact path="delete" element={<DeleteDepartmentForm />} />
                 </Route>
 
                 <Route exact path="benefits" element={<BenefitsSidePanel />} >
