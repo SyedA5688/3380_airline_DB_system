@@ -2,9 +2,11 @@ const {Pool} = require('pg');
 const fs = require('fs').promises;
 require('dotenv').config();
 
-const pool = new Pool({
-  connectionString: process.env.ELEPHANTSQL_URL
-});
+// const pool = new Pool({
+//   connectionString: process.env.ELEPHANTSQL_URL
+// });
+
+const pool = new Pool();
 
 const endPool = () => {
   console.log('Disconnecting pool...');
