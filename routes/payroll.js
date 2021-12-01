@@ -185,7 +185,7 @@ router.post('/payroll', async (req, res) => {
           calcGrossQuery
         ];
         const dbQuery = format('INSERT INTO %I(%I)\nSELECT %s\nFROM (%s) AS gross_calc\nRETURNING *;', ...args);
-        const result = await client.query(dbQuery); 
+        const result = await utils.transacQuery(queries, client, dbQuery); 
 
         await utils.transacQuery(queries, client, 'COMMIT;');
         await utils.transacQuery(queries, client, 'END TRANSACTION;\n');
@@ -304,7 +304,7 @@ router.post('/payroll/all', async(req, res) => {
           calcGrossQuery
         ];
         const dbQuery = format('INSERT INTO %I(%I)\nSELECT %s\nFROM (%s) AS gross_calc\nRETURNING *;', ...args);
-        const result = await client.query(dbQuery); 
+        const result = await utils.transacQuery(queries, client, dbQuery); 
 
         await utils.transacQuery(queries, client, 'COMMIT;');
         await utils.transacQuery(queries, client, 'END TRANSACTION;\n');
