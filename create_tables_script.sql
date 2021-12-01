@@ -1565,4 +1565,44 @@ INSERT INTO salary (employee_id, hourly_wage, annual_bonus) VALUES
 (1000259, '$50', '$90,000'),
 (1000260, '$50', '$90,000'),
 (1000261, '$50', '$90,000'),
-(1000261, '$50', '$90,000');
+(1000262, '$50', '$90,000');
+
+INSERT INTO payroll(pay_period,tax_rate,gross_income,taxed_income,net_income,hours_worked,employee_id)
+SELECT pay_period,tax_rate,gross_income,gross_income * tax_rate AS taxed_income,gross_income * (1 - tax_rate) AS net_income,hours_worked,employee_id
+FROM (
+	SELECT e.employee_id, (4.4 * weekly_hours)::real AS hours_worked, '1980-01-01'::DATE AS pay_period, '0.1'::REAL AS tax_rate, (4.4 * weekly_hours)::real * hourly_wage AS gross_income
+	FROM employee e
+		JOIN job j ON e.job_id = j.job_id
+		JOIN salary s ON e.employee_id = s.employee_id
+	WHERE NOT e.job_id = 0
+) AS gross_calc;
+
+INSERT INTO payroll(pay_period,tax_rate,gross_income,taxed_income,net_income,hours_worked,employee_id)
+SELECT pay_period,tax_rate,gross_income,gross_income * tax_rate AS taxed_income,gross_income * (1 - tax_rate) AS net_income,hours_worked,employee_id
+FROM (
+	SELECT e.employee_id, (4.4 * weekly_hours)::real AS hours_worked, '1980-02-01'::DATE AS pay_period, '0.1'::REAL AS tax_rate, (4.4 * weekly_hours)::real * hourly_wage AS gross_income
+	FROM employee e
+		JOIN job j ON e.job_id = j.job_id
+		JOIN salary s ON e.employee_id = s.employee_id
+	WHERE NOT e.job_id = 0
+) AS gross_calc;
+
+INSERT INTO payroll(pay_period,tax_rate,gross_income,taxed_income,net_income,hours_worked,employee_id)
+SELECT pay_period,tax_rate,gross_income,gross_income * tax_rate AS taxed_income,gross_income * (1 - tax_rate) AS net_income,hours_worked,employee_id
+FROM (
+	SELECT e.employee_id, (4.4 * weekly_hours)::real AS hours_worked, '1980-03-01'::DATE AS pay_period, '0.1'::REAL AS tax_rate, (4.4 * weekly_hours)::real * hourly_wage AS gross_income
+	FROM employee e
+		JOIN job j ON e.job_id = j.job_id
+		JOIN salary s ON e.employee_id = s.employee_id
+	WHERE NOT e.job_id = 0
+) AS gross_calc;
+
+INSERT INTO payroll(pay_period,tax_rate,gross_income,taxed_income,net_income,hours_worked,employee_id)
+SELECT pay_period,tax_rate,gross_income,gross_income * tax_rate AS taxed_income,gross_income * (1 - tax_rate) AS net_income,hours_worked,employee_id
+FROM (
+	SELECT e.employee_id, (4.4 * weekly_hours)::real AS hours_worked, '1980-04-01'::DATE AS pay_period, '0.1'::REAL AS tax_rate, (4.4 * weekly_hours)::real * hourly_wage AS gross_income
+	FROM employee e
+		JOIN job j ON e.job_id = j.job_id
+		JOIN salary s ON e.employee_id = s.employee_id
+	WHERE NOT e.job_id = 0
+) AS gross_calc
