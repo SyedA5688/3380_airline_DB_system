@@ -15,7 +15,7 @@ module.exports = (app) => {
   app.use(manager);
   app.use(payroll);
   app.use(initialize);
-  // app.get('*', (req, res) => {
-  //   res.sendFile(path.join(__dirname, '../client/build/index.html'));
-  // });
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/build/index.html'));
+  });
 };
