@@ -1,16 +1,5 @@
 -- Run these commands in ElephantSQL postgres database in browser tab to recreate starting tables for local testing
 
--- DROP TABLE IF EXISTS payroll          CASCADE;
--- DROP TABLE IF EXISTS benefits         CASCADE;
--- DROP TABLE IF EXISTS salary           CASCADE;
--- DROP TABLE IF EXISTS leave            CASCADE;
--- DROP TABLE IF EXISTS department       CASCADE;
--- DROP TABLE IF EXISTS job_location     CASCADE;
--- DROP TABLE IF EXISTS job              CASCADE;
--- DROP TABLE IF EXISTS employee         CASCADE;
--- DROP TABLE IF EXISTS employee_address CASCADE;
-
-
 CREATE TABLE benefits (
   benefits_package_id        INT          GENERATED ALWAYS AS IDENTITY, 
   amount                     MONEY        NOT NULL,
