@@ -148,21 +148,21 @@ class SearchAllJobsForm extends Component {
     }
     else if (searchBy === "title") {
       return <div className="form-group">
-        <input type="text" pattern="[A-Za-z0-9-_ ]+"  className="form-control" id="inputSearchJobTitle" placeholder="Pilot" name="searchTitle" value={this.state.searchJobTitle} onChange={this.handleChange} required />
+        <input type="text" pattern="[A-Za-z0-9-_ ]+"  className="form-control" id="inputSearchJobTitle" placeholder="(e.g. Pilot)" name="searchTitle" value={this.state.searchJobTitle} onChange={this.handleChange} required />
         <div className="invalid-feedback">Please provide a valid job title.</div>
         <div className="valid-feedback">Valid job title.</div>
       </div>
     }
     else if (searchBy === "department") {
       return <div className="form-group">
-        <input type="number" min="0" pattern="[0-9]+"  className="form-control" id="inputSearchID" placeholder="0" name="searchDepartment" value={this.state.searchDepartment} onChange={this.handleChange} required />
-        <div className="invalid-feedback">Please provide a valid department ID.</div>
-        <div className="valid-feedback">Valid department name.</div>
-      </div>
+      <input type="text" pattern="[A-Za-z0-9 ]+"  className="form-control" id="inputDepartmentName" placeholder="(e.g. Engineering)" name="searchDepartment" value={this.state.searchDepartment} onChange={this.handleChange} required />
+      <div className="invalid-feedback">Please provide a valid job title.</div>
+      <div className="valid-feedback">Valid job title.</div>
+    </div>
     }
     else if (searchBy === "location") {
       return <div className="form-group">
-        <input type="number" min="0" pattern="[0-9]+"  className="form-control" id="inputSearchID" placeholder="0" name="searchLocation" value={this.state.searchLocation} onChange={this.handleChange} required />
+        <input type="number" min="0" pattern="[0-9]+"  className="form-control" id="inputSearchLocation" placeholder="(e.g. 0)" name="searchLocation" value={this.state.searchLocation} onChange={this.handleChange} required />
         <div className="invalid-feedback">Please provide a valid job location ID.</div>
         <div className="valid-feedback">Valid job location ID.</div>
       </div>
