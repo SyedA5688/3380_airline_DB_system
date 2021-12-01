@@ -162,7 +162,7 @@ class CreateAllPayrollForm extends Component {
             </thead>
             
             <tbody>
-              {this.state.createdPayrollEntries && this.state.createdPayrollEntries.map(payrollObj => (
+              {this.state.createdPayrollEntries && this.state.createdPayrollEntries.slice(0, 100).map(payrollObj => (
                 <tr key={payrollObj.payroll_id}>
                   <th scope="col">{payrollObj.payroll_id}</th>
                   <th scope="col">{payrollObj.employee_id}</th>
