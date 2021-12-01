@@ -23,12 +23,22 @@ class UpdateForm extends Component {
       editCity: '',
       editCountry: '',
       editZipCode: '',
-      editState: ''
+      editState: '',
+      showSQL: false,
     };
     
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClear = this.handleClear.bind(this);
+    this.toggleSQL = this.toggleSQL.bind(this);
+  }
+
+  toggleSQL = async(event) => {
+    if (this.state.queries) {
+      this.setState({
+        showSQL: !this.state.showSQL
+      });
+    }
   }
 
   handleChange = async (event) => {
@@ -103,7 +113,8 @@ class UpdateForm extends Component {
       this.assertValidDBResponse(responseBody);
 
       this.setState({
-        returnedEmployee: responseBody.rows
+        returnedEmployee: responseBody.rows,
+        queries: responseBody.queries
       });
 
       document.getElementById("successModal").style.display = "block"
@@ -124,7 +135,6 @@ class UpdateForm extends Component {
   closeSuccessModal = () => {
     document.getElementById("successModal").style.display = "none"
     document.getElementById("successModal").classList.remove("show");
-    this.handleClear();
   }
 
   handleClear = async (event) => {
@@ -147,7 +157,9 @@ class UpdateForm extends Component {
       editCountry: '',
       editZipCode: '',
       editState: '',
-      returnedEmployee: null
+      returnedEmployee: null,
+      queries: null,
+      showSQL: false
     });
 
     // Remove was-validated class from form to reset its appearance
@@ -291,7 +303,15 @@ class UpdateForm extends Component {
 
           <button type="submit" className="btn btn-outline-secondary mt-3">Submit</button>
           <button type="button" className="btn btn-outline-secondary mt-3 mx-3" onClick={this.handleClear} >Clear</button>
-          </form>
+        </form>
+
+        <button type="button" className="btn btn-outline-secondary mt-3 mx-3 mb-3" onClick={this.toggleSQL} >Toggle SQL</button>
+        {this.state.showSQL ? 
+        <div className="mb-5" >
+          {this.state.queries.map((queryText, index) => (
+            <span style={{whiteSpace: 'pre-wrap'}} key={index}>{queryText}<br/></span>
+          ))}
+        </div> : <div></div>}
       </div>
     );
   }

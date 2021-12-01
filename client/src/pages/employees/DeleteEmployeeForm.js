@@ -6,12 +6,22 @@ class DeleteEmployeeForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: ''
+      id: '',
+      showSQL: false,
     };
     
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClear = this.handleClear.bind(this);
+    this.toggleSQL = this.toggleSQL.bind(this);
+  }
+
+  toggleSQL = async(event) => {
+    if (this.state.queries) {
+      this.setState({
+        showSQL: !this.state.showSQL
+      });
+    }
   }
 
   handleChange = async (event) => {
@@ -51,12 +61,13 @@ class DeleteEmployeeForm extends Component {
       });
   
       const responseBody = await response.json();
-      // console.log("Response body:", responseBody);
+      console.log("Response body:", responseBody);
       this.assertValidDBResponse(responseBody);
       
       if (responseBody["rowCount"] === 1) {
         this.setState({
-          deletedEmployee: responseBody
+          deletedEmployee: responseBody,
+          queries: responseBody.queries
         });
         
         document.getElementById("successModal").style.display = "block"
@@ -82,13 +93,14 @@ class DeleteEmployeeForm extends Component {
   closeSuccessModal = () => {
     document.getElementById("successModal").style.display = "none"
     document.getElementById("successModal").classList.remove("show");
-    this.handleClear();
   }
 
   handleClear = async (event) => {
     this.setState({
       id: '',
-      deletedEmployee: null
+      deletedEmployee: null,
+      queries: null,
+      showSQL: false
     });
 
     const form = document.querySelector('#deleteFormHTML');
@@ -142,6 +154,14 @@ class DeleteEmployeeForm extends Component {
           <button type="submit" className="btn btn-outline-secondary mt-3">Submit</button>
           <button type="button" className="btn btn-outline-secondary mt-3 mx-3" onClick={this.handleClear} >Clear</button>
         </form>
+
+        <button type="button" className="btn btn-outline-secondary mt-3 mx-3 mb-3" onClick={this.toggleSQL} >Toggle SQL</button>
+        {this.state.showSQL ? 
+        <div className="mb-5" >
+          {this.state.queries.map((queryText, index) => (
+            <span style={{whiteSpace: 'pre-wrap'}} key={index}>{queryText}<br/></span>
+          ))}
+        </div> : <div></div>}
       </div>
     );
   }
