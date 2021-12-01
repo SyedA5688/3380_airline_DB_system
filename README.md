@@ -1,23 +1,31 @@
-# 3380_airline_system_project
-This repository contains the implementation of the airline personnel HR web/database system for COSC 3380 Database Systems with Dr. Carlos Ordonez, Fall 2021.
+## 3380 Airline HR Database System Project
+This repository contains an airline personnel HR web and database system that was build for 
+CS 3380 Database Systems with Dr. Carlos Ordonez, Fall 2021.
 
-Group Members:
-Syed Rizvi
-Nathaniel Valtierra
-Kurmanbek Bazarov
+**Group Members:**
+* Syed Rizvi
+* Nathaniel Valtierra
+* Kurmanbek Bazarov
+
+**Software Stack**
+* Database: Elephant SQL
+* Backend: Express and Node JS
+* Frontend: React JS library
 
 
-Prerequirements:
-- Node.js installed on local machine
-- npm package manager (comes with node)
+## Requirements:
+The application will be run on the user's local machine, therefore Node JS is required to run and 
+view this project, as well as to install dependencies. You will need:
+* Node.js installed on your local machine (https://nodejs.org/en/)
+* npm package manager (comes with node)
 
-Instructions for getting started:
-1. Pull the code
+## Getting started:
+1. Pull the code (or alternatively download and unzip the master branch of the code base)
 ```
 git clone https://github.com/SyedA5688/3380_airline_DB_system.git
 ```
 
-2. Navigate to repository base
+2. In a Windows terminal, navigate to repository base
 ```
 cd 3380_airline_DB_system
 ```
@@ -27,16 +35,18 @@ cd 3380_airline_DB_system
 npm install
 ```
 
-4. Replace the sample url in the .env file with the url of your ElephantSQL instance
-- Create an ElephantSQL account, create an instance, then follow instructions in create_table_script.txt to create example employee table
-- Replace the sample url in the .env file with the url of your ElephantSQL instance so that web application connects to your ElephantSQL database. In future we might all work out of one person's ElephantSQL instance to test concurrency in transactions.
+4. In a second Windows terminal, navigate to the web client and install dependencies for React frontend
+```
+cd 3380_airline_DB_system
+npm install
+```
 
-5. Start the Web Server (web server listens for web requests made by web client, which is user)
+5. Start the Express Server in the first terminal (in the base directory, 3380_airline_DB_system/)
 ```
 node index.js
 ```
 
-6. Once server is listening on a local port, start web client
-  - Start a new terminal
-  - cd to client/ directory
-  - run ```npm start``` to start developmental react frontend client
+6. Start frontend web client in the second terminal (the one in the 3380_airline_DB_system/client/ directory)
+```
+npm start
+```

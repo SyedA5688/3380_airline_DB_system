@@ -34,6 +34,17 @@ class Navbar extends React.Component {
                   <a className="nav-link" href="/payroll/search">Payroll</a>
                 </li>
               </ul>
+              <ul className="navbar-nav ms-auto" >
+                <li className="nav-item">
+                  <a className="nav-link" target="_blank" rel="noreferrer" href="/">PDF</a>
+                </li>
+                <li className="nav-item">
+                  <a className="nav-link" target="_blank" rel="noreferrer" href="/">Demo</a>
+                </li>
+                <li className="nav-item">
+                  <a className="nav-link" target="_blank" rel="noreferrer" href="https://github.com/SyedA5688/3380_airline_DB_system#3380_airline_system_project">ReadME</a>
+                </li>
+              </ul>
             </div>
           </div>
         </nav>
