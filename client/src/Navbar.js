@@ -144,10 +144,10 @@ class Navbar extends React.Component {
               <ul className="navbar-nav ms-auto">
                 <button type="button" className="btn btn-outline-secondary" onClick={this.handleInitializeDB} >Initialize DB</button>
                 <li className="nav-item">
-                  <a className="nav-link" target="_blank" rel="noreferrer" href="/">PDF</a>
+                  <a className="nav-link" target="_blank" rel="noreferrer" href="https://syedarizvi.com/team07.pdf">PDF</a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" target="_blank" rel="noreferrer" href="/">Demo</a>
+                  <a className="nav-link" target="_blank" rel="noreferrer" href="https://www.youtube.com/watch?v=K2cJQ1I8Hcc">Demo</a>
                 </li>
                 <li className="nav-item">
                   <a className="nav-link" target="_blank" rel="noreferrer" href="https://github.com/SyedA5688/3380_airline_DB_system#3380_airline_system_project">ReadME</a>
