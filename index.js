@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const mountRoutes = require('./routes');
 require('dotenv').config();
 
@@ -9,9 +10,9 @@ const server = app.listen(port, () => {
   console.log(`Server started on port ${port}`);
 });
 
-// app.use(express.static('client'));
 app.use(cors());
 app.use(express.json());
+// app.use(express.static(path.join(__dirname, './client/build')));
 
 mountRoutes(app);
 
