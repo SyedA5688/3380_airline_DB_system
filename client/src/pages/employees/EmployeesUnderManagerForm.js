@@ -107,12 +107,13 @@ class SearchEmployeesUnderManagerForm extends Component {
       default:
         query = "";
     }
-    // console.log("Sending query:", query);
+    console.log("Sending query:", query);
     
     try {
+      // let querySearchStr = query === "" ? `searchBy=${this.state.searchBy}` : `q=${query}&searchBy=${this.state.searchBy}`
       const response = await fetch(`/manager/${this.state.managerID}?q=${query}&searchBy=${this.state.searchBy}&page=${this.state.page}&sort=${this.state.sort}&order=${this.state.order}&limit=${this.state.limit}`);
       const body = await response.json();
-      // console.log("Response Body:", body);
+      console.log("Response Body:", body);
 
       this.assertValidGETResponse(body);
       this.setState({
@@ -120,7 +121,7 @@ class SearchEmployeesUnderManagerForm extends Component {
       });
     }
     catch (e) {
-      console.log("Error occurred while sending GET request to /manager endpoint,", e);
+      console.log("Error occurred while sending GET request to /manager/:id endpoint,", e);
       document.getElementById("errorModal").style.display = "block"
       document.getElementById("errorModal").classList.add("show")
     }
@@ -246,7 +247,8 @@ class SearchEmployeesUnderManagerForm extends Component {
             <label className="sr-only" htmlFor="inputSortBy">Sort by:</label>
             <select name="sort" className="form-select" id="inputSortBy" defaultValue="id" onChange={this.handleChange}>
               <option value="id">Manager ID</option>
-              <option value="name">Name</option>
+              <option value="fname">First Name</option>
+              <option value="lname">Last Name</option>
               <option value="title">Job Title</option>
               <option value="department">Department</option>
             </select>

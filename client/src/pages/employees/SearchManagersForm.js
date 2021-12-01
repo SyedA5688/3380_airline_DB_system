@@ -235,7 +235,8 @@ class SearchManagersForm extends Component {
             <label className="sr-only" htmlFor="inputSortBy">Sort by:</label>
             <select name="sort" className="form-select" id="inputSortBy" defaultValue="id" onChange={this.handleChange}>
               <option value="id">Manager ID</option>
-              <option value="name">Name</option>
+              <option value="fname">First Name</option>
+              <option value="lname">Last Name</option>
               <option value="title">Job Title</option>
               <option value="department">Department</option>
             </select>

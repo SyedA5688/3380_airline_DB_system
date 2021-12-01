@@ -7,7 +7,7 @@ class Navbar extends React.Component {
     return (
       <div className="navbar-page-container" > 
         <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
-          <div class="container-fluid">
+          <div className="container-fluid">
             <a className="navbar-brand mx-4" href="/">Airline HR Database System</a>
             <button className="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" >
               <span className="navbar-toggler-icon"></span>
