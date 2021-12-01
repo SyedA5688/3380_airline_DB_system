@@ -16,12 +16,22 @@ class SearchEmployeeLeaveForm extends Component {
       page: 1,
       sort: 'id',
       order: 'asc',
-      limit: 10
+      limit: 10,
+      showSQL: false,
     };
     
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClear = this.handleClear.bind(this);
+    this.toggleSQL = this.toggleSQL.bind(this);
+  }
+
+  toggleSQL = async(event) => {
+    if (this.state.queries) {
+      this.setState({
+        showSQL: !this.state.showSQL
+      });
+    }
   }
 
   handleChange = async (event) => {
@@ -107,7 +117,8 @@ class SearchEmployeeLeaveForm extends Component {
 
       this.assertValidGETResponse(body);
       this.setState({
-        returnedLeaves: body.rows
+        returnedLeaves: body.rows,
+        queries: body.queries
       });
     }
     catch (e) {
@@ -132,7 +143,9 @@ class SearchEmployeeLeaveForm extends Component {
       searchDate: '',
       searchStatus: '',
       searchReason: '',
-      returnedLeaves: null
+      returnedLeaves: null,
+      queries: null,
+      showSQL: false
     });
 
     const form = document.querySelector('#searchFormHTML');
@@ -259,31 +272,42 @@ class SearchEmployeeLeaveForm extends Component {
           <button type="button" className="btn btn-outline-secondary mt-3 mx-3" onClick={this.handleClear} >Clear</button>
         </form>
 
-        {this.state.returnedLeaves ? <table align="center" className="table mt-5 border" >
-          <thead className="table-dark">
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Leave ID</th>
-              <th scope="col">Employee ID</th>
-              <th scope="col">Date</th>
-              <th scope="col">Reason</th>
-              <th scope="col">Status</th>
-            </tr>
-          </thead>
-          
-          <tbody>
-            {this.state.returnedLeaves && this.state.returnedLeaves.map((leaveObj, index) => (
-              <tr key={leaveObj.leave_id}>
-                <th scope="col">{index + 1}</th>
-                <th scope="col">{leaveObj.leave_id}</th>
-                <th scope="col">{leaveObj.employee_id}</th>
-                <th scope="col">{leaveObj.date.split("T")[0]}</th>
-                <th scope="col">{leaveObj.reason}</th>
-                <th scope="col">{leaveObj.status}</th>
+        {this.state.returnedLeaves ? 
+        <div>
+          <table align="center" className="table mt-5 border" >
+            <thead className="table-dark">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Leave ID</th>
+                <th scope="col">Employee ID</th>
+                <th scope="col">Date</th>
+                <th scope="col">Reason</th>
+                <th scope="col">Status</th>
               </tr>
+            </thead>
+            
+            <tbody>
+              {this.state.returnedLeaves && this.state.returnedLeaves.map((leaveObj, index) => (
+                <tr key={leaveObj.leave_id}>
+                  <th scope="col">{index + 1}</th>
+                  <th scope="col">{leaveObj.leave_id}</th>
+                  <th scope="col">{leaveObj.employee_id}</th>
+                  <th scope="col">{leaveObj.date.split("T")[0]}</th>
+                  <th scope="col">{leaveObj.reason}</th>
+                  <th scope="col">{leaveObj.status}</th>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          <button type="button" className="btn btn-outline-secondary mx-3 mb-3" onClick={this.toggleSQL} >Toggle SQL</button>
+          {this.state.showSQL ? 
+          <div className="mb-5" >
+            {this.state.queries.map((queryText, index) => (
+              <span style={{whiteSpace: 'pre-wrap'}} key={index}>{queryText}<br/></span>
             ))}
-          </tbody>
-        </table> :
+          </div> : <div></div>}
+        </div> :
         <div></div>}
       </div>
     );

@@ -14,12 +14,22 @@ class SearchAllJobsForm extends Component {
       page: 1,
       sort: 'id',
       order: 'asc',
-      limit: 10
+      limit: 10,
+      showSQL: false,
     };
     
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClear = this.handleClear.bind(this);
+    this.toggleSQL = this.toggleSQL.bind(this);
+  }
+
+  toggleSQL = async(event) => {
+    if (this.state.queries) {
+      this.setState({
+        showSQL: !this.state.showSQL
+      });
+    }
   }
 
   handleChange = async (event) => {
@@ -102,7 +112,8 @@ class SearchAllJobsForm extends Component {
 
       this.assertValidGETResponse(body);
       this.setState({
-        returnedJobs: body.rows
+        returnedJobs: body.rows,
+        queries: body.queries
       });
     }
     catch (e) {
@@ -127,7 +138,9 @@ class SearchAllJobsForm extends Component {
       searchJobTitle: '',
       searchDepartment: '',
       searchLocation: '',
-      returnedJobs: null
+      returnedJobs: null,
+      queries: null,
+      showSQL: false
     });
 
     const form = document.querySelector('#searchFormHTML');
@@ -148,21 +161,21 @@ class SearchAllJobsForm extends Component {
     }
     else if (searchBy === "title") {
       return <div className="form-group">
-        <input type="text" pattern="[A-Za-z0-9-_ ]+"  className="form-control" id="inputSearchJobTitle" placeholder="Pilot" name="searchTitle" value={this.state.searchJobTitle} onChange={this.handleChange} required />
+        <input type="text" pattern="[A-Za-z0-9-_ ]+"  className="form-control" id="inputSearchJobTitle" placeholder="(e.g. Pilot)" name="searchTitle" value={this.state.searchJobTitle} onChange={this.handleChange} required />
         <div className="invalid-feedback">Please provide a valid job title.</div>
         <div className="valid-feedback">Valid job title.</div>
       </div>
     }
     else if (searchBy === "department") {
       return <div className="form-group">
-        <input type="number" min="0" pattern="[0-9]+"  className="form-control" id="inputSearchID" placeholder="0" name="searchDepartment" value={this.state.searchDepartment} onChange={this.handleChange} required />
-        <div className="invalid-feedback">Please provide a valid department ID.</div>
-        <div className="valid-feedback">Valid department name.</div>
-      </div>
+      <input type="text" pattern="[A-Za-z0-9 ]+"  className="form-control" id="inputDepartmentName" placeholder="(e.g. Engineering)" name="searchDepartment" value={this.state.searchDepartment} onChange={this.handleChange} required />
+      <div className="invalid-feedback">Please provide a valid job title.</div>
+      <div className="valid-feedback">Valid job title.</div>
+    </div>
     }
     else if (searchBy === "location") {
       return <div className="form-group">
-        <input type="number" min="0" pattern="[0-9]+"  className="form-control" id="inputSearchID" placeholder="0" name="searchLocation" value={this.state.searchLocation} onChange={this.handleChange} required />
+        <input type="number" min="0" pattern="[0-9]+"  className="form-control" id="inputSearchLocation" placeholder="(e.g. 0)" name="searchLocation" value={this.state.searchLocation} onChange={this.handleChange} required />
         <div className="invalid-feedback">Please provide a valid job location ID.</div>
         <div className="valid-feedback">Valid job location ID.</div>
       </div>
@@ -239,35 +252,46 @@ class SearchAllJobsForm extends Component {
           <button type="button" className="btn btn-outline-secondary mt-3 mx-3" onClick={this.handleClear} >Clear</button>
         </form>
 
-        {this.state.returnedJobs ? <table align="center" className="table mt-5 border" >
-          <thead className="table-dark">
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Job ID</th>
-              <th scope="col">Job Title</th>
-              <th scope="col">Department ID</th>
-              <th scope="col">Department Name</th>
-              <th scope="col">Location ID</th>
-              <th scope="col">Weekly Hours</th>
-              <th scope="col">Benefits Package ID</th>
-            </tr>
-          </thead>
-          
-          <tbody>
-            {this.state.returnedJobs && this.state.returnedJobs.map((jobObj, index) => (
-              <tr key={jobObj.job_id}>
-                <th scope="col">{index + 1}</th>
-                <th scope="col">{jobObj.job_id	}</th>
-                <th scope="col">{jobObj.job_title	}</th>
-                <th scope="col">{jobObj.department_id	}</th>
-                <th scope="col">{jobObj.department_name	}</th>
-                <th scope="col">{jobObj.location_id	}</th>
-                <th scope="col">{jobObj.weekly_hours}</th>
-                <th scope="col">{jobObj.benefits_package_id}</th>
+        {this.state.returnedJobs ? 
+        <div>
+          <table align="center" className="table mt-5 border" >
+            <thead className="table-dark">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Job ID</th>
+                <th scope="col">Job Title</th>
+                <th scope="col">Department ID</th>
+                <th scope="col">Department Name</th>
+                <th scope="col">Location ID</th>
+                <th scope="col">Weekly Hours</th>
+                <th scope="col">Benefits Package ID</th>
               </tr>
+            </thead>
+            
+            <tbody>
+              {this.state.returnedJobs && this.state.returnedJobs.map((jobObj, index) => (
+                <tr key={jobObj.job_id}>
+                  <th scope="col">{index + 1}</th>
+                  <th scope="col">{jobObj.job_id	}</th>
+                  <th scope="col">{jobObj.job_title	}</th>
+                  <th scope="col">{jobObj.department_id	}</th>
+                  <th scope="col">{jobObj.department_name	}</th>
+                  <th scope="col">{jobObj.location_id	}</th>
+                  <th scope="col">{jobObj.weekly_hours}</th>
+                  <th scope="col">{jobObj.benefits_package_id}</th>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          <button type="button" className="btn btn-outline-secondary mx-3 mb-3" onClick={this.toggleSQL} >Toggle SQL</button>
+          {this.state.showSQL ? 
+          <div className="mb-5" >
+            {this.state.queries.map((queryText, index) => (
+              <span style={{whiteSpace: 'pre-wrap'}} key={index}>{queryText}<br/></span>
             ))}
-          </tbody>
-        </table> :
+          </div> : <div></div>}
+        </div> :
         <div></div>}
       </div>
     );

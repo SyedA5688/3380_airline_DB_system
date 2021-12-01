@@ -10,11 +10,21 @@ class UpdateDepartmentForm extends Component {
       updateDepartmentName: '',
       updateCreationDate: '',
       updateDepartmentHeadID: '',
+      showSQL: false,
     };
     
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClear = this.handleClear.bind(this);
+    this.toggleSQL = this.toggleSQL.bind(this);
+  }
+
+  toggleSQL = async(event) => {
+    if (this.state.queries) {
+      this.setState({
+        showSQL: !this.state.showSQL
+      });
+    }
   }
 
   handleChange = async (event) => {
@@ -74,7 +84,8 @@ class UpdateDepartmentForm extends Component {
       this.assertValidDBResponse(responseBody);
 
       this.setState({
-        returnedDepartment: responseBody.rows
+        returnedDepartment: responseBody.rows,
+        queries: responseBody.queries
       });
 
       document.getElementById("successModal").style.display = "block"
@@ -95,7 +106,6 @@ class UpdateDepartmentForm extends Component {
   closeSuccessModal = () => {
     document.getElementById("successModal").style.display = "none"
     document.getElementById("successModal").classList.remove("show");
-    this.handleClear();
   }
 
   handleClear = async (event) => {
@@ -104,7 +114,9 @@ class UpdateDepartmentForm extends Component {
       updateDepartmentName: '',
       updateCreationDate: '',
       updateDepartmentHeadID: '',
-      returnedDepartment: null
+      returnedDepartment: null,
+      queries: null,
+      showSQL: false
     });
 
     const form = document.querySelector('#updateFormHTML');
@@ -181,6 +193,14 @@ class UpdateDepartmentForm extends Component {
           <button type="submit" className="btn btn-outline-secondary mt-3">Submit</button>
           <button type="button" className="btn btn-outline-secondary mt-3 mx-3" onClick={this.handleClear} >Clear</button>
           </form>
+
+          <button type="button" className="btn btn-outline-secondary mt-3 mx-3 mb-3" onClick={this.toggleSQL} >Toggle SQL</button>
+          {this.state.showSQL ? 
+          <div className="mb-5" >
+            {this.state.queries.map((queryText, index) => (
+              <span style={{whiteSpace: 'pre-wrap'}} key={index}>{queryText}<br/></span>
+            ))}
+          </div> : <div></div>}
       </div>
     );
   }

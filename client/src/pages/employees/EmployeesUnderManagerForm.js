@@ -17,12 +17,22 @@ class SearchEmployeesUnderManagerForm extends Component {
       page: 1,
       sort: 'id',
       order: 'asc',
-      limit: 10
+      limit: 10,
+      showSQL: false,
     };
     
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClear = this.handleClear.bind(this);
+    this.toggleSQL = this.toggleSQL.bind(this);
+  }
+
+  toggleSQL = async(event) => {
+    if (this.state.queries) {
+      this.setState({
+        showSQL: !this.state.showSQL
+      });
+    }
   }
 
   handleChange = async (event) => {
@@ -110,17 +120,19 @@ class SearchEmployeesUnderManagerForm extends Component {
     // console.log("Sending query:", query);
     
     try {
+      // let querySearchStr = query === "" ? `searchBy=${this.state.searchBy}` : `q=${query}&searchBy=${this.state.searchBy}`
       const response = await fetch(`/manager/${this.state.managerID}?q=${query}&searchBy=${this.state.searchBy}&page=${this.state.page}&sort=${this.state.sort}&order=${this.state.order}&limit=${this.state.limit}`);
       const body = await response.json();
       // console.log("Response Body:", body);
 
       this.assertValidGETResponse(body);
       this.setState({
-        returnedEmployees: body.rows
+        returnedEmployees: body.rows,
+        queries: body.queries
       });
     }
     catch (e) {
-      console.log("Error occurred while sending GET request to /manager endpoint,", e);
+      console.log("Error occurred while sending GET request to /manager/:id endpoint,", e);
       document.getElementById("errorModal").style.display = "block"
       document.getElementById("errorModal").classList.add("show")
     }
@@ -144,7 +156,9 @@ class SearchEmployeesUnderManagerForm extends Component {
       searchLastName: '',
       searchTitle: '',
       searchDepartment: '',
-      returnedEmployees: null
+      returnedEmployees: null,
+      queries: null,
+      showSQL: false
     });
 
     const form = document.querySelector('#searchFormHTML');
@@ -246,7 +260,8 @@ class SearchEmployeesUnderManagerForm extends Component {
             <label className="sr-only" htmlFor="inputSortBy">Sort by:</label>
             <select name="sort" className="form-select" id="inputSortBy" defaultValue="id" onChange={this.handleChange}>
               <option value="id">Manager ID</option>
-              <option value="name">Name</option>
+              <option value="fname">First Name</option>
+              <option value="lname">Last Name</option>
               <option value="title">Job Title</option>
               <option value="department">Department</option>
             </select>
@@ -302,6 +317,14 @@ class SearchEmployeesUnderManagerForm extends Component {
               ))}
             </tbody>
           </table> 
+
+          <button type="button" className="btn btn-outline-secondary mx-3 mb-3" onClick={this.toggleSQL} >Toggle SQL</button>
+          {this.state.showSQL ? 
+          <div className="mb-5" >
+            {this.state.queries.map((queryText, index) => (
+              <span style={{whiteSpace: 'pre-wrap'}} key={index}>{queryText}<br/></span>
+            ))}
+          </div> : <div></div>}
         </div>:
         <div></div>}
       </div>

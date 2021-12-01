@@ -16,12 +16,22 @@ class SearchBenefitsForm extends Component {
       page: 1,
       sort: 'id',
       order: 'asc',
-      limit: 10
+      limit: 10,
+      showSQL: false,
     };
     
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClear = this.handleClear.bind(this);
+    this.toggleSQL = this.toggleSQL.bind(this);
+  }
+
+  toggleSQL = async(event) => {
+    if (this.state.queries) {
+      this.setState({
+        showSQL: !this.state.showSQL
+      });
+    }
   }
 
   handleChange = async (event) => {
@@ -115,7 +125,8 @@ class SearchBenefitsForm extends Component {
 
       this.assertValidGETResponse(body);
       this.setState({
-        returnedBenefits: body.rows
+        returnedBenefits: body.rows,
+        queries: body.queries
       });
     }
     catch (e) {
@@ -142,7 +153,9 @@ class SearchBenefitsForm extends Component {
       searchStock: '',
       searchProvider: '',
       searchRetirement: '',
-      returnedBenefits: null
+      returnedBenefits: null,
+      queries: null,
+      showSQL: false
     });
 
     const form = document.querySelector('#searchFormHTML');
@@ -271,34 +284,45 @@ class SearchBenefitsForm extends Component {
           <button type="button" className="btn btn-outline-secondary mt-3 mx-3" onClick={this.handleClear} >Clear</button>
         </form>
 
-        {this.state.returnedBenefits ? <table align="center" className="table mt-5 border" >
-          <thead className="table-dark">
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Benefits Package ID</th>
-              <th scope="col">Amount</th>
-              <th scope="col">Stock Options</th>
-              <th scope="col">Health Insurance Provider</th>
-              <th scope="col">Retirement Plan</th>
-            </tr>
-          </thead>
-          
-          <tbody>
-            {this.state.returnedBenefits && this.state.returnedBenefits.map((benefitsObj, index) => (
-              <tr key={benefitsObj.benefits_package_id	}>
-                <th scope="col">{index + 1}</th>
-                <th scope="col">{benefitsObj.benefits_package_id}</th>
-                <th scope="col">{benefitsObj.amount}</th>
-                <th scope="col">{benefitsObj.stock_options}</th>
-                <th scope="col">{benefitsObj.health_insurance_provider}</th>
-                <th scope="col">{benefitsObj.retirement_plan}</th>
-                <th scope="col">{benefitsObj.department_head_id}</th>
-                <th scope="col">{benefitsObj.first_name}</th>
-                <th scope="col">{benefitsObj.last_name}</th>
+        {this.state.returnedBenefits ? 
+        <div>
+          <table align="center" className="table mt-5 border" >
+            <thead className="table-dark">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Benefits Package ID</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Stock Options</th>
+                <th scope="col">Health Insurance Provider</th>
+                <th scope="col">Retirement Plan</th>
               </tr>
+            </thead>
+            
+            <tbody>
+              {this.state.returnedBenefits && this.state.returnedBenefits.map((benefitsObj, index) => (
+                <tr key={benefitsObj.benefits_package_id	}>
+                  <th scope="col">{index + 1}</th>
+                  <th scope="col">{benefitsObj.benefits_package_id}</th>
+                  <th scope="col">{benefitsObj.amount}</th>
+                  <th scope="col">{benefitsObj.stock_options}</th>
+                  <th scope="col">{benefitsObj.health_insurance_provider}</th>
+                  <th scope="col">{benefitsObj.retirement_plan}</th>
+                  <th scope="col">{benefitsObj.department_head_id}</th>
+                  <th scope="col">{benefitsObj.first_name}</th>
+                  <th scope="col">{benefitsObj.last_name}</th>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          <button type="button" className="btn btn-outline-secondary mx-3 mb-3" onClick={this.toggleSQL} >Toggle SQL</button>
+          {this.state.showSQL ? 
+          <div className="mb-5" >
+            {this.state.queries.map((queryText, index) => (
+              <span style={{whiteSpace: 'pre-wrap'}} key={index}>{queryText}<br/></span>
             ))}
-          </tbody>
-        </table> :
+          </div> : <div></div>}
+        </div> :
         <div></div>}
       </div>
     );

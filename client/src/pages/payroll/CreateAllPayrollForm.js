@@ -8,11 +8,21 @@ class CreateAllPayrollForm extends Component {
     this.state = {
       pay_period: '',
       tax_rate: '',
+      showSQL: false,
     };
     
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClear = this.handleClear.bind(this);
+    this.toggleSQL = this.toggleSQL.bind(this);
+  }
+
+  toggleSQL = async(event) => {
+    if (this.state.queries) {
+      this.setState({
+        showSQL: !this.state.showSQL
+      });
+    }
   }
 
   handleChange = async (event) => {
@@ -66,7 +76,8 @@ class CreateAllPayrollForm extends Component {
       this.assertValidDBResponse(responseBody);
   
       this.setState({
-        createdPayrollEntries: responseBody.rows
+        createdPayrollEntries: responseBody.rows,
+        queries: responseBody.queries
       });
     }
     catch (err) {
@@ -85,7 +96,9 @@ class CreateAllPayrollForm extends Component {
     this.setState({
       pay_period: '',
       tax_rate: '',
-      createdPayrollEntries: null
+      createdPayrollEntries: null,
+      queries: null,
+      showSQL: false
     });
 
     const form = document.querySelector('#createFormHTML');
@@ -149,7 +162,7 @@ class CreateAllPayrollForm extends Component {
             </thead>
             
             <tbody>
-              {this.state.createdPayrollEntries && this.state.createdPayrollEntries.map(payrollObj => (
+              {this.state.createdPayrollEntries && this.state.createdPayrollEntries.slice(0, 100).map(payrollObj => (
                 <tr key={payrollObj.payroll_id}>
                   <th scope="col">{payrollObj.payroll_id}</th>
                   <th scope="col">{payrollObj.employee_id}</th>
@@ -163,6 +176,14 @@ class CreateAllPayrollForm extends Component {
               ))}
             </tbody>
           </table>
+
+          <button type="button" className="btn btn-outline-secondary mx-3 mb-3" onClick={this.toggleSQL} >Toggle SQL</button>
+          {this.state.showSQL ? 
+          <div className="mb-5" >
+            {this.state.queries.map((queryText, index) => (
+              <span style={{whiteSpace: 'pre-wrap'}} key={index}>{queryText}<br/></span>
+            ))}
+          </div> : <div></div>}
         </div>:
         <div></div>}
       </div>

@@ -16,12 +16,22 @@ class SearchAllForm extends Component {
       sort: 'id',
       order: 'asc',
       limit: 10,
-      page: 1
+      page: 1,
+      showSQL: false,
     };
     
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClear = this.handleClear.bind(this);
+    this.toggleSQL = this.toggleSQL.bind(this);
+  }
+
+  toggleSQL = async(event) => {
+    if (this.state.queries) {
+      this.setState({
+        showSQL: !this.state.showSQL
+      });
+    }
   }
 
   handleChange = async (event) => {
@@ -115,10 +125,12 @@ class SearchAllForm extends Component {
       // console.log("Making GET request to /employee API endpoint")
       const response = await fetch(`/employee?q=${query}&searchBy=${this.state.searchBy}&page=${this.state.page}&sort=${this.state.sort}&order=${this.state.order}&limit=${this.state.limit}`);
       const body = await response.json();
+      // console.log("response body:", body);
 
       this.assertValidGETResponse(body);
       this.setState({
-        returnedEmployees: body.rows
+        returnedEmployees: body.rows,
+        queries: body.queries
       });
     }
     catch (e) {
@@ -145,7 +157,9 @@ class SearchAllForm extends Component {
       searchID: '',
       searchTitle: '',
       searchDepartment: '',
-      returnedEmployees: ''
+      returnedEmployees: null,
+      queries: null,
+      showSQL: false
     });
 
     // Remove was-validated class from form to reset its appearance
@@ -239,7 +253,8 @@ class SearchAllForm extends Component {
             <label className="sr-only" htmlFor="inputSortBy">Sort by:</label>
             <select name="sort" className="form-select" id="inputSortBy" defaultValue="id" onChange={this.handleChange}>
               <option value="id">Employee ID</option>
-              <option value="name">Name</option>
+              <option value="fname">First Name</option>
+              <option value="lname">Last Name</option>
               <option value="title">Job Title</option>
               <option value="department">Department</option>
             </select>
@@ -265,34 +280,45 @@ class SearchAllForm extends Component {
           <button type="button" className="btn btn-outline-secondary mt-3 mx-3" onClick={this.handleClear} >Clear</button>
         </form>
 
-        {this.state.returnedEmployees ? <table align="center" className="table mt-5 border" >
-          <thead className="table-dark">
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">First Name</th>
-              <th scope="col">Last Name</th>
-              <th scope="col">Middle Initial</th>
-              <th scope="col">Employee ID</th>
-              <th scope="col">Job Title</th>
-              <th scope="col">Department Name</th>
-            </tr>
-          </thead>
-          {/* Add Employees in tbody through HTML injection in main.js */}
-          <tbody>
-            {this.state.returnedEmployees && this.state.returnedEmployees.map((employeeObj, index) => (
-              <tr key={employeeObj.employee_id}>
-                <th scope="col">{index}</th>
-                <th scope="col">{employeeObj.first_name}</th>
-                <th scope="col">{employeeObj.last_name}</th>
-                <th scope="col">{employeeObj.m_initial}</th>
-                <th scope="col">{employeeObj.employee_id}</th>
-                <th scope="col">{employeeObj.job_title}</th>
-                <th scope="col">{employeeObj.department_name}</th>
+        {this.state.returnedEmployees ? 
+        <div>
+          <table align="center" className="table mt-5 border" >
+            <thead className="table-dark">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Middle Initial</th>
+                <th scope="col">Employee ID</th>
+                <th scope="col">Job Title</th>
+                <th scope="col">Department Name</th>
               </tr>
+            </thead>
+            {/* Add Employees in tbody through HTML injection in main.js */}
+            <tbody>
+              {this.state.returnedEmployees && this.state.returnedEmployees.map((employeeObj, index) => (
+                <tr key={employeeObj.employee_id}>
+                  <th scope="col">{index}</th>
+                  <th scope="col">{employeeObj.first_name}</th>
+                  <th scope="col">{employeeObj.last_name}</th>
+                  <th scope="col">{employeeObj.m_initial}</th>
+                  <th scope="col">{employeeObj.employee_id}</th>
+                  <th scope="col">{employeeObj.job_title}</th>
+                  <th scope="col">{employeeObj.department_name}</th>
+                </tr>
+              ))}
+            </tbody>
+          </table> 
+
+          <button type="button" className="btn btn-outline-secondary mx-3 mb-3" onClick={this.toggleSQL} >Toggle SQL</button>
+          {this.state.showSQL ? 
+          <div className="mb-5" >
+            {this.state.queries.map((queryText, index) => (
+              <span style={{whiteSpace: 'pre-wrap'}} key={index}>{queryText}<br/></span>
             ))}
-          </tbody>
-        </table> :
-        <div></div>}
+          </div> : <div></div>}
+        </div> :
+        <div className="mb-5"></div>}
       </div>
     );
   }

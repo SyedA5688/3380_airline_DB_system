@@ -9,12 +9,22 @@ class InsertLeaveForm extends Component {
       insertEmployeeID: '',
       insertDate: '',
       insertReason: '',
-      insertStatus: ''
+      insertStatus: '',
+      showSQL: false,
     };
     
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClear = this.handleClear.bind(this);
+    this.toggleSQL = this.toggleSQL.bind(this);
+  }
+
+  toggleSQL = async(event) => {
+    if (this.state.queries) {
+      this.setState({
+        showSQL: !this.state.showSQL
+      });
+    }
   }
 
   handleChange = async (event) => {
@@ -70,7 +80,8 @@ class InsertLeaveForm extends Component {
       this.assertValidDBResponse(responseBody);
   
       this.setState({
-        insertedLeaveEntry: responseBody.rows
+        insertedLeaveEntry: responseBody.rows,
+        queries: responseBody.queries
       });
     }
     catch (err) {
@@ -91,7 +102,9 @@ class InsertLeaveForm extends Component {
       insertDate: '',
       insertReason: '',
       insertStatus: '',
-      insertedLeaveEntry: null
+      insertedLeaveEntry: null,
+      queries: null,
+      showSQL: false
     });
 
     // Remove was-validated class from form to reset its appearance
@@ -176,6 +189,14 @@ class InsertLeaveForm extends Component {
               ))}
             </tbody>
           </table>
+
+          <button type="button" className="btn btn-outline-secondary mx-3 mb-3" onClick={this.toggleSQL} >Toggle SQL</button>
+          {this.state.showSQL ? 
+          <div className="mb-5" >
+            {this.state.queries.map((queryText, index) => (
+              <span style={{whiteSpace: 'pre-wrap'}} key={index}>{queryText}<br/></span>
+            ))}
+          </div> : <div></div>}
         </div>:
         <div></div>}
       </div>

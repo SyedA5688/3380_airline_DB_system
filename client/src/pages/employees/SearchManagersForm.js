@@ -16,12 +16,22 @@ class SearchManagersForm extends Component {
       page: 1,
       sort: 'id',
       order: 'asc',
-      limit: 10
+      limit: 10,
+      showSQL: false,
     };
     
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClear = this.handleClear.bind(this);
+    this.toggleSQL = this.toggleSQL.bind(this);
+  }
+
+  toggleSQL = async(event) => {
+    if (this.state.queries) {
+      this.setState({
+        showSQL: !this.state.showSQL
+      });
+    }
   }
 
   handleChange = async (event) => {
@@ -115,7 +125,8 @@ class SearchManagersForm extends Component {
 
       this.assertValidGETResponse(body);
       this.setState({
-        returnedManagers: body.rows
+        returnedManagers: body.rows,
+        queries: body.queries
       });
     }
     catch (e) {
@@ -141,7 +152,9 @@ class SearchManagersForm extends Component {
       searchLastName: '',
       searchTitle: '',
       searchDepartment: '',
-      returnedManagers: null
+      returnedManagers: null,
+      queries: null,
+      showSQL: false
     });
 
     const form = document.querySelector('#searchFormHTML');
@@ -235,7 +248,8 @@ class SearchManagersForm extends Component {
             <label className="sr-only" htmlFor="inputSortBy">Sort by:</label>
             <select name="sort" className="form-select" id="inputSortBy" defaultValue="id" onChange={this.handleChange}>
               <option value="id">Manager ID</option>
-              <option value="name">Name</option>
+              <option value="fname">First Name</option>
+              <option value="lname">Last Name</option>
               <option value="title">Job Title</option>
               <option value="department">Department</option>
             </select>
@@ -261,33 +275,44 @@ class SearchManagersForm extends Component {
           <button type="button" className="btn btn-outline-secondary mt-3 mx-3" onClick={this.handleClear} >Clear</button>
         </form>
 
-        {this.state.returnedManagers ? <table align="center" className="table mt-5 border" >
-          <thead className="table-dark">
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Supervisee Count</th>
-              <th scope="col">ID</th>
-              <th scope="col">First Name</th>
-              <th scope="col">Last name</th>
-              <th scope="col">Job Title</th>
-              <th scope="col">Department Name</th>
-            </tr>
-          </thead>
-          
-          <tbody>
-            {this.state.returnedManagers && this.state.returnedManagers.map((managerObj, index) => (
-              <tr key={managerObj.employee_id		}>
-                <th scope="col">{index + 1}</th>
-                <th scope="col">{managerObj.count}</th>
-                <th scope="col">{managerObj.employee_id}</th>
-                <th scope="col">{managerObj.first_name}</th>
-                <th scope="col">{managerObj.last_name}</th>
-                <th scope="col">{managerObj.job_title}</th>
-                <th scope="col">{managerObj.department_name}</th>
+        {this.state.returnedManagers ? 
+        <div>
+          <table align="center" className="table mt-5 border" >
+            <thead className="table-dark">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Supervisee Count</th>
+                <th scope="col">ID</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last name</th>
+                <th scope="col">Job Title</th>
+                <th scope="col">Department Name</th>
               </tr>
+            </thead>
+            
+            <tbody>
+              {this.state.returnedManagers && this.state.returnedManagers.map((managerObj, index) => (
+                <tr key={managerObj.employee_id		}>
+                  <th scope="col">{index + 1}</th>
+                  <th scope="col">{managerObj.count}</th>
+                  <th scope="col">{managerObj.employee_id}</th>
+                  <th scope="col">{managerObj.first_name}</th>
+                  <th scope="col">{managerObj.last_name}</th>
+                  <th scope="col">{managerObj.job_title}</th>
+                  <th scope="col">{managerObj.department_name}</th>
+                </tr>
+              ))}
+            </tbody>
+          </table> 
+
+          <button type="button" className="btn btn-outline-secondary mx-3 mb-3" onClick={this.toggleSQL} >Toggle SQL</button>
+          {this.state.showSQL ? 
+          <div className="mb-5" >
+            {this.state.queries.map((queryText, index) => (
+              <span style={{whiteSpace: 'pre-wrap'}} key={index}>{queryText}<br/></span>
             ))}
-          </tbody>
-        </table> :
+          </div> : <div></div>}
+        </div>:
         <div></div>}
       </div>
     );

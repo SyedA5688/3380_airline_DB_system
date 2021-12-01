@@ -6,11 +6,21 @@ class SearchJobLocationsForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      showSQL: false,
     };
     
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClear = this.handleClear.bind(this);
+    this.toggleSQL = this.toggleSQL.bind(this);
+  }
+
+  toggleSQL = async(event) => {
+    if (this.state.queries) {
+      this.setState({
+        showSQL: !this.state.showSQL
+      });
+    }
   }
 
   handleChange = async (event) => {
@@ -53,7 +63,8 @@ class SearchJobLocationsForm extends Component {
 
       this.assertValidGETResponse(body);
       this.setState({
-        returnedJobLocations: body.rows
+        returnedJobLocations: body.rows,
+        queries: body.queries
       });
     }
     catch (e) {
@@ -73,7 +84,9 @@ class SearchJobLocationsForm extends Component {
 
   handleClear = async (event) => {
     this.setState({
-      returnedJobLocations: null
+      returnedJobLocations: null,
+      queries: null,
+      showSQL: false
     });
 
     const form = document.querySelector('#searchFormHTML');
@@ -107,31 +120,42 @@ class SearchJobLocationsForm extends Component {
           <button type="button" className="btn btn-outline-secondary mt-3 mx-3" onClick={this.handleClear} >Clear</button>
         </form>
 
-        {this.state.returnedJobLocations ? <table align="center" className="table mt-5 border" >
-          <thead className="table-dark">
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Location ID</th>
-              <th scope="col">Address ID</th>
-              <th scope="col">Location Name</th>
-              <th scope="col">Airport ID</th>
-              <th scope="col">Flight ID</th>
-            </tr>
-          </thead>
-          
-          <tbody>
-            {this.state.returnedJobLocations && this.state.returnedJobLocations.map((jobLocationObj, index) => (
-              <tr key={jobLocationObj.location_id}>
-                <th scope="col">{index + 1}</th>
-                <th scope="col">{jobLocationObj.location_id}</th>
-                <th scope="col">{jobLocationObj.address_id}</th>
-                <th scope="col">{jobLocationObj.location_name}</th>
-                <th scope="col">{jobLocationObj.airport_id}</th>
-                <th scope="col">{jobLocationObj.flight_id}</th>
+        {this.state.returnedJobLocations ? 
+        <div>
+          <table align="center" className="table mt-5 border" >
+            <thead className="table-dark">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Location ID</th>
+                <th scope="col">Address ID</th>
+                <th scope="col">Location Name</th>
+                <th scope="col">Airport ID</th>
+                <th scope="col">Flight ID</th>
               </tr>
+            </thead>
+            
+            <tbody>
+              {this.state.returnedJobLocations && this.state.returnedJobLocations.map((jobLocationObj, index) => (
+                <tr key={jobLocationObj.location_id}>
+                  <th scope="col">{index + 1}</th>
+                  <th scope="col">{jobLocationObj.location_id}</th>
+                  <th scope="col">{jobLocationObj.address_id}</th>
+                  <th scope="col">{jobLocationObj.location_name}</th>
+                  <th scope="col">{jobLocationObj.airport_id}</th>
+                  <th scope="col">{jobLocationObj.flight_id}</th>
+                </tr>
+              ))}
+            </tbody>
+          </table> 
+
+          <button type="button" className="btn btn-outline-secondary mx-3 mb-3" onClick={this.toggleSQL} >Toggle SQL</button>
+          {this.state.showSQL ? 
+          <div className="mb-5" >
+            {this.state.queries.map((queryText, index) => (
+              <span style={{whiteSpace: 'pre-wrap'}} key={index}>{queryText}<br/></span>
             ))}
-          </tbody>
-        </table> :
+          </div> : <div></div>}
+        </div>:
         <div></div>}
       </div>
     );

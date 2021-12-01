@@ -14,12 +14,22 @@ class SearchPayrollForm extends Component {
       page: 1,
       sort: 'id',
       order: 'asc',
-      limit: 10
+      limit: 10,
+      showSQL: false,
     };
     
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClear = this.handleClear.bind(this);
+    this.toggleSQL = this.toggleSQL.bind(this);
+  }
+
+  toggleSQL = async(event) => {
+    if (this.state.queries) {
+      this.setState({
+        showSQL: !this.state.showSQL
+      });
+    }
   }
 
   handleChange = async (event) => {
@@ -102,7 +112,8 @@ class SearchPayrollForm extends Component {
 
       this.assertValidGETResponse(body);
       this.setState({
-        returnedPayrollEntries: body.rows
+        returnedPayrollEntries: body.rows,
+        queries: body.queries
       });
     }
     catch (e) {
@@ -126,7 +137,9 @@ class SearchPayrollForm extends Component {
       searchPeriod: '',
       searchEmployee: '',
       searchIncome: '',
-      returnedBenefits: null
+      returnedBenefits: null,
+      queries: null,
+      showSQL: false
     });
 
     const form = document.querySelector('#searchFormHTML');
@@ -239,37 +252,48 @@ class SearchPayrollForm extends Component {
           <button type="button" className="btn btn-outline-secondary mt-3 mx-3" onClick={this.handleClear} >Clear</button>
         </form>
 
-        {this.state.returnedPayrollEntries ? <table align="center" className="table mt-5 border" >
-          <thead className="table-dark">
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Payroll ID</th>
-              <th scope="col">Employee ID</th>
-              <th scope="col">Hours Worked</th>
-              <th scope="col">Pay Period</th>
-              <th scope="col">Tax Rate</th>
-              <th scope="col">Gross Income</th>
-              <th scope="col">Taxed Income</th>
-              <th scope="col">Net Income</th>
-            </tr>
-          </thead>
-          
-          <tbody>
-            {this.state.returnedPayrollEntries && this.state.returnedPayrollEntries.map((payrollObj, index) => (
-              <tr key={payrollObj.payroll_id}>
-                <th scope="col">{index + 1}</th>
-                <th scope="col">{payrollObj.payroll_id}</th>
-                <th scope="col">{payrollObj.employee_id}</th>
-                <th scope="col">{payrollObj.hours_worked}</th>
-                <th scope="col">{payrollObj.pay_period.split("T")[0]}</th>
-                <th scope="col">{payrollObj.tax_rate}</th>
-                <th scope="col">{payrollObj.gross_income}</th>
-                <th scope="col">{payrollObj.taxed_income}</th>
-                <th scope="col">{payrollObj.net_income}</th>
+        {this.state.returnedPayrollEntries ? 
+        <div>
+          <table align="center" className="table mt-5 border" >
+            <thead className="table-dark">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Payroll ID</th>
+                <th scope="col">Employee ID</th>
+                <th scope="col">Hours Worked</th>
+                <th scope="col">Pay Period</th>
+                <th scope="col">Tax Rate</th>
+                <th scope="col">Gross Income</th>
+                <th scope="col">Taxed Income</th>
+                <th scope="col">Net Income</th>
               </tr>
+            </thead>
+            
+            <tbody>
+              {this.state.returnedPayrollEntries && this.state.returnedPayrollEntries.map((payrollObj, index) => (
+                <tr key={payrollObj.payroll_id}>
+                  <th scope="col">{index + 1}</th>
+                  <th scope="col">{payrollObj.payroll_id}</th>
+                  <th scope="col">{payrollObj.employee_id}</th>
+                  <th scope="col">{payrollObj.hours_worked}</th>
+                  <th scope="col">{payrollObj.pay_period.split("T")[0]}</th>
+                  <th scope="col">{payrollObj.tax_rate}</th>
+                  <th scope="col">{payrollObj.gross_income}</th>
+                  <th scope="col">{payrollObj.taxed_income}</th>
+                  <th scope="col">{payrollObj.net_income}</th>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          <button type="button" className="btn btn-outline-secondary mx-3 mb-3" onClick={this.toggleSQL} >Toggle SQL</button>
+          {this.state.showSQL ? 
+          <div className="mb-5" >
+            {this.state.queries.map((queryText, index) => (
+              <span style={{whiteSpace: 'pre-wrap'}} key={index}>{queryText}<br/></span>
             ))}
-          </tbody>
-        </table> :
+          </div> : <div></div>}
+        </div> :
         <div></div>}
       </div>
     );
