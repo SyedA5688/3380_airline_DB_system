@@ -39,7 +39,17 @@ cd 3380_airline_DB_system
 npm install
 ```
 
-4. Run the application. This command will start the backend server on port 5000
+4. In a second Windows terminal, navigate to client directory
+```
+cd 3380_airline_DB_system/client
+```
+
+5. Install dependencies of React web interface
+```
+npm install
+```
+
+6. In the first terminal in the base directory, run the application using this command. This command will start the backend server on port 5000.
 ```
 node index.js
 ```
