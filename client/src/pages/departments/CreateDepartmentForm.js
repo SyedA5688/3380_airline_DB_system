@@ -9,11 +9,21 @@ class CreateDepartmentForm extends Component {
       createDepartmentName: '',
       createDepartmentDate: '',
       createDepartmentHeadID: '',
+      showSQL: false,
     };
     
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClear = this.handleClear.bind(this);
+    this.toggleSQL = this.toggleSQL.bind(this);
+  }
+
+  toggleSQL = async(event) => {
+    if (this.state.queries) {
+      this.setState({
+        showSQL: !this.state.showSQL
+      });
+    }
   }
 
   handleChange = async (event) => {
@@ -68,7 +78,8 @@ class CreateDepartmentForm extends Component {
       this.assertValidDBResponse(responseBody);
   
       this.setState({
-        createdDepartment: responseBody.rows
+        createdDepartment: responseBody.rows,
+        queries: responseBody.queries
       });
     }
     catch (err) {
@@ -88,7 +99,9 @@ class CreateDepartmentForm extends Component {
       createDepartmentName: '',
       createDepartmentDate: '',
       createDepartmentHeadID: '',
-      createdDepartment: null
+      createdDepartment: null,
+      queries: null,
+      showSQL: false
     });
 
     // Remove was-validated class from form to reset its appearance
@@ -169,6 +182,14 @@ class CreateDepartmentForm extends Component {
               ))}
             </tbody>
           </table>
+
+          <button type="button" className="btn btn-outline-secondary mx-3 mb-3" onClick={this.toggleSQL} >Toggle SQL</button>
+          {this.state.showSQL ? 
+          <div className="mb-5" >
+            {this.state.queries.map((queryText, index) => (
+              <span style={{whiteSpace: 'pre-wrap'}} key={index}>{queryText}<br/></span>
+            ))}
+          </div> : <div></div>}
         </div>:
         <div></div>}
       </div>

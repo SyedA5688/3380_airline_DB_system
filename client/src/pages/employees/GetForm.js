@@ -29,7 +29,8 @@ class GetForm extends Component {
       showBenefitsAmount: false,
       showStockOptions: false,
       showHealthInsuranceProvider: false,
-      showRetirementPlanNumber: false
+      showRetirementPlanNumber: false,
+      showSQL: false
     };
     
     // Bad coupling if DB response changes names/details, but need to control which response attributes are shown
@@ -62,6 +63,15 @@ class GetForm extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClear = this.handleClear.bind(this);
+    this.toggleSQL = this.toggleSQL.bind(this);
+  }
+
+  toggleSQL = async(event) => {
+    if (this.state.queries) {
+      this.setState({
+        showSQL: !this.state.showSQL
+      });
+    }
   }
 
   handleChange = async (event) => {
@@ -105,7 +115,8 @@ class GetForm extends Component {
       // console.log(responseBody.rows);
 
       this.setState({
-        returnedEmployee: responseBody.rows
+        returnedEmployee: responseBody.rows,
+        queries: responseBody.queries
       });
     }
     catch (err) {
@@ -123,7 +134,9 @@ class GetForm extends Component {
   handleClear = async (event) => {
     this.setState({
       getID: '',
-      returnedEmployee: null
+      returnedEmployee: null,
+      queries: null,
+      showSQL: false
     });
 
     // Remove was-validated class from form to reset its appearance
@@ -287,8 +300,8 @@ class GetForm extends Component {
 
         {this.state.returnedEmployee ? 
         <div>
-          <h3>Employee Details:</h3>
-          <table align="center" className="table mt-5 border" >
+          <h3 className="mt-4" >Employee Details:</h3>
+          <table align="center" className="table mt-1 border" >
             <thead className="table-dark">
               <tr>
                 <th scope="col">Employee Attribute</th>
@@ -311,6 +324,14 @@ class GetForm extends Component {
               })}
             </tbody>
           </table>
+
+          <button type="button" className="btn btn-outline-secondary mx-3 mb-3" onClick={this.toggleSQL} >Toggle SQL</button>
+          {this.state.showSQL ? 
+          <div className="mb-5" >
+            {this.state.queries.map((queryText, index) => (
+              <span style={{whiteSpace: 'pre-wrap'}} key={index}>{queryText}<br/></span>
+            ))}
+          </div> : <div></div>}
         </div>:
         <div></div>}
       </div>
