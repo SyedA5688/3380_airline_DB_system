@@ -45,7 +45,7 @@ router.delete('/init', async (req, res) => {
       await utils.transacQuery(queries, client, 'SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;');
 
       for(const query of createScript) {
-        await utils.transacQuery(queries, client, query + ';');
+        if(query !== '\r\n' && query !== '\n') await utils.transacQuery(queries, client, query + ';');
       }
       await utils.transacQuery(queries, client, 'COMMIT;');
       await utils.transacQuery(queries, client, 'END TRANSACTION;\n');
@@ -59,7 +59,7 @@ router.delete('/init', async (req, res) => {
       console.log(err.stack);
       await utils.transacQuery(queries, client, 'ROLLBACK;\n');
       client.release();
-      res.status(422).json({
+      res.status(500).json({
         error: err.message,
         queries: queries,
         transaction: true
