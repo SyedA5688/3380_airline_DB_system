@@ -1605,4 +1605,4 @@ FROM (
 		JOIN job j ON e.job_id = j.job_id
 		JOIN salary s ON e.employee_id = s.employee_id
 	WHERE NOT e.job_id = 0
-) AS gross_calc
+) AS gross_calc;
