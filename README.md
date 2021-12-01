@@ -2,6 +2,9 @@
 This repository contains an airline personnel HR web and database system that was build for 
 CS 3380 Database Systems with Dr. Carlos Ordonez, Fall 2021.
 
+Link to demo video: https://www.youtube.com/watch?v=K2cJQ1I8Hcc
+Link to project final report: https://syedarizvi.com/team07.pdf 
+
 **Group Members:**
 * Syed Rizvi
 * Nathaniel Valtierra
