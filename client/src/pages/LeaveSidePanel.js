@@ -13,7 +13,7 @@ class JobsSidePanel extends Component {
               <ul className="sidebar-ul" >
                 <li className="sidebar-li"><a href="/leave/search" >Search All Leave Entries</a></li>
                 <li className="sidebar-li"><a href="/leave/getEmployee" >Employee Leave Entries</a></li>
-                <li className="sidebar-li"><a href="/leave/create" >Enter New Leave</a></li>
+                <li className="sidebar-li"><a href="/leave/create" >Create New Leave</a></li>
                 <li className="sidebar-li"><a href="/leave/update" >Update Leave Details</a></li>
               </ul>
             </nav>
