@@ -10,6 +10,7 @@ ORDER BY -- [...] [ASC | DESC]  --|
 OFFSET -- [...]                 --| Dynamic ordering based on search parameters
 LIMIT -- [...];                 --|
 
+
 -- Example: Getting a summary of the first 10 employees who are interns sorted by last name descending
 SELECT  employee_id, 
         first_name, 
@@ -25,6 +26,10 @@ ORDER BY last_name DESC
 OFFSET 0
 LIMIT 10;
 
+
+
+
+
 /* Getting managers and number of employees managed by manager */
 SELECT COUNT(*) AS manages -- , [basic employee information]
 
@@ -36,6 +41,7 @@ FROM employee e
 GROUP BY -- [basic employee information]
 -- [Dynamic filtering based on search parameters]
 -- [Dynamic ordering based on search parameters]
+
 
 -- Example: Getting a summary of the first 10 managers who work in the finance department
 SELECT  COUNT(*), 
@@ -59,6 +65,10 @@ GROUP BY  m.employee_id,
 ORDER BY job_title ASC
 OFFSET 0
 LIMIT 10;
+
+
+
+
 
 /* Getting department information, including the number of jobs and employees in the department */
 SELECT  COUNT(DISTINCT j.job_id) AS job_count,
@@ -84,6 +94,43 @@ GROUP BY  d.department_id,
 ORDER BY department_id ASC
 OFFSET 0
 LIMIT 10;
+
+
+
+
+
+-- Important Transaction Examples:
+/* Inserting a new employee into the database */
+BEGIN TRANSACTION;
+SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+INSERT INTO employee_address (street_address,city,country,zip_code,state)
+        VALUES ('12345 SEVENTH STREET','HOUSTON','UNITED STATES','28822','TEXAS')
+        RETURNING address_id;
+INSERT INTO employee 
+        (first_name,last_name,dob,gender,address_id,ssn,phone,email,job_id,manager_id)
+        VALUES ('SYED','RIZVI','2000-01-01','M','268','123456677','+18328323322','syed.a.rizvi@email.com','9','1000000')
+        RETURNING employee_id;
+INSERT INTO salary (employee_id,hourly_wage,annual_bonus)
+        VALUES ('1000264','18.00','2000');
+COMMIT;
+END TRANSACTION;
+
+
+/* Update an employee's details */
+BEGIN TRANSACTION;
+SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+SELECT employee_id
+        FROM employee
+        WHERE employee_id = '1000009';
+UPDATE employee
+        SET m_initial = 'K'
+        WHERE employee_id = '1000009';
+UPDATE salary
+        SET hourly_wage = '25.00'
+        WHERE employee_id = '1000009';
+COMMIT;
+END TRANSACTION;
+
 
 /* Create a new payroll entry for employee 1000000 who worked for 360 hours in the month of November 1979 with a 10% tax rate*/
 BEGIN TRANSACTION;
@@ -115,6 +162,8 @@ FROM (
 
 COMMIT;
 END TRANSACTION;
+
+
 
 /* Create a payroll entry for every assigned employee for December with 15% tax rate, assuming every employee worked their required hours*/
 BEGIN TRANSACTION;
