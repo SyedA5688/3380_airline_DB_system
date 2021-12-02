@@ -309,7 +309,7 @@ class GetForm extends Component {
               </tr>
             </thead>
             <tbody>
-              {this.state.returnedEmployee && this.state.returnedEmployee.rows > 0 && Object.keys(this.state.returnedEmployee[0]).map(responseKey => {
+              {this.state.returnedEmployee && this.state.returnedEmployee[0] && Object.keys(this.state.returnedEmployee[0]).map(responseKey => {
                 let elem = null;
                 if (this.state[this.db_to_state[responseKey]]) {
                   elem = (<tr key={responseKey + "_row_key"}>
