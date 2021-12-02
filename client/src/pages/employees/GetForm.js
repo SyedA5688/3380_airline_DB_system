@@ -175,7 +175,7 @@ class GetForm extends Component {
           
           <div className="form-group mb-3">
             <label className="sr-only" htmlFor="getEmployeeID">Employee ID</label>
-            <input type="number" step="1" pattern="[0-9]+" className="form-control" id="getEmployeeID" value={this.state.getID} name="getID" onChange={this.handleChange} required />
+            <input type="number" step="1" min="0" pattern="[0-9]+" className="form-control" id="getEmployeeID" value={this.state.getID} name="getID" onChange={this.handleChange} required />
             <div className="invalid-feedback">Please input a valid Employee ID.</div>
           </div>
 
@@ -309,7 +309,7 @@ class GetForm extends Component {
               </tr>
             </thead>
             <tbody>
-              {this.state.returnedEmployee && Object.keys(this.state.returnedEmployee[0]).map(responseKey => {
+              {this.state.returnedEmployee && this.state.returnedEmployee.rows > 0 && Object.keys(this.state.returnedEmployee[0]).map(responseKey => {
                 let elem = null;
                 if (this.state[this.db_to_state[responseKey]]) {
                   elem = (<tr key={responseKey + "_row_key"}>
