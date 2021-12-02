@@ -32,7 +32,7 @@ router.delete('/init', async (req, res) => {
       // Delete tables
       await utils.transacQuery(queries, client, 'BEGIN TRANSACTION;', '-- Delete all tables\n');
       await utils.transacQuery(queries, client, 'SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;');
-      const deleteScript = (await fs.readFile('./delete_tables_script.sql', 'utf8')).split('\r\n');
+      const deleteScript = (await fs.readFile('./routes/delete_tables_script.sql', 'utf8')).split('\r\n');
       for(const query of deleteScript) {
         await utils.transacQuery(queries, client, query);
       }
@@ -40,7 +40,7 @@ router.delete('/init', async (req, res) => {
       await utils.transacQuery(queries, client, 'END TRANSACTION;\n');
       
       // Recreate tables from script
-      const createScript = (await fs.readFile('./create_tables_script.sql', 'utf8')).split(';');
+      const createScript = (await fs.readFile('./routes/create_tables_script.sql', 'utf8')).split(';');
       await utils.transacQuery(queries, client, 'BEGIN TRANSACTION;', '-- Recreate tables from script\n');
       await utils.transacQuery(queries, client, 'SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;');
 

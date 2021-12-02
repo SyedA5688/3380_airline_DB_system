@@ -6,6 +6,8 @@ Link to demo video: https://www.youtube.com/watch?v=K2cJQ1I8Hcc
 
 Link to project final report: https://syedarizvi.com/team07.pdf 
 
+transaction.sql and query.sql update as you navigate the website
+
 **Group Members:**
 * Syed Rizvi
 * Nathaniel Valtierra
