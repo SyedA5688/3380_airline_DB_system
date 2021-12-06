@@ -7,7 +7,7 @@ const router = new Router();
 module.exports = router;
 
 /**
- * @api {get} /benefits Get all departments
+ * @api {get} /department Get all departments
  * @apiName GetAllDepartments
  * @apiGroup Departments
  * @apiDescription Returns department information.
@@ -52,7 +52,7 @@ module.exports = router;
  *    }
  */
 router.get('/department', async (req, res) => {
-  const params = req.query;
+  const params = req.query; 
   const sortParams = {
     id: 'department_id',
     name: 'department_name',

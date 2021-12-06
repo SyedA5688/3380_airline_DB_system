@@ -247,7 +247,7 @@ router.get('/leave', async (req, res) => {
   
   const orderString = utils.orderingParams(params, sortParams, 'date');
   const queryString = `SELECT *\nFROM %I\n`;
-  const dbQuery = format(queryString, 'leave') + + `${filterString}${orderString};`;
+  const dbQuery = format(queryString, 'leave') + `${filterString}${orderString};`;
   try {
     const result = await db.query(dbQuery, '-- Get all leave entries\n'); 
     res.json({

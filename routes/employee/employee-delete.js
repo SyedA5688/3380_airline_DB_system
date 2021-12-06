@@ -36,7 +36,7 @@ router.delete('/employee/:id', async (req, res) => {
         await utils.transacQuery(queries, client, 'BEGIN TRANSACTION;', '-- Delete employee\n');
         await utils.transacQuery(queries, client, 'SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;');
 
-        const dbQuery = format('DELETE FROM %I\nWHERE %I = %L', 'employee', 'employee_id', id);
+        const dbQuery = format('DELETE FROM %I\nWHERE %I = %L;', 'employee', 'employee_id', id);
         const result = await utils.transacQuery(queries, client, dbQuery);
 
         await utils.transacQuery(queries, client, 'COMMIT;');
